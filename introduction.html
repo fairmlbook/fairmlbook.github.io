@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Solon Barocas">
+  <meta name="author" content="Moritz Hardt">
+  <meta name="author" content="Arvind Narayanan">
+  <title>Introduction</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body);
+  });</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article>
+<header>
+<div id="chapter">Chapter 1</div>
+<h1 class="title">Introduction</h1>
+</header>
+<nav id="TOC">
+<div id="menuToggle">
+<a class="toggle" tabindex="0" ><img src="figures/hamburger icon.svg" alt="hamburger" id="hamburger"></a>
+<a id="index" href="index.html"><img src="figures/home.png" alt="home" id="home"></a>
+<ul>
+<li><a href="#demographic-disparities">Demographic disparities</a></li>
+<li><a href="#the-machine-learning-loop">The machine learning loop</a></li>
+<li><a href="#the-state-of-society">The state of society</a></li>
+<li><a href="#the-trouble-with-measurement">The trouble with measurement</a></li>
+<li><a href="#from-data-to-models">From data to models</a></li>
+<li><a href="#the-pitfalls-of-action">The pitfalls of action</a></li>
+<li><a href="#feedback-and-feedback-loops">Feedback and feedback loops</a></li>
+<li><a href="#getting-concrete-with-a-toy-example">Getting concrete with a toy example</a></li>
+<li><a href="#other-ethical-considerations">Other ethical considerations</a><ul>
+<li><a href="#predictions-versus-interventions">Predictions versus interventions</a></li>
+<li><a href="#accuracy">Accuracy</a></li>
+<li><a href="#diversity">Diversity</a></li>
+<li><a href="#stereotype-perpetuation-and-cultural-denigration">Stereotype perpetuation and cultural denigration</a></li>
+</ul></li>
+<li><a href="#our-outlook-limitations-and-opportunities">Our outlook: limitations and opportunities</a></li>
+<li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a></li>
+<li><a href="#bibliography">References</a></li>
+</ul>
+</div>
+</nav>
+<p>Our success, happiness, and wellbeing are never fully of our own making. Others’ decisions can profoundly affect the course of our lives: whether to admit us to a particular school, offer us a job, or grant us a mortgage. Arbitrary, inconsistent, or faulty decision-making thus raises serious concerns because it risks limiting our ability to achieve the goals that we have set for ourselves and access the opportunities for which we are qualified.</p>
+<p>So how do we ensure that these decisions are made the right way and for the right reasons? While there’s much to value in fixed rules, applied consistently, <em>good</em> decisions take available evidence into account. We expect admissions, employment, and lending decisions to rest on factors that are relevant to the outcome of interest.</p>
+<p>Identifying details that are relevant to a decision might happen informally and without much thought: employers might observe that people who study math seem to perform particularly well in the financial industry. But they could test these observations against historical evidence by examining the degree to which one’s major correlates with success on the job. This is the traditional work of statistics—and it promises to provide a more reliable basis for decision-making by quantifying how much weight to assign certain details in our determinations.</p>
+<p>Decades of research have compared the accuracy of statistical models to the judgments of humans, even experts with years of experience, and found that in many situations data-driven decisions trounce those based on intuition or expertise.<span><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle"/><span class="sidenote">Robyn M Dawes, David Faust, and Paul E Meehl, “Clinical Versus Actuarial Judgment,” <em>Science</em> 243, no. 4899 (1989): 1668–74.<br />
+<br />
+</span></span> These results have been welcomed as a way to ensure that the high-stakes decisions that shape our life chances are both accurate and fair.</p>
+<p>Machine learning promises to bring greater discipline to decision-making because it offers to uncover factors that are relevant to decision-making that humans might overlook, given the complexity or subtlety of the relationships in historical evidence. Rather than starting with some intuition about the relationship between certain factors and an outcome of interest, machine learning lets us defer the question of relevance to the data themselves: which factors—among all that we have observed—bear a statistical relationship to the outcome.</p>
+<p>Uncovering patterns in historical evidence can be even more powerful than this might seem to suggest. Recent breakthroughs in computer vision—specifically object recognition—reveal just how much pattern-discovery can achieve. In this domain, machine learning has helped to overcome a strange fact of human cognition: while we may be able to effortlessly identify objects in a scene, we are unable to specify the full set of rules that we rely upon to make these determinations. We cannot hand code a program that exhaustively enumerates all the relevant factors that allow us to recognize objects from every possible perspective or in all their potential visual configurations. Machine learning aims to solve this problem by abandoning the attempt to teach a computer through explicit instruction in favor of a process of learning by example. By exposing the computer to many examples of images containing pre-identified objects, we hope the computer will learn the patterns that reliably distinguish different objects from one another and from the environments in which they appear.</p>
+<p>This can feel like a remarkable achievement, not only because computers can now execute complex tasks but also because the rules for deciding what appears in an image seem to emerge from the data themselves.</p>
+<p>But there are serious risks in learning from examples. Learning is not a process of simply committing examples to memory. Instead, it involves generalizing from examples: honing in on those details that are characteristic of (say) cats in general, not just the specific cats that happen to appear in the examples. This is the process of induction: drawing general rules from specific examples—rules that effectively account for past cases, but also apply to future, as yet unseen cases, too. The hope is that we’ll figure out how future cases are likely to be similar to past cases, even if they are not exactly the same.</p>
+<p>This means that reliably generalizing from historical examples to future cases requires that we provide the computer with <em>good</em> examples: a sufficiently large number of examples to uncover subtle patterns; a sufficiently diverse set of examples to showcase the many different types of appearances that objects might take; a sufficiently well-annotated set of examples to furnish machine learning with reliable ground truth; and so on. Thus, evidence-based decision-making is only as reliable as the evidence on which it is based, and high quality examples are critically important to machine learning. The fact that machine learning is “evidence-based” by no means ensures that it will lead to accurate, reliable, or fair decisions.</p>
+<p>This is especially true when using machine learning to model human behavior and characteristics. Our historical examples of the relevant outcomes will almost always reflect historical prejudices against certain social groups, prevailing cultural stereotypes, and existing demographic inequalities. And finding patterns in these data will often mean replicating these very same dynamics.</p>
+<p>We write this book as machine learning begins to play a role in especially consequential decision-making. In the criminal justice system, defendants are assigned statistical scores that are intended to predict the risk of committing future crimes, and these scores inform decisions about bail, sentencing, and parole. In the commercial sphere, firms use machine learning to analyze and filter resumes of job applicants. And statistical methods are of course the bread and butter of lending, credit, and insurance underwriting.</p>
+<p>At the same time, machine learning powers everyday applications that might seem frivolous in comparison but collectively have a powerful effect on shaping our culture: search engines, news recommenders, and ad targeting algorithms influence our information diet and our worldviews; chatbots and social recommendation engines mediate our interactions with the world.</p>
+<p>This book is an attempt to survey the risks in these and many other applications of machine learning, and to provide a critical review of an emerging set of proposed solutions. It will show how even well-intentioned applications of machine learning might give rise to objectionable results. And it will introduce formal methods for characterizing these problems and assess various computational methods for addressing them.</p>
+<section id="demographic-disparities" class="level1">
+<h1>Demographic disparities</h1>
+<p>Amazon uses a data-driven system to determine the neighborhoods in which to offer free same-day delivery.<span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">We don’t know the details of how Amazon’s system works, and in particular we don’t know to what extent it uses machine learning. The same is true of many other systems reported on in the press. Nonetheless, we’ll use these as motivating examples when a machine learning system for the task at hand would plausibly show the same behavior.<br />
+<br />
+</span></span> A 2016 study found stark disparities in the demographic makeup of these neighborhoods: in many U.S. cities, white residents were more than twice as likely as black residents to live in one of the qualifying neighborhoods.<span><label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"/><span class="sidenote">David Ingold and Spencer Soper, “Amazon Doesn’t Consider the Race of Its Customers. Should It?” (<a href="https://www.bloomberg.com/graphics/2016-amazon-same-day/" class="uri">https://www.bloomberg.com/graphics/2016-amazon-same-day/</a>, 2016).<br />
+<br />
+</span></span></p>
+<p>In Chapter 2 we’ll see how to make our intuition about demographic disparities mathematically precise, and we’ll see that there are many possible ways of measuring these inequalities. The pervasiveness of such disparities in machine learning applications is a key concern of this book.</p>
+<p>When we observe disparities, it doesn’t imply that the designer of the system intended for such inequalities to arise. Looking beyond intent, it’s important to understand when observed disparities can be considered to be discrimination. In turn, two key questions to ask are whether the disparities are justified and whether they are harmful. These questions rarely have simple answers, but the extensive literature on discrimination in philosophy and sociology can help us reason about them.</p>
+<p>To understand why the racial disparities in Amazon’s system might be harmful, we must keep in mind the history of racial prejudice in the United States, its relationship to geographic segregation and disparities, and the perpetuation of those inequalities over time. Amazon argued that its system was justified because it was designed based on efficiency and cost considerations and that race wasn’t an explicit factor. Nonetheless, it has the effect of providing different opportunities to consumers at racially disparate rates. The concern is that this might contribute to the perpetuation of long-lasting cycles of inequality. If, instead, the system had been found to be partial to ZIP codes ending in an odd digit, it would not have triggered a similar outcry.</p>
+<p>The term <em>bias</em> is often used to refer to demographic disparities in algorithmic systems that are objectionable for societal reasons. We’ll avoid using this sense of the word bias in this book, since it means different things to different people. There’s a more traditional use of the term bias in statistics and machine learning. Suppose that Amazon’s estimates of delivery dates/times were consistently too early by a few hours. This would be a case of <em>statistical bias</em>. A statistical estimator is said to be biased if its expected or average value differs from the true value that it aims to estimate. Statistical bias is a fundamental concept in statistics, and there is a rich set of established techniques for analyzing and avoiding it.</p>
+<p>There are many other measures that quantify desirable statistical properties of a predictor or an estimator, such as precision, recall, and calibration. These are similarly well understood; none of them require any knowledge of social groups and are relatively straightforward to measure. The attention to demographic criteria in statistics and machine learning is a relatively new direction. This reflects a change in how we conceptualize machine learning systems and the responsibilities of those building it. Is our goal to faithfully reflect the data? Or do we have an obligation to question the data, and to design our systems to conform to some notion of equitable behavior, regardless of whether or not that’s supported by the data currently available to us? These perspectives are often in tension, and the difference between them will become clearer when we delve into stages of machine learning.</p>
+</section>
+<section id="the-machine-learning-loop" class="level1">
+<h1>The machine learning loop</h1>
+<p>Let’s study the pipeline of machine learning and understand how demographic disparities propagate through it. This approach lets us glimpse into the black box of machine learning and will prepare us for the more detailed analyses in later chapters. Studying the stages of machine learning is crucial if we want to intervene to minimize disparities.</p>
+<p>The figure below shows the stages of a typical system that produces outputs using machine learning. Like any such diagram, it is a simplification, but it is useful for our purposes.</p>
+<figure>
+<img src="figures/loop_small.png" alt="The machine learning loop" /><figcaption>The machine learning loop</figcaption>
+</figure>
+<p>The first stage is measurement, which is the process by which the state of the world is reduced to a set of rows, columns, and values in a dataset. It’s a messy process, because the real world is messy. The term measurement is misleading, evoking an image of a dispassionate scientist recording what she observes, whereas we’ll see that it requires subjective human decisions.</p>
+<p>The ‘learning’ in machine learning refers to the next stage, which is to turn that data into a model. A model summarizes the patterns in the training data; it makes generalizations. A model could be generated using supervised learning via an algorithm such as Support Vector Machines, or using unsupervised learning via an algorithm such as k-means clustering. It could take many forms: a hyperplane or a set of regions in n-dimensional space, or a set of distributions. It is typically represented as a set of weights or parameters.</p>
+<p>The next stage is the action we take based on the model’s <em>predictions</em>, which are applications of the model to new, unseen inputs. ‘Prediction’ is another misleading term—while it does sometimes involve trying to predict the future (“is this patient at high risk for cancer?”), usually it doesn’t. It can take the form of classification (determine whether a piece of email is spam), regression (assigning risk scores to defendants), or information retrieval (finding documents that best match a search query).</p>
+<p>The corresponding actions in these three applications might be: depositing the email in the user’s inbox or spam folder, deciding whether to set bail for the defendant’s pre-trial release, and displaying the retrieved search results to the user. They may differ greatly in their significance to the individual, but they have in common that the collective responses of individuals to these decisions alter the state of the world—that is, the underlying patterns that the system aims to model.</p>
+<p>Some machine learning systems record feedback from users (how users react to actions) and use them to refine the model. For example, search engines track what users click on as an implicit signal of relevance or quality. Feedback can also occur unintentionally, or even adversarially; these are more problematic, as we’ll explore later in this chapter.</p>
+</section>
+<section id="the-state-of-society" class="level1">
+<h1>The state of society</h1>
+<p>In this book, we’re concerned with applications of machine learning that involve data about <em>people</em>. In these applications, the available training data will likely encode the demographic disparities that exist in our society. For example, the figure shows the gender breakdown of a sample of occupations in the United States, based on data released by the Bureau of Labor Statistics for the year 2017.<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle"/><span class="sidenote">The percentage of women in a sample of occupations in the United States. The area of the bubble represents the number of workers.<br />
+<br />
+<img src="figures/occupation_gender.png" alt="Gender composition of occupations" /><br />
+<br />
+</span></span></p>
+<p>Unsurprisingly, many occupations have stark gender imbalances. If we’re building a machine learning system that screens job candidates, we should be keenly aware that this is the baseline we’re starting from. It doesn’t necessarily mean that the outputs of our system will be inaccurate or discriminatory, but throughout this chapter we’ll see how it complicates things.</p>
+<p>Why do these disparities exist? There are many potentially contributing factors, including a history of explicit discrimination, implicit attitudes and stereotypes about gender, and differences in the distribution of certain characteristics by gender. We’ll see that even in the absence of explicit discrimination, stereotypes can be self-fulfilling and persist for a long time in society. As we integrate machine learning into decision-making, we should be careful to ensure that ML doesn’t become a part of this feedback loop.</p>
+<p>What about applications that aren’t about people? Consider “Street Bump,” a project by the city of Boston to crowdsource data on potholes. The smartphone app automatically detects pot holes using data from the smartphone’s sensors and sends the data to the city. Infrastructure seems like a comfortably boring application of data-driven decision-making, far removed from the ethical quandaries we’ve been discussing.</p>
+<p>And yet! Kate Crawford points out that the data reflect the patterns of smartphone ownership, which are higher in wealthier parts of the city compared to lower-income areas and areas with large elderly populations.<span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle"/><span class="sidenote">Kate Crawford, “The Hidden Biases in Big Data,” <em>Harvard Business Review</em> 1 (2013).<br />
+<br />
+</span></span></p>
+<p>The lesson here is that it’s rare for machine learning applications to not be about people. In the case of Street Bump, the data is collected by people, and hence reflects demographic disparities; besides, the reason we’re interested in improving infrastructure in the first place is its effect on people’s lives.</p>
+<p>To drive home the point that most machine learning applications involve people, we analyzed Kaggle, a well-known platform for data science competitions. We focused on the top 30 competitions sorted by prize amount. In 14 of these competitions, we observed that the task is to make decisions about individuals. In most of these cases, there exist societal stereotypes or disparities that may be perpetuated by the application of machine learning. For example, the Automated Essay Scoring<span><label for="sn-5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-5" class="margin-toggle"/><span class="sidenote">Kaggle, “The Hewlett Foundation: Automated Essay Scoring” (<a href="https://www.kaggle.com/c/asap-aes" class="uri">https://www.kaggle.com/c/asap-aes</a>, 2012).<br />
+<br />
+</span></span> task seeks algorithms that attempt to match the scores of human graders of student essays. Students’ linguistic choices are signifiers of social group membership, and human graders are known to sometimes have biases based on such factors.<span><label for="sn-6" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-6" class="margin-toggle"/><span class="sidenote">Rema N Hanna and Leigh L Linden, “Discrimination in Grading,” <em>American Economic Journal: Economic Policy</em> 4, no. 4 (2012): 146–68; Maresa Sprietsma, “Discrimination in Grading: Experimental Evidence from Primary School Teachers,” <em>Empirical Economics</em> 45, no. 1 (2013): 523–38.<br />
+<br />
+</span></span> Thus, because human graders must provide the original labels, automated grading systems risk enshrining any such biases that are captured in the training data.</p>
+<p>In a further 5 of the 30 competitions, the task did not call for making decisions about people, but decisions made using the model would nevertheless directly impact people. For example, one competition sponsored by real-estate company Zillow calls for improving the company’s “Zestimate” algorithm for predicting home sale prices. Any system that predicts a home’s future sale price (and publicizes these predictions) is likely to create a self-fulfilling feedback loop in which homes predicted to have lower sale prices deter future buyers, suppressing demand and lowering the final sale price.</p>
+<p>In 9 of the 30 competitions, we did not find an obvious, direct impact on people, such as a competition on predicting ocean health (of course, even such competitions have indirect impacts on people, due to actions that we might take on the basis of the knowledge gained). In two cases, we didn’t have enough information to make a determination.</p>
+<p>To summarize, human society is full of demographic disparities, and training data will likely reflect these. We’ll now turn to the process by which training data is constructed, and see that things are even trickier.</p>
+</section>
+<section id="the-trouble-with-measurement" class="level1">
+<h1>The trouble with measurement</h1>
+<p>The term measurement suggests a straightforward process, calling to mind a camera objectively recording a scene. In fact, measurement is fraught with subjective decisions and technical difficulties.</p>
+<p>Consider a seemingly straightforward task: measuring the demographic diversity of college campuses. A recent New York Times article aimed to do just this, and was titled “Even With Affirmative Action, Blacks and Hispanics Are More Underrepresented at Top Colleges Than 35 Years Ago.”<span><label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle"/><span class="sidenote">Jeremy Ashkenas, Haeyoun Park, and Adam Pearce, “Even with Affirmative Action, Blacks and Hispanics Are More Underrepresented at Top Colleges Than 35 Years Ago” (<a href="https://www.nytimes.com/interactive/2017/08/24/us/affirmative-action.html" class="uri">https://www.nytimes.com/interactive/2017/08/24/us/affirmative-action.html</a>, 2017).<br />
+<br />
+</span></span> The authors argue that the gap between enrolled black and Hispanic freshmen and the black and Hispanic college-age population has grown over the past 35 years. To support their claim, they present demographic information for more than 100 American universities and colleges from the year 1980 to 2015, and show how the percentages of black, Hispanic, Asian, white, and multiracial students have changed over the years. Interestingly, the multiracial category was only recently introduced in 2008, but the comparisons in the article ignore the introduction of this new category. How many students who might have checked the “white” or “black” box checked the “multiracial” box instead? How might this have affected the percentages of “white” and “black” students at these universities? Furthermore, individuals’ and society’s conception of race changes over time. Would a person with black and Latino parents be more inclined to self-identify as black in 2015 than in the 1980s? The point is that even a seemingly straightforward question about trends in demographic diversity is impossible to answer without making some assumptions, and illustrates the difficulties of measurement in a world that resists falling neatly into a set of checkboxes. Race is not a stable category; how we measure race often changes how we conceive of it, and changing conceptions of race may force us to alter what we measure.</p>
+<p>To be clear, this situation is typical: measuring almost any attribute about people is similarly subjective and challenging. If anything, things are more chaotic when machine learning researchers have to create categories, as is often the case.</p>
+<p>One area where machine learning practitioners often have to define new categories is in defining the target variable.<span><label for="sn-8" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-8" class="margin-toggle"/><span class="sidenote">Solon Barocas and Andrew D. Selbst, “Big Data’s Disparate Impact,” <em>California Law Review</em> 104 (2016).<br />
+<br />
+</span></span> This is the outcome that we’re trying to predict – will the defendant recidivate if released on bail? Will the candidate be a good employee if hired? And so on.</p>
+<p>Biases in the training set’s target variable are especially critical, because they are guaranteed to bias the predictions (not necessarily so with other attributes). But the target variable is arguably the hardest from a measurement standpoint, because it is often a construct that is made up for the purposes of the problem at hand rather than one that is widely understood and measured. For example, “creditworthiness” is a construct that was created in the context of the problem of how to successfully extend credit to consumers;<span><label for="sn-9" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-9" class="margin-toggle"/><span class="sidenote">Barocas and Selbst.<br />
+<br />
+</span></span> it is not an intrinsic property that people either possess or lack.</p>
+<p>If our target variable is the idea of a “good employee”, we might use performance review scores to quantify it. This means that our data inherits any biases present in managers’ evaluations of their reports. Another example: the use of computer vision to automatically rank people’s physical attractiveness.<span><label for="sn-10" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-10" class="margin-toggle"/><span class="sidenote">Lizzie Plaugic, “FaceApp’s Creator Apologizes for the App’s Skin-Lightening ‘Hot’ Filter” (The Verge. <a href="https://www.theverge.com/2017/4/25/15419522/faceapp-hot-filter-racist-apology" class="uri">https://www.theverge.com/2017/4/25/15419522/faceapp-hot-filter-racist-apology</a>, 2017); Rowland Manthorpe, “The Beauty.ai Robot Beauty Contest Is Back” (Wired UK. <a href="https://www.wired.co.uk/article/robot-beauty-contest-beauty-ai" class="uri">https://www.wired.co.uk/article/robot-beauty-contest-beauty-ai</a>, 2017).<br />
+<br />
+</span></span> The training data consists of human evaluation of attractiveness, and, unsurprisingly, all these classifiers showed a preference for lighter skin.</p>
+<p>In some cases we might be able to get closer to a more objective definition for a target variable, at least in principle. For example, in criminal risk assessment, the training data is not judges’ decisions on who should get bail, but rather based on who actually went on to commit a crime. But there’s one big caveat—we can’t really measure who committed a crime, so we use arrests as a proxy. This replaces the biases of judges with the biases of policing. On the other hand, if our target variable is whether the defendant appears or fails to appear in court for trial, we would be able to measure it directly with perfect accuracy. That said, we may still have concerns about a system that treats defendants differently based on predicted probability of appearance, given that some reasons for failing to appear are less objectionable than others (trying to hold down a job that would not allow for time off versus trying to avoid prosecution).</p>
+<p>In hiring, instead of relying on performance reviews for (say) a sales job, we might rely on the number of sales closed. But is that an objective measurement or is it subject to the biases of the potential customers (who might respond more positively to certain salespeople than others) and workplace conditions (which might be a hostile environment for some, but not others)?</p>
+<p>In some applications, researchers repurpose an existing scheme of classification to define the target variable rather than creating one from scratch. For example, an object recognition system can be created by training a classifier on ImageNet, a database of images organized in a hierarchy of concepts.<span><label for="sn-11" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-11" class="margin-toggle"/><span class="sidenote">J. Deng et al., “ImageNet: A Large-Scale Hierarchical Image Database,” in <em>CVPR09</em>, 2009.<br />
+<br />
+</span></span> ImageNet’s hierarchy comes from Wordnet, a database of words, categories, and the relationships among them.<span><label for="sn-12" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-12" class="margin-toggle"/><span class="sidenote">George A Miller, “WordNet: A Lexical Database for English,” <em>Communications of the ACM</em> 38, no. 11 (1995): 39–41.<br />
+<br />
+</span></span> Wordnet’s authors in turn imported the word lists from a number of older sources, such as thesauri. As a result, WordNet (and ImageNet) categories contain numerous outmoded words and associations, such as occupations that no longer exist and stereotyped gender associations. Thus, ImageNet-trained object recognition systems assume a categorization of the world that is mismatched with the world in which they operate.</p>
+<p>We think of technology changing rapidly and society being slow to adapt, but at least in this instance, the categorization scheme at the heart of much of today’s machine learning technology has been frozen in time while social norms have changed rapidly.</p>
+<p>Our favorite example of measurement bias has to do with cameras, which we referenced at the beginning of the section as the exemplar of dispassionate observation and recording. But are they?</p>
+<p>The visual world has an essentially infinite bandwidth compared to what can be captured by cameras, whether film or digital, which means that photography technology involves a series of choices about what is relevant and what isn’t, and transformations of the captured data based on those choices. Both film and digital cameras have historically been more adept at photographing lighter-skinned individuals.<span><label for="sn-13" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-13" class="margin-toggle"/><span class="sidenote">Lorna Roth, “Looking at Shirley, the Ultimate Norm: Colour Balance, Image Technologies, and Cognitive Equity,” <em>Canadian Journal of Communication</em> 34, no. 1 (2009): 111.<br />
+<br />
+</span></span> One reason is the default settings such as color balance which were optimized for lighter skin tones. Another, deeper reason is the limited “dynamic range” of cameras, which makes it hard to capture brighter and darker tones in the same image. This started changing in the 1970s, in part due to complaints from furniture companies and chocolate companies about the difficulty of photographically capturing the details of furniture and chocolate respectively! Another impetus came from the increasing diversity of television subjects at this time.</p>
+<p>When we go from individual images to datasets of images, we introduce another layer of potential biases. Consider the image datasets that are used to train today’s computer vision systems for tasks such as object recognition. If these datasets were samples of an underlying visual world, we would expect that a computer vision system trained on one such dataset would do well on another dataset. But in reality, we observe a big drop in accuracy when we train and test on different datasets.<span><label for="sn-14" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-14" class="margin-toggle"/><span class="sidenote">Antonio Torralba and Alexei A Efros, “Unbiased Look at Dataset Bias,” in <em>Computer Vision and Pattern Recognition (Cvpr), 2011 Ieee Conference on</em> (IEEE, 2011), 1521–8.<br />
+<br />
+</span></span> This shows that these datasets are biased relative to each other in a statistical sense, and is a good starting point for investigating whether these biases include cultural stereotypes.</p>
+<p>It’s not all bad news: machine learning can in fact help mitigate measurement biases. Returning to the issue of dynamic range in cameras, computational techniques, including machine learning, are making it possible to improve the representation of tones in images.<span><label for="sn-15" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-15" class="margin-toggle"/><span class="sidenote">Zicheng Liu, Cha Zhang, and Zhengyou Zhang, “Learning-Based Perceptual Image Quality Improvement for Video Conferencing,” in <em>Multimedia and Expo, 2007 Ieee International Conference on</em> (IEEE, 2007), 1035–8; Liad Kaufman, Dani Lischinski, and Michael Werman, “Content-Aware Automatic Photo Enhancement,” in <em>Computer Graphics Forum</em>, vol. 31, 8 (Wiley Online Library, 2012), 2528–40; Nima Khademi Kalantari and Ravi Ramamoorthi, “Deep High Dynamic Range Imaging of Dynamic Scenes,” <em>ACM Trans. Graph</em> 36, no. 4 (2017): 144.<br />
+<br />
+</span></span> Another example comes from medicine: diagnoses and treatments are sometimes personalized by race. But it turns out that race is used as a crude proxy for ancestry and genetics, and sometimes environmental and behavioral factors.<span><label for="sn-16" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-16" class="margin-toggle"/><span class="sidenote">Vence L Bonham, Shawneequa L Callier, and Charmaine D Royal, “Will Precision Medicine Move Us Beyond Race?” <em>The New England Journal of Medicine</em> 374, no. 21 (2016): 2003; James F Wilson et al., “Population Genetic Structure of Variable Drug Response,” <em>Nature Genetics</em> 29, no. 3 (2001): 265.<br />
+<br />
+</span></span> If we can measure these genetic and lifestyle factors and incorporate them—instead of race—into statistical models of disease and drug response, we can increase the accuracy of diagnoses and treatments while mitigating racial biases.</p>
+<p>To summarize, measurement involves defining your variables of interest, the process for interacting with the real world and turning your observations into numbers, and then actually collecting the data. Usually machine learning practitioners don’t think about these steps, because someone else has already done those things. And yet it is crucial to understand the provenance of the data. Even if someone else has collected the data for you, it’s almost always too messy for your algorithms to handle, hence the dreaded “data cleaning” step. But the messiness of the real world isn’t just an annoyance to be dealt with by cleaning, it is instead a manifestation of the limitations of data-driven techniques.</p>
+</section>
+<section id="from-data-to-models" class="level1">
+<h1>From data to models</h1>
+<p>We’ve seen that training data reflects the disparities, distortions, and biases from the real world and the measurement process. This leads to an obvious question: when we learn a model from such data, are these disparities preserved, mitigated, or exacerbated?</p>
+<p>Statistical methods, including machine learning, are good at calibration: ensuring that the distribution of outputs matches the prior probabilities. By contrast, human intuition is notoriously poor at accounting for priors, and this is a major reason that statistical predictions perform better in a wide variety of settings. But calibration also means that by default, we should expect our models to faithfully reflect disparities found in the input data.</p>
+<p>Here’s another way to think about it. Some patterns in the training data (smoking is associated with cancer) represent knowledge that we wish to mine using machine learning, while other patterns (girls like pink and boys like blue) represent stereotypes that we might wish to avoid learning. But learning algorithms have no general way to distinguish between these two types of patterns, because they are the result of social norms and moral judgments. Absent specific intervention, machine learning will extract stereotypes, including incorrect and harmful ones, in the same way that it extracts knowledge.</p>
+<p>A telling example of this comes from machine translation. The screenshot on the right shows the result of translating sentences from English to Turkish and back.<span><label for="sn-17" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-17" class="margin-toggle"/><span class="sidenote">Translating from English to Turkish, then back to English injects gender stereotypes.**<br />
+<br />
+<img src="figures/google-translate.png" /><br />
+<br />
+</span></span> The same stereotyped translations result for many pairs of languages and other occupation words in all translation engines we’ve tested. It’s easy to see why. Turkish has gender neutral pronouns, and when translating such a pronoun to English, the system picks the sentence that best matches the statistics of the training set (which is typically a large, minimally curated corpus of historical text and text found on the web).</p>
+<p>When we build a statistical model of language from such text, we should expect the gender associations of occupation words to roughly mirror real-world labor statistics. In addition, because of the male-as-norm bias<span><label for="sn-18" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-18" class="margin-toggle"/><span class="sidenote">Marcel Danesi, <em>Dictionary of Media and Communications</em> (Routledge, 2014).<br />
+<br />
+</span></span> (the use of male pronouns when the gender is unknown) we should expect translations to favor male pronouns. It turns out that when we repeat the experiment with dozens of occupation words, these two factors—labor statistics and the male-as-norm bias—together almost perfectly predict which pronoun will be returned.<span><label for="sn-19" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-19" class="margin-toggle"/><span class="sidenote">Aylin Caliskan, Joanna J. Bryson, and Arvind Narayanan, “Semantics Derived Automatically from Language Corpora Contain Human-Like Biases,” <em>Science</em> 356, no. 6334 (2017): 183–86.<br />
+<br />
+</span></span></p>
+<p>Here’s a tempting response to the observation that models reflect data biases. Suppose we’re building a model for scoring resumes for a programming job. What if we simply withhold gender from the data? Surely the resulting model can’t be gender biased? Unfortunately, it’s not that simple, because of the problem of proxies<span><label for="sn-20" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-20" class="margin-toggle"/><span class="sidenote">Barocas and Selbst, “Big Data’s Disparate Impact.”<br />
+<br />
+</span></span> or redundant encodings,<span><label for="sn-21" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-21" class="margin-toggle"/><span class="sidenote">Moritz Hardt, “How Big Data Is Unfair” (<a href="https://medium.com/@mrtz/how-big-data-is-unfair-9aa544d739de" class="uri">https://medium.com/@mrtz/how-big-data-is-unfair-9aa544d739de</a>, 2014).<br />
+<br />
+</span></span> as we’ll discuss in the next chapter. There are any number of other attributes in the data that might correlate with gender. In our culture, the age at which someone starts programming is well known to be correlated with gender. This illustrates another problem with proxies: they may be genuinely relevant to the decision at hand. How long someone has been programming is a factor that gives us valuable information about their suitability for a programming job, but it also reflects the reality of gender stereotyping.</p>
+<p>Finally, it’s also possible for the learning step to introduce demographic disparities that aren’t in the training data. The most common reason for this is the sample size disparity. If we construct our training set by sampling uniformly from the training data, then by definition we’ll have fewer data points about minorities. Of course, machine learning works better when there’s more data, so it will work less well for members of minority groups, assuming that members of the majority and minority groups are systematically different in terms of the prediction task.<span><label for="sn-22" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-22" class="margin-toggle"/><span class="sidenote">Hardt.<br />
+<br />
+</span></span></p>
+<p>Worse, in many settings minority groups are underrepresented relative to population statistics. For example, minority groups are underrepresented in the tech industry. Different groups might also adopt technology at different rates, which might skew datasets assembled form social media. If training sets are drawn from these unrepresentative contexts, there will be even fewer training points from minority individuals. For example, many products that incorporate face-detection technology have been reported to have trouble with non-Caucasian faces, and it’s easy to guess why.<span><label for="sn-23" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-23" class="margin-toggle"/><span class="sidenote">Hardt.<br />
+<br />
+</span></span></p>
+<p>When we develop machine-learning models, we typically only test their overall accuracy; so a “5% error” statistic might hide the fact that a model performs terribly for a minority group. Reporting accuracy rates by group will help alert us to problems like the above example. In the next chapter, we’ll look at metrics that quantify the error-rate disparity between groups.</p>
+<p>There’s one application of machine learning where we find especially high error rates for minority groups: anomaly detection. This is the idea of detecting behavior that deviates from the norm as evidence of abuse against a system. A good example is the <em>Nymwars</em> controversy, where Google, Facebook, and other tech companies aimed to block users who used uncommon (hence, presumably fake) names.</p>
+<p>Further, suppose that in some cultures, most people receive names from a small set of names, whereas in other cultures, names might be more diverse, and it might be common for names to be unique. For users in the latter culture, a popular name would be more likely to be fake. In other words, the same feature that constitutes evidence towards a prediction in one group might constitute evidence against the prediction for another group.<span><label for="sn-24" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-24" class="margin-toggle"/><span class="sidenote">Hardt.<br />
+<br />
+</span></span></p>
+<p>If we’re not careful, learning algorithms will generalize based on the majority culture, leading to a high error rate for minority groups. This is because of the desire to avoid overfitting, that is, picking up patterns that arise due to random noise rather than true differences. One way to avoid this is to explicitly model the differences between groups, although there are both technical and ethical challenges associated with this, as we’ll show in later chapters.</p>
+</section>
+<section id="the-pitfalls-of-action" class="level1">
+<h1>The pitfalls of action</h1>
+<p>Any real machine-learning system seeks to make some change in the world. To understand its effects, then, we have to consider it in the context of the larger socio-technical system in which it is embedded.</p>
+<p>In Chapter 2, we’ll see that if a model is calibrated—it faithfully captures the patterns in the underlying data—predictions made using that model will inevitably have disparate error rates for different groups, if those groups have different <em>base rates</em>, that is, rates of positive or negative outcomes. In other words, understanding the properties of a prediction requires understanding not just the model, but also the population differences between the groups on which the predictions are applied.</p>
+<p>Further, population characteristics can shift over time; this is a well-known machine learning phenomenon known as drift. If sub-populations change differently over time, that can introduce disparities. An additional wrinkle: whether or not disparities are objectionable may differ between cultures, and may change over time as social norms evolve.</p>
+<p>When people are subject to automated decisions, their perception of those decisions depends not only on the outcomes but also the process of decision-making. An ethical decision-making process might require, among other things, the ability to explain a prediction or decision, which might not be feasible with black-box models.</p>
+<p>A major limitation of machine learning is that it only reveals correlations, but we often use its predictions as if they reveal causation. This is a persistent source of problems. For example, an early machine learning system in healthcare famously learned the seemingly nonsensical rule that patients with asthma had lower risk of developing pneumonia. This was a true pattern in the data, but the likely reason was that asthmatic patients were more likely to receive in-patient care.<span><label for="sn-25" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-25" class="margin-toggle"/><span class="sidenote">Rich Caruana et al., “Intelligible Models for Healthcare: Predicting Pneumonia Risk and Hospital 30-Day Readmission,” in <em>Proceedings of the 21th Acm Sigkdd International Conference on Knowledge Discovery and Data Mining</em> (ACM, 2015), 1721–30.<br />
+<br />
+</span></span> So it’s not valid to use the prediction to decide whether or not to admit a patient. We’ll discuss causality in Chapter 4.</p>
+<p>Another way to view this example is that the prediction affects the outcome (because of the actions taken on the basis of the prediction), and thus invalidates itself. The same principle is also seen in the the use of machine learning for predicting traffic congestion: if sufficiently many people choose their routes based on the prediction, then the route predicted to be clear will in fact be congested. The effect can also work in the opposite direction: the prediction might reinforce the outcome, resulting in feedback loops. To better understand how, let’s talk about the final stage in our loop: feedback.</p>
+</section>
+<section id="feedback-and-feedback-loops" class="level1">
+<h1>Feedback and feedback loops</h1>
+<p>Many systems receive feedback when they make predictions. When a search engine serves results, it typically records the links that the user clicks on and how long the user spends on those pages, and treats these as implicit signals about which results were found to be most relevant. When a video sharing website recommends a video, it uses the thumbs up/down feedback as an explicit signal. Such feedback is used to refine the model.</p>
+<p>But feedback is tricky to interpret correctly. If a user clicked on the first link on a page of search results, is that simply because it was first, or because it was in fact the most relevant? This is again a case of the action (the ordering of search results) affecting the outcome (the link(s) the user clicks on). This is an active area of research; there are techniques that aim to learn accurately from this kind of biased feedback.<span><label for="sn-26" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-26" class="margin-toggle"/><span class="sidenote">Thorsten Joachims, Adith Swaminathan, and Tobias Schnabel, “Unbiased Learning-to-Rank with Biased Feedback,” in <em>Proceedings of the Tenth Acm International Conference on Web Search and Data Mining</em> (ACM, 2017), 781–89.<br />
+<br />
+</span></span></p>
+<p>Bias in feedback might also reflect cultural prejudices, which is of course much harder to characterize than the effects of the ordering of search results. For example, the clicks on the targeted ads that appear alongside search results might reflect gender and racial stereotypes. There’s a well-known study that hints at this: Google searches for black-sounding names such as “Latanya Farrell” were much more likely to results in ads for arrest records (“Latanya Farrell, Arrested?”) than searches for white-sounding names (“Kristen Haring”).<span><label for="sn-27" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-27" class="margin-toggle"/><span class="sidenote">Latanya Sweeney, “Discrimination in Online Ad Delivery,” <em>Queue</em> 11, no. 3 (March 2013): 10:10–10:29, <a href="https://doi.org/10.1145/2460276.2460278" class="uri">https://doi.org/10.1145/2460276.2460278</a>.<br />
+<br />
+</span></span> One potential explanation is that users are more likely to click on ads that conform to stereotypes, and the advertising system is optimized for maximizing clicks.</p>
+<p>In other words, even feedback that’s designed into systems can lead to unexpected or undesirable biases. But there are many unintended ways in which feedback might arise, and these can be are more pernicious and harder to control. Let’s look at three.</p>
+<p><em>Self-fulfilling predictions.</em> Suppose a predictive policing system determines certain areas of a city to be at high risk for crime. More police officers might be deployed to such areas. Alternatively, officers in areas predicted to be high risk might be subtly lowering their threshold for stopping, searching, or arresting people—perhaps even unconsciously. Either way, the prediction will appear to be validated, even if it had been made purely based on data biases.</p>
+<p>Here’s another example of how acting on a prediction can change the outcome. In the United States, some criminal defendants are released prior to trial, whereas for others, a bail amount is set as a precondition of release. Many defendants are unable to post bail. Does the release or detention affect the outcome of the case? Perhaps defendants who are detained face greater pressure to plead guilty. At any rate, how could one possibly test the causal impact of detention without doing an experiment? Intriguingly, we can take advantage of a pseudo-experiment, namely that defendants are assigned bail judges quasi-randomly, and some judges are stricter than others. Thus, pre-trial detention is partially random, in a quantifiable way. Studies using this technique have confirmed that detention indeed causes an increase in the likelihood of a conviction.<span><label for="sn-28" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-28" class="margin-toggle"/><span class="sidenote">Will Dobbie, Jacob Goldin, and Crystal Yang, “The Effects of Pre-Trial Detention on Conviction, Future Crime, and Employment: Evidence from Randomly Assigned Judges” (National Bureau of Economic Research, 2016).<br />
+<br />
+</span></span> If bail were set based on risk predictions, whether human or algorithmic, and we evaluated its efficacy by examining case outcomes, we would see a self-fulfilling effect.</p>
+<p><em>Predictions that affect the training set.</em> Continuing this example, predictive policing activity will leads to arrests, records of which might be added to the algorithm’s training set. These areas might then continue to appear to be at high risk of crime, and perhaps also other areas with a similar demographic composition, depending on the feature set used for predictions. The biases might even compound over time.</p>
+<p>A 2016 paper analyzed a predictive policing algorithm by PredPol, one of the few to be published in a peer-reviewed journal.<span><label for="sn-29" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-29" class="margin-toggle"/><span class="sidenote">PredPol deserves praise for publicly releasing their algorithm, without which this research would not even have been possible.<br />
+<br />
+</span></span> By applying it to data derived from Oakland police records, they found that black people would be targeted for predictive policing of drug crimes at roughly twice the rate of whites, even though the two groups have roughly equal rates of drug use.<span><label for="sn-30" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-30" class="margin-toggle"/><span class="sidenote">Kristian Lum and William Isaac, “To Predict and Serve?” <em>Significance</em> 13, no. 5 (2016): 14–19.<br />
+<br />
+</span></span> Their simulation showed that this initial bias would be amplified by a feedback loop, with policing increasingly concentrated on targeted areas. This is despite the fact that the PredPol algorithm does not explicitly take demographics into account.</p>
+<p>A more recent paper built on this idea and showed mathematically how feedback loops occur when data discovered on the basis of predictions are used to update the model.<span><label for="sn-31" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-31" class="margin-toggle"/><span class="sidenote">Danielle Ensign et al., “Runaway Feedback Loops in Predictive Policing,” <em>arXiv Preprint arXiv:1706.09847</em>, 2017.<br />
+<br />
+</span></span> The paper also shows how to tweak the model to avoid feedback loops: by quantifying how surprising an observation of crime is given the predictions, and only updating the model in response to surprising events.</p>
+<p><em>Predictions that affect the phenomenon and society at large.</em> Prejudicial policing on a large scale, algorithmic or not, will affect society over time, contributing to the cycle of poverty and crime. This is an extremely well-trodden thesis, and we’ll briefly review the sociological literature on durable inequality and the persistence of stereotypes in Chapter 3.</p>
+<p>Let us remind ourselves that we deploy machine learning so that we can act on its predictions. It is hard to even conceptually eliminate the effects of predictions on outcomes, future training sets, the phenomena themselves, or society at large. The more central machine learning becomes in our lives, the stronger this effect.</p>
+<p>Returning to the example of a search engine, in the short term it might be possible to extract an unbiased signal from user clicks, but in the long run, results that are returned more often will be linked to and thus rank more highly. As a side effect of fulfilling its purpose of retrieving relevant information, a search engine will necessarily change the very thing that it aims to measure, sort, and rank. Similarly, most machine learning systems will affect the phenomena that they predict. This is why we’ve depicted the machine learning process as a loop.</p>
+<p>Throughout this book we’ll learn methods for mitigating societal biases in machine learning, but let us pause to consider that there are fundamental limits to what we can achieve, especially when we consider machine learning as a socio-technical system instead of a mathematical abstraction. The textbook model of training and test data being independent and identically distributed is a simplification, and might be unachievable in practice.</p>
+</section>
+<section id="getting-concrete-with-a-toy-example" class="level1">
+<h1>Getting concrete with a toy example</h1>
+<p>Now let’s look at a concrete setting, albeit a toy problem, to illustrate many of the ideas discussed so far, and some new ones.</p>
+<p>Let’s say you’re on a hiring committee, making decisions based on just two attributes of each applicant: their college GPA and their interview score (we did say it’s a toy problem!). We formulate this as a machine-learning problem: the task is to use these two variables to predict some measure of the “quality” of an applicant. For example, it could be based on the average performance review score after two years at the company. We’ll assume we have data from past candidates that allows us to train a model to predict performance scores based on GPA and interview score.</p>
+<figure>
+<img src="figures/toy_example.svg" alt="Toy example: a hiring classifier that predicts job performance (not shown) based on GPA and interview score, and then applies a cutoff." /><figcaption>Toy example: a hiring classifier that predicts job performance (not shown) based on GPA and interview score, and then applies a cutoff.</figcaption>
+</figure>
+<p>Obviously, this is a reductive formulation—we’re assuming that an applicant’s worth can be reduced to a single number, and that we know how to measure that number. This is a valid criticism, and applies to most applications of data-driven decision-making today. But it has one big advantage: once we do formulate the decision as a prediction problem, statistical methods tend to do better than humans, even domain experts with years of training, in making decisions based on noisy predictors. The subject has been well researched, and we’ll study it in Chapter 3.</p>
+<p>Given this formulation, the simplest thing we can do is to use linear regression to predict the average job performance rating from the two observed variables, and then use a cutoff based on the number of candidates we want to hire. The figure above shows what this might look like. In reality, the variables under consideration need not satisfy a linear relationship, thus suggesting the use of a non-linear model, which we avoid for simplicity.</p>
+<p>As you can see in the figure, our candidates fall into two demographic groups, represented by triangles and squares.<span><label for="sn-32" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-32" class="margin-toggle"/><span class="sidenote">This binary categorization is a simplification for the purposes of our thought experiment. Such simplifications are also common in the research literature. Indeed, most proposed fairness interventions themselves start by assuming such a categorization. But when building real systems, enforcing rigid categories of people can be ethically questionable. This is not specific to machine learning, and a similar tension arises in many data-driven settings, such as the checkboxes for race on census forms or employment applications.<br />
+<br />
+</span></span> Note that the classifier didn’t take into account which group a candidate belonged to. Does this mean that the classifier is fair? We might hope that it is, based on the fairness-as-blindness idea, symbolized by the icon of Lady Justice wearing a blindfold. In this view, an impartial model—one that doesn’t use the group membership in the regression—is fair; a model that gives different scores to otherwise-identical members of different groups is discriminatory.</p>
+<p>We’ll defer a richer understanding of what fairness means to Chapter 3, so let’s ask a simpler question: are candidates from the two groups equally likely to be positively classified? The answer is no: the triangles are more likely to be selected than the squares. That’s because data is a social mirror; the “ground truth” labels that we’re predicting—job performance ratings—are systematically lower for the squares than the triangles.</p>
+<p>There are many possible reasons for this disparity. First, the managers who score the employees’ performance might have a bias against one group. Or the overall workplace might be biased against one group, preventing them from reaching their potential and leading to lower performance. Alternately, the disparity might originate before the candidates were hired. For example, it might arise from disparities in educational institutions attended by the two groups. Or there might be intrinsic differences between them. Of course, it might be a combination of these factors. We can’t tell from our data how much of the disparity is attributable to these different factors. In general, such a determination is methodologically hard, and requires causal reasoning.</p>
+<p>For now, let’s assume that we have evidence that the level of demographic disparity produced by our selection procedure is unjustified, and we’re interested in intervening to decrease it. How could we do it? We observe that GPA is correlated with the demographic attribute—it’s a proxy. Perhaps we could simply omit that variable as a predictor? Unfortunately, we’d also cripple the accuracy of our model. In real datasets, most attributes tend to be proxies for demographic variables, and dropping them may not be a reasonable option.</p>
+<p>Another crude approach is to pick different cutoffs so that candidates from both groups have the same probability of being hired. Or we could mitigate the demographic disparity instead of eliminating it, by decreasing the difference in the cutoffs.</p>
+<p>Given the available data, there is no mathematically principled way to know which cutoffs to pick. In some situations there is a legal baseline: for example, guidelines from the U.S. Equal Employment Opportunity Commission state that if the probability of selection for two groups differs by more than 20%, it might constitute a sufficient disparate impact to initiate a lawsuit. But a disparate impact alone is not illegal; the disparity needs to be unjustified or avoidable for courts to find liability. Even these quantitative guidelines do not provide easy answers or bright lines.</p>
+<p>At any rate, the pick-different-thresholds approach to mitigating disparities seems unsatisfying. It is no longer blind, and two candidates with the same observable attributes may receive different decisions depending on which group they are in.</p>
+<p>But there are other possible interventions, and we’ll discuss one. To motivate it, let’s take a step back and ask why the company wants to decrease the demographic disparity in hiring.</p>
+<p>One answer is rooted in justice to individuals and the specific social groups to which they belong. But a different answer comes from the firm’s selfish interests: diverse teams work better.<span><label for="sn-33" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-33" class="margin-toggle"/><span class="sidenote">David Rock and Heidi Grant, “Why Diverse Teams Are Smarter” (Harvard Business Review. <a href="https://hbr.org/2016/11/why-diverse-teams-are-smarter" class="uri">https://hbr.org/2016/11/why-diverse-teams-are-smarter</a>, 2016).<br />
+<br />
+</span></span> From this perspective, increasing the diversity of the cohort that is hired would benefit the firm and everyone in the cohort.</p>
+<p>How do we operationalize diversity in a selection task? If we had a distance function between pairs of candidates, we could measure the average distance between selected candidates. As a strawman, let’s say we use the Euclidean distance based on the GPA and interview score. If we incorporated such a diversity criterion into the objective function, it would result in a model where the GPA is weighted less. This technique has the advantage of being blind: we didn’t explicitly consider the group membership, but as a side-effect of insisting on diversity of the other observable attributes, we have also improved demographic diversity. However, a careless application of such an intervention can easily go wrong: for example, the model might give weight to attributes that are completely irrelevant to the task.</p>
+<p>More generally, there are many possible algorithmic interventions beyond picking different thresholds for different groups. In particular, the idea of a similarity function between pairs of individuals is a powerful one, and we’ll see other interventions that make use of it. But coming up with a suitable similarity function in practice isn’t easy: it may not be clear which attributes are relevant, how to weight them, and how to deal with correlations between attributes.</p>
+</section>
+<section id="other-ethical-considerations" class="level1">
+<h1>Other ethical considerations</h1>
+<p>So far we’ve been mostly concerned with ethical concerns that arise from demographic disparities in the outputs of machine learning systems. But a few other types of concerns are worth highlighting.</p>
+<section id="predictions-versus-interventions" class="level2">
+<h2>Predictions versus interventions</h2>
+<p>Fairly rendered decisions under unfair circumstances may do little to improve people’s lives. In many cases, we cannot achieve any reasonable notion of fairness through changes to decision-making alone; we need to change the conditions under which these decisions are made.</p>
+<p>Let’s return to the hiring example above. When using machine learning to make predictions about how someone might fare in a specific workplace or occupation, we tend to treat the environment that people will confront in these roles as a constant and ask how people’s performance will vary according to their observable characteristics. In other words, we treat the current state of the world as a given, leaving us to select the person who will do best under these circumstances. This approach risks overlooking more fundamental changes that we could make to the workplace (culture, family friendly policies, on-the-job training) that might make it a more welcoming and productive environment for people that have not flourished under previous conditions.<span><label for="sn-34" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-34" class="margin-toggle"/><span class="sidenote">Solon Barocas, “Putting Data to Work,” in <em>Data and Discrimination: Collected Essays</em>, ed. Seeta Peña Gangadharan Virginia Eubanks and Solon Barocas (New America Foundation, 2014), 59–62.<br />
+<br />
+</span></span></p>
+<p>The tendency with work on fairness in machine learning is to ask whether an employer is using a fair selection process, even though we might have the opportunity to intervene in the workplace dynamics that actually account for differences in predicted outcomes along the lines of race, gender, disability, and other characteristics.</p>
+<p>We can learn a lot from the so-called social model of disability, which views a predicted difference in a disabled person’s ability to excel on the job as the result of a lack of appropriate accommodations (an accessible workplace, necessary equipment, flexible working arrangements) rather than any inherent capacity of the person himself. A person is only disabled in the sense that we have not built physical environments or adopted appropriate policies to ensure their equal participation.</p>
+<p>The same might be true of people with other characteristics, and changes to the selection process alone will not help us address the fundamental injustice of conditions that keep certain people from contributing as effectively as others.</p>
+</section>
+<section id="accuracy" class="level2">
+<h2>Accuracy</h2>
+<p>Accuracy is an underappreciated ethical issue. The reason that it doesn’t get much attention in the technical literature is that we assume a setting where a decision maker has some notion of utility, which is almost always directly connected to maximizing accuracy. For example, a bank deciding who should receive a loan might use data to predict whether the recipient will pay it back; they would like to minimize both types of errors—false positives and false negatives—as they would lose money with false positives and forego potential profits with false negatives. Thus, machine learning problems are already framed in terms of maximizing accuracy, and the literature often talks about the accuracy-fairness trade-off.</p>
+<p>Yet there are two reasons to separately consider accuracy as a criterion for responsible machine learning. We’re already discussed one of these: errors might be unequally distributed between demographic groups, and a utility-maximizing decision maker might not take this into account.</p>
+<p>The other, related reason is that whether to deploy the automated decision-making system at all is often a debate to be had, and one that we’re not comfortable leaving to the logic (and whims) of the marketplace. Two such debates recently: should police use of facial recognition technology be regulated, and now?<span><label for="sn-35" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-35" class="margin-toggle"/><span class="sidenote">Clare Garvie, Alvaro Bedoya, and Jonathan Frankle, “The Perpetual Line-up,” <em>Georgetown Law: Center on Privacy and Technology.</em>, 2016.<br />
+<br />
+</span></span><span><label for="sn-36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-36" class="margin-toggle"/><span class="sidenote">This is not to say that accuracy is the sole criterion in determining the acceptability of police use of facial recognition. Rather, the primary concerns are about civil liberties and the unaccountability of police power.<br />
+<br />
+</span></span> What can go wrong with the use of DNA testing as a forensic tool? Understanding the error rate as well as the nature of errors of these technologies is critical to an informed debate.</p>
+<p>At the same time, debating the merits of these technologies on the basis of their likely accuracy for different groups may distract from a more fundamental question: should we ever deploy such systems, even if they perform equally well for everyone? We may want to regulate the police’s access to such tools, even if the tools are perfectly accurate. Our civil rights—freedom or movement and association—are equally threatened by these technologies when they fail and when they work well.</p>
+</section>
+<section id="diversity" class="level2">
+<h2>Diversity</h2>
+<p>Diversity is a bit of a catch-all term. It is a criterion in selection systems, such as in the hiring example above. Another context in which we might care about diversity is in the construction of training datasets for machine learning that are representative of the world. Let’s discuss two more.</p>
+<p>In information systems, low diversity can lead to a narrowing of opportunity. For example, one reason that students from poor backgrounds don’t go to selective colleges is that they are simply unaware that the opportunity is available to them.<span><label for="sn-37" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-37" class="margin-toggle"/><span class="sidenote">Eleanor Wiske Dillon and Jeffrey Andrew Smith, “The Determinants of Mismatch Between Students and Colleges” (National Bureau of Economic Research, 2013); Ozan Jaquette and Karina Salazar, “Opinion | Colleges Recruit at Richer, Whiter High Schools - the New York Times” (<a href="https://www.nytimes.com/interactive/2018/04/13/opinion/college-recruitment-rich-white.html" class="uri">https://www.nytimes.com/interactive/2018/04/13/opinion/college-recruitment-rich-white.html</a>, 2018).<br />
+<br />
+</span></span> Online search and ads are valuable avenues for mitigating this problem; yet, doing so requires swimming against the current of targeting of ads (and sometimes searches) based on algorithmic profiling of users. There is evidence that ad targeting sometimes narrows opportunities in this way.<span><label for="sn-38" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-38" class="margin-toggle"/><span class="sidenote">Amit Datta, Michael Carl Tschantz, and Anupam Datta, “Automated Experiments on Ad Privacy Settings,” <em>Proceedings on Privacy Enhancing Technologies</em> 2015, no. 1 (2015): 92–112.<br />
+<br />
+</span></span></p>
+<p>A related concern arises in personalization systems: the infamous filter bubble.<span><label for="sn-39" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-39" class="margin-toggle"/><span class="sidenote">Eli Pariser, <em>The Filter Bubble: What the Internet Is Hiding from You</em> (Penguin UK, 2011).<br />
+<br />
+</span></span> This is the idea that when algorithmic systems learn our past activities to predict what we might click on, they feed us information that conforms to our existing views. Note that individual users may like the filter bubble—indeed, research suggests that our own choices result in a narrowing of what we consume online, compared to algorithmic recommendations<span><label for="sn-40" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-40" class="margin-toggle"/><span class="sidenote">Eytan Bakshy, Solomon Messing, and Lada A Adamic, “Exposure to Ideologically Diverse News and Opinion on Facebook,” <em>Science</em> 348, no. 6239 (2015): 1130–2.<br />
+<br />
+</span></span>—but the worry is that an ideologically segregated populace may not be conducive to a functioning democracy. The filter bubble is a concern for search engines, news websites, and social media; the relevant machine learning techniques include information retrieval and collaborative filtering.</p>
+</section>
+<section id="stereotype-perpetuation-and-cultural-denigration" class="level2">
+<h2>Stereotype perpetuation and cultural denigration</h2>
+<p>Image search results for occupation terms such as CEO or software developer reflect (and arguably exaggerate) the prevailing gender composition and stereotypes about those occupations.<span><label for="sn-41" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-41" class="margin-toggle"/><span class="sidenote">Matthew Kay, Cynthia Matuszek, and Sean A Munson, “Unequal Representation and Gender Stereotypes in Image Search Results for Occupations,” in <em>Proceedings of the 33rd Annual Acm Conference on Human Factors in Computing Systems</em> (ACM, 2015), 3819–28.<br />
+<br />
+</span></span> Should we care about such disparities in image search results? After all, these results don’t affect hiring or any other consequential decisions. And what are the harms from gender stereotypes in online translation? These and other examples that are disturbing to varying degrees—such as Google’s app labeling photos of black Americans as “gorillas”, or offensive results in autocomplete—seem to fall into a different moral category than, say, a discriminatory system used in criminal justice, which has immediate and tangible consequences.</p>
+<p>A recent talk lays out the differences.<span><label for="sn-42" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-42" class="margin-toggle"/><span class="sidenote">Kate Crawford, “The Trouble with Bias” (NIPS Keynote <a href="https://www.youtube.com/watch?v=fMym_BKWQzk" class="uri">https://www.youtube.com/watch?v=fMym_BKWQzk</a>, 2017).<br />
+<br />
+</span></span> When decision-making systems in criminal justice, health care, etc. are discriminatory, they create <em>allocative harms</em>, which are caused when a system withholds certain groups an opportunity or a resource. In contrast, the other examples—stereotype perpetuation and cultural denigration—are examples of <em>representational harms</em>, which occur when systems reinforce the subordination of some groups along the lines of identity—race, class, gender, etc.</p>
+<p>Allocative harms have received much attention both because their effects are immediate, and because they are easier to formalize and study in computer science and in economics. Representational harms have long-term effects, and resist formal characterization. But as machine learning becomes a bigger part of how we make sense of the world—through technologies such as search, translation, voice assistants, and image labeling—representational harms will leave an imprint on our culture, and influence identity formation and stereotype perpetuation. Thus, these are critical concerns for the fields of natural language processing and computer vision.</p>
+</section>
+</section>
+<section id="our-outlook-limitations-and-opportunities" class="level1">
+<h1>Our outlook: limitations and opportunities</h1>
+<p>We’ve seen how machine learning propagates inequalities in the state of the world through the stages of measurement, learning, action, and feedback. Machine learning systems that affect people are best thought of as closed loops, since the actions we take based on predictions in turn affect the state of the world. One major goal of fair machine learning is to develop an understanding of when these disparities are harmful, unjustified, or otherwise unacceptable, and to develop interventions to mitigate such disparities.</p>
+<p>There are fundamental challenges and limitations to this goal. Unbiased measurement might be infeasible even in principle, as we’ve seen through examples. There are additional practical limitations arising from the fact that the decision maker is typically not involved in the measurement stage. Further, observational data can be insufficient to identify the causes of disparities, which is needed in the design of meaningful interventions and in order to understand the effects of intervention. Most attempts to “debias” machine learning in the current research literature assume simplistic mathematical systems, often ignoring the effect of algorithmic interventions on individuals and on the long-term state of society.</p>
+<p>Despite these important limitations, there are reasons to be cautiously optimistic about fairness and machine learning. First, data-driven decision-making has the potential to be more transparent compared to human decision-making. It forces us to articulate our decision-making objectives and enables us to clearly understand the tradeoffs between desiderata. However, there are challenges to overcome to achieve this potential for transparency. One challenge is improving the interpretability and explainability of modern machine learning methods, which is a topic of vigorous ongoing research. Another challenge is the proprietary nature of datasets and systems that are crucial to an informed public debate on this topic. Many commentators have called for a change in the status quo.<span><label for="sn-43" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-43" class="margin-toggle"/><span class="sidenote">Dillon Reisman et al., “Algorithmic Impact Assessments: A Practical Framework for Public Agency Accountability” (<a href="https://ainowinstitute.org/aiareport2018.pdf" class="uri">https://ainowinstitute.org/aiareport2018.pdf</a>, 2018).<br />
+<br />
+</span></span></p>
+<p>Second, effective interventions do exist in many machine learning applications, especially in natural-language processing and computer vision. Tasks in these domains (say, transcribing speech) are subject to less inherent uncertainty than traditional decision-making (say, predicting if a loan applicant will repay), removing some of the statistical constraints that we’ll study in Chapter 2.</p>
+<p>Our final and most important reason for optimism is that the turn to automated decision-making and machine learning offers an opportunity to reconnect with the moral foundations of fairness. Algorithms force us to be explicit about what we want to achieve with decision-making. And it’s far more difficult to paper over our poorly specified or true intentions when we have to state these objectives formally. In this way, machine learning has the potential to help us debate the fairness of different policies and decision-making procedures more effectively.</p>
+<p>We should not expect work on fairness in machine learning to deliver easy answers. And we should be suspicious of efforts that treat fairness as something that can be reduced to an algorithmic stamp of approval. At its best, this work will make it far more difficult to avoid the hard questions when it comes to debating and defining fairness, not easier. It may even force us to confront the meaningfulness and enforceability of existing approaches to discrimination in law and policy,<span><label for="sn-44" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-44" class="margin-toggle"/><span class="sidenote">Barocas and Selbst, “Big Data’s Disparate Impact.”<br />
+<br />
+</span></span> expanding the tools at our disposal to reason about fairness and seek out justice.</p>
+<p>We hope that this book can play a small role in stimulating this nascent interdisciplinary inquiry.</p>
+</section>
+<section id="bibliographic-notes-and-further-reading" class="level1">
+<h1>Bibliographic notes and further reading</h1>
+<p>For an introduction to statistical learning, we recommend the textbook by Hastie, Tibshirani, and Friedman.<span><label for="sn-45" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-45" class="margin-toggle"/><span class="sidenote">Trevor Hastie, Robert Tibshirani, and Jerome Friedman, <em>The Elements of Statistical Learning</em> (Springer, 2009).<br />
+<br />
+</span></span> It is <a href="https://web.stanford.edu/~hastie/ElemStatLearn/">available</a> for download online. An excellent textbook by Wasserman<span><label for="sn-46" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-46" class="margin-toggle"/><span class="sidenote">Larry Wasserman, <em>All of Statistics: A Concise Course in Statistical Inference</em> (Springer, 2010).<br />
+<br />
+</span></span> also provides much useful technical background.</p>
+<p>This chapter draws from several taxonomies of biases in machine learning and data-driven decision-making: a blog post by Moritz Hardt,<span><label for="sn-47" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-47" class="margin-toggle"/><span class="sidenote">Hardt, “How Big Data Is Unfair.”<br />
+<br />
+</span></span> a paper by Barocas and Selbst,<span><label for="sn-48" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-48" class="margin-toggle"/><span class="sidenote">Barocas and Selbst, “Big Data’s Disparate Impact.”<br />
+<br />
+</span></span> and a 2016 report by the White House Office of Science and Technology Policy.<span><label for="sn-49" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-49" class="margin-toggle"/><span class="sidenote">Cecilia Munoz, Megan Smith, and D Patil, “Big Data: A Report on Algorithmic Systems, Opportunity, and Civil Rights,” <em>Executive Office of the President. The White House</em>, 2016.<br />
+<br />
+</span></span> For a broad survey of challenges raised by AI, machine learning, and algorithmic systems, see the AI Now report.<span><label for="sn-50" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-50" class="margin-toggle"/><span class="sidenote">Alex Campolo et al., “AI Now 2017 Report,” <em>AI Now Institute at New York University</em>, 2017.<br />
+<br />
+</span></span></p>
+<p>An early work that investigated fairness in algorithmic systems is by Friedman and Nissenbaum in 1996.<span><label for="sn-51" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-51" class="margin-toggle"/><span class="sidenote">Batya Friedman and Helen Nissenbaum, “Bias in Computer Systems,” <em>ACM Transactions on Information Systems (TOIS)</em> 14, no. 3 (1996): 330–47.<br />
+<br />
+</span></span> Papers studying demographic disparities in classification began appearing regularly starting in 2008;<span><label for="sn-52" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-52" class="margin-toggle"/><span class="sidenote">Dino Pedreshi, Salvatore Ruggieri, and Franco Turini, “Discrimination-Aware Data Mining,” in <em>Proc. <span class="math inline">\(14\)</span>th Acm Sigkdd</em>, 2008.<br />
+<br />
+</span></span> the locus of this research was in Europe, and in the data mining research community. With the establishment of the FAT/ML workshop in 2014, a new community emerged, and the topic has since grown in popularity. Several popular-audience books have delivered critiques of algorithmic systems in modern society.<span><label for="sn-53" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-53" class="margin-toggle"/><span class="sidenote">Frank Pasquale, <em>The Black Box Society: The Secret Algorithms That Control Money and Information</em> (Harvard University Press, 2015); Cathy O’Neil, <em>Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy</em> (Broadway Books, 2016); Virginia Eubanks, <em>Automating Inequality: How High-Tech Tools Profile, Police, and Punish the Poor</em> (St. Martin’s Press, 2018); Safiya Umoja Noble, <em>Algorithms of Oppression: How Search Engines Reinforce Racism</em> (NYU Press, 2018).<br />
+<br />
+</span></span></p>
+</section>
+<section id="bibliography" class="level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-NYTMeasurement">
+<p>Ashkenas, Jeremy, Haeyoun Park, and Adam Pearce. “Even with Affirmative Action, Blacks and Hispanics Are More Underrepresented at Top Colleges Than 35 Years Ago.” <a href="https://www.nytimes.com/interactive/2017/08/24/us/affirmative-action.html" class="uri">https://www.nytimes.com/interactive/2017/08/24/us/affirmative-action.html</a>, 2017.</p>
+</div>
+<div id="ref-bakshy2015exposure">
+<p>Bakshy, Eytan, Solomon Messing, and Lada A Adamic. “Exposure to Ideologically Diverse News and Opinion on Facebook.” <em>Science</em> 348, no. 6239 (2015): 1130–2.</p>
+</div>
+<div id="ref-barocas2014putting">
+<p>Barocas, Solon. “Putting Data to Work.” In <em>Data and Discrimination: Collected Essays</em>, edited by Seeta Peña Gangadharan Virginia Eubanks and Solon Barocas, 59–62. New America Foundation, 2014.</p>
+</div>
+<div id="ref-barocas2016big">
+<p>Barocas, Solon, and Andrew D. Selbst. “Big Data’s Disparate Impact.” <em>California Law Review</em> 104 (2016).</p>
+</div>
+<div id="ref-bonham2016will">
+<p>Bonham, Vence L, Shawneequa L Callier, and Charmaine D Royal. “Will Precision Medicine Move Us Beyond Race?” <em>The New England Journal of Medicine</em> 374, no. 21 (2016): 2003.</p>
+</div>
+<div id="ref-caliskan2017semantics">
+<p>Caliskan, Aylin, Joanna J. Bryson, and Arvind Narayanan. “Semantics Derived Automatically from Language Corpora Contain Human-Like Biases.” <em>Science</em> 356, no. 6334 (2017): 183–86.</p>
+</div>
+<div id="ref-campolo2017ai">
+<p>Campolo, Alex, Madelyn Sanfilippo, Meredith Whittaker, and Kate Crawford. “AI Now 2017 Report.” <em>AI Now Institute at New York University</em>, 2017.</p>
+</div>
+<div id="ref-caruana2015intelligible">
+<p>Caruana, Rich, Yin Lou, Johannes Gehrke, Paul Koch, Marc Sturm, and Noemie Elhadad. “Intelligible Models for Healthcare: Predicting Pneumonia Risk and Hospital 30-Day Readmission.” In <em>Proceedings of the 21th Acm Sigkdd International Conference on Knowledge Discovery and Data Mining</em>, 1721–30. ACM, 2015.</p>
+</div>
+<div id="ref-crawford2013hidden">
+<p>Crawford, Kate. “The Hidden Biases in Big Data.” <em>Harvard Business Review</em> 1 (2013).</p>
+</div>
+<div id="ref-crawford17trouble">
+<p>———. “The Trouble with Bias.” NIPS Keynote <a href="https://www.youtube.com/watch?v=fMym_BKWQzk" class="uri">https://www.youtube.com/watch?v=fMym_BKWQzk</a>, 2017.</p>
+</div>
+<div id="ref-danesi2014dictionary">
+<p>Danesi, Marcel. <em>Dictionary of Media and Communications</em>. Routledge, 2014.</p>
+</div>
+<div id="ref-datta2015automated">
+<p>Datta, Amit, Michael Carl Tschantz, and Anupam Datta. “Automated Experiments on Ad Privacy Settings.” <em>Proceedings on Privacy Enhancing Technologies</em> 2015, no. 1 (2015): 92–112.</p>
+</div>
+<div id="ref-dawes1989clinical">
+<p>Dawes, Robyn M, David Faust, and Paul E Meehl. “Clinical Versus Actuarial Judgment.” <em>Science</em> 243, no. 4899 (1989): 1668–74.</p>
+</div>
+<div id="ref-imagenet_cvpr09">
+<p>Deng, J., W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. “ImageNet: A Large-Scale Hierarchical Image Database.” In <em>CVPR09</em>, 2009.</p>
+</div>
+<div id="ref-dillon2013determinants">
+<p>Dillon, Eleanor Wiske, and Jeffrey Andrew Smith. “The Determinants of Mismatch Between Students and Colleges.” National Bureau of Economic Research, 2013.</p>
+</div>
+<div id="ref-dobbie2016effects">
+<p>Dobbie, Will, Jacob Goldin, and Crystal Yang. “The Effects of Pre-Trial Detention on Conviction, Future Crime, and Employment: Evidence from Randomly Assigned Judges.” National Bureau of Economic Research, 2016.</p>
+</div>
+<div id="ref-ensign2017runaway">
+<p>Ensign, Danielle, Sorelle A Friedler, Scott Neville, Carlos Scheidegger, and Suresh Venkatasubramanian. “Runaway Feedback Loops in Predictive Policing.” <em>arXiv Preprint arXiv:1706.09847</em>, 2017.</p>
+</div>
+<div id="ref-eubanks2018automating">
+<p>Eubanks, Virginia. <em>Automating Inequality: How High-Tech Tools Profile, Police, and Punish the Poor</em>. St. Martin’s Press, 2018.</p>
+</div>
+<div id="ref-friedman1996bias">
+<p>Friedman, Batya, and Helen Nissenbaum. “Bias in Computer Systems.” <em>ACM Transactions on Information Systems (TOIS)</em> 14, no. 3 (1996): 330–47.</p>
+</div>
+<div id="ref-garvie2016perpetual">
+<p>Garvie, Clare, Alvaro Bedoya, and Jonathan Frankle. “The Perpetual Line-up.” <em>Georgetown Law: Center on Privacy and Technology.</em>, 2016.</p>
+</div>
+<div id="ref-hanna2012discrimination">
+<p>Hanna, Rema N, and Leigh L Linden. “Discrimination in Grading.” <em>American Economic Journal: Economic Policy</em> 4, no. 4 (2012): 146–68.</p>
+</div>
+<div id="ref-Howbigda92">
+<p>Hardt, Moritz. “How Big Data Is Unfair.” <a href="https://medium.com/@mrtz/how-big-data-is-unfair-9aa544d739de" class="uri">https://medium.com/@mrtz/how-big-data-is-unfair-9aa544d739de</a>, 2014.</p>
+</div>
+<div id="ref-hastie2009elements">
+<p>Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. <em>The Elements of Statistical Learning</em>. Springer, 2009.</p>
+</div>
+<div id="ref-amazon">
+<p>Ingold, David, and Spencer Soper. “Amazon Doesn’t Consider the Race of Its Customers. Should It?” <a href="https://www.bloomberg.com/graphics/2016-amazon-same-day/" class="uri">https://www.bloomberg.com/graphics/2016-amazon-same-day/</a>, 2016.</p>
+</div>
+<div id="ref-jaquette18colleges">
+<p>Jaquette, Ozan, and Karina Salazar. “Opinion | Colleges Recruit at Richer, Whiter High Schools - the New York Times.” <a href="https://www.nytimes.com/interactive/2018/04/13/opinion/college-recruitment-rich-white.html" class="uri">https://www.nytimes.com/interactive/2018/04/13/opinion/college-recruitment-rich-white.html</a>, 2018.</p>
+</div>
+<div id="ref-joachims2017unbiased">
+<p>Joachims, Thorsten, Adith Swaminathan, and Tobias Schnabel. “Unbiased Learning-to-Rank with Biased Feedback.” In <em>Proceedings of the Tenth Acm International Conference on Web Search and Data Mining</em>, 781–89. ACM, 2017.</p>
+</div>
+<div id="ref-kaggle-aes">
+<p>Kaggle. “The Hewlett Foundation: Automated Essay Scoring.” <a href="https://www.kaggle.com/c/asap-aes" class="uri">https://www.kaggle.com/c/asap-aes</a>, 2012.</p>
+</div>
+<div id="ref-kalantari2017deep">
+<p>Kalantari, Nima Khademi, and Ravi Ramamoorthi. “Deep High Dynamic Range Imaging of Dynamic Scenes.” <em>ACM Trans. Graph</em> 36, no. 4 (2017): 144.</p>
+</div>
+<div id="ref-kaufman2012content">
+<p>Kaufman, Liad, Dani Lischinski, and Michael Werman. “Content-Aware Automatic Photo Enhancement.” In <em>Computer Graphics Forum</em>, 31:2528–40. 8. Wiley Online Library, 2012.</p>
+</div>
+<div id="ref-kay2015unequal">
+<p>Kay, Matthew, Cynthia Matuszek, and Sean A Munson. “Unequal Representation and Gender Stereotypes in Image Search Results for Occupations.” In <em>Proceedings of the 33rd Annual Acm Conference on Human Factors in Computing Systems</em>, 3819–28. ACM, 2015.</p>
+</div>
+<div id="ref-liu2007learning">
+<p>Liu, Zicheng, Cha Zhang, and Zhengyou Zhang. “Learning-Based Perceptual Image Quality Improvement for Video Conferencing.” In <em>Multimedia and Expo, 2007 Ieee International Conference on</em>, 1035–8. IEEE, 2007.</p>
+</div>
+<div id="ref-lum2016predict">
+<p>Lum, Kristian, and William Isaac. “To Predict and Serve?” <em>Significance</em> 13, no. 5 (2016): 14–19.</p>
+</div>
+<div id="ref-TheBeaut81">
+<p>Manthorpe, Rowland. “The Beauty.ai Robot Beauty Contest Is Back.” Wired UK. <a href="https://www.wired.co.uk/article/robot-beauty-contest-beauty-ai" class="uri">https://www.wired.co.uk/article/robot-beauty-contest-beauty-ai</a>, 2017.</p>
+</div>
+<div id="ref-miller1995wordnet">
+<p>Miller, George A. “WordNet: A Lexical Database for English.” <em>Communications of the ACM</em> 38, no. 11 (1995): 39–41.</p>
+</div>
+<div id="ref-munoz2016big">
+<p>Munoz, Cecilia, Megan Smith, and D Patil. “Big Data: A Report on Algorithmic Systems, Opportunity, and Civil Rights.” <em>Executive Office of the President. The White House</em>, 2016.</p>
+</div>
+<div id="ref-noble2018algorithms">
+<p>Noble, Safiya Umoja. <em>Algorithms of Oppression: How Search Engines Reinforce Racism</em>. NYU Press, 2018.</p>
+</div>
+<div id="ref-o2016weapons">
+<p>O’Neil, Cathy. <em>Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy</em>. Broadway Books, 2016.</p>
+</div>
+<div id="ref-pariser2011filter">
+<p>Pariser, Eli. <em>The Filter Bubble: What the Internet Is Hiding from You</em>. Penguin UK, 2011.</p>
+</div>
+<div id="ref-pasquale2015black">
+<p>Pasquale, Frank. <em>The Black Box Society: The Secret Algorithms That Control Money and Information</em>. Harvard University Press, 2015.</p>
+</div>
+<div id="ref-pedreshi2008discrimination">
+<p>Pedreshi, Dino, Salvatore Ruggieri, and Franco Turini. “Discrimination-Aware Data Mining.” In <em>Proc. <span class="math inline">\(14\)</span>th Acm Sigkdd</em>, 2008.</p>
+</div>
+<div id="ref-FaceApps44">
+<p>Plaugic, Lizzie. “FaceApp’s Creator Apologizes for the App’s Skin-Lightening ‘Hot’ Filter.” The Verge. <a href="https://www.theverge.com/2017/4/25/15419522/faceapp-hot-filter-racist-apology" class="uri">https://www.theverge.com/2017/4/25/15419522/faceapp-hot-filter-racist-apology</a>, 2017.</p>
+</div>
+<div id="ref-AInow18aia">
+<p>Reisman, Dillon, Jason Schultz, Kate Crawford, and Meredith Whittaker. “Algorithmic Impact Assessments: A Practical Framework for Public Agency Accountability.” <a href="https://ainowinstitute.org/aiareport2018.pdf" class="uri">https://ainowinstitute.org/aiareport2018.pdf</a>, 2018.</p>
+</div>
+<div id="ref-WhyDiver95">
+<p>Rock, David, and Heidi Grant. “Why Diverse Teams Are Smarter.” Harvard Business Review. <a href="https://hbr.org/2016/11/why-diverse-teams-are-smarter" class="uri">https://hbr.org/2016/11/why-diverse-teams-are-smarter</a>, 2016.</p>
+</div>
+<div id="ref-roth2009looking">
+<p>Roth, Lorna. “Looking at Shirley, the Ultimate Norm: Colour Balance, Image Technologies, and Cognitive Equity.” <em>Canadian Journal of Communication</em> 34, no. 1 (2009): 111.</p>
+</div>
+<div id="ref-sprietsma2013discrimination">
+<p>Sprietsma, Maresa. “Discrimination in Grading: Experimental Evidence from Primary School Teachers.” <em>Empirical Economics</em> 45, no. 1 (2013): 523–38.</p>
+</div>
+<div id="ref-Sweeney2013">
+<p>Sweeney, Latanya. “Discrimination in Online Ad Delivery.” <em>Queue</em> 11, no. 3 (March 2013): 10:10–10:29. <a href="https://doi.org/10.1145/2460276.2460278" class="uri">https://doi.org/10.1145/2460276.2460278</a>.</p>
+</div>
+<div id="ref-torralba2011unbiased">
+<p>Torralba, Antonio, and Alexei A Efros. “Unbiased Look at Dataset Bias.” In <em>Computer Vision and Pattern Recognition (Cvpr), 2011 Ieee Conference on</em>, 1521–8. IEEE, 2011.</p>
+</div>
+<div id="ref-wasserman2010all">
+<p>Wasserman, Larry. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer, 2010.</p>
+</div>
+<div id="ref-wilson2001population">
+<p>Wilson, James F, Michael E Weale, Alice C Smith, Fiona Gratrix, Benjamin Fletcher, Mark G Thomas, Neil Bradman, and David B Goldstein. “Population Genetic Structure of Variable Drug Response.” <em>Nature Genetics</em> 29, no. 3 (2001): 265.</p>
+</div>
+</div>
+</section>
+<div id="lastupdate">
+Last updated: Tue Jul 17 21:52:12 EDT 2018
+</div>
+</article>
+</body>
+</html>
