@@ -47,7 +47,7 @@
 </ul></li>
 <li><a href="#calibration-and-sufficiency">Calibration and sufficiency</a><ul>
 <li><a href="#calibration-by-group">Calibration by group</a></li>
-<li><a href="#calibration-as-a-consequence-of-unconstrained-learning">Calibration as a consequence of unconstrained learning</a></li>
+<li><a href="#calibration-by-group-as-a-consequence-of-unconstrained-learning">Calibration by group as a consequence of unconstrained learning</a></li>
 </ul></li>
 <li><a href="#relationships-between-criteria">Relationships between criteria</a><ul>
 <li><a href="#independence-versus-sufficiency">Independence versus Sufficiency</a></li>
@@ -256,10 +256,10 @@
 <br />
 </span></span> Each choice of the threshold defines one binary classifier. Which threshold should we choose?</p>
 <p>The answer to this question is surprisingly subtle. Roughly speaking, which threshold we choose depends on our notion of utility for the resulting classifier and the problem we’re trying to solve. Our notion of utility could be complex and depend on many different considerations.</p>
-<p>In classification, it is common to oversimplify the problem quite a bit by summarizing all considerations of utility with just two numbers: a cost for accepting a negative instance (false positive) and a cost for rejecting a positive instance (false negative). If in our problem we face a high cost for false positives, we want to choose a higher and therefore more conservative threshold than in other applications where false negatives are costly.</p>
+<p>In classification, it is common to oversimplify the problem quite a bit by summarizing all considerations of utility with just two numbers: a cost for accepting a negative instance (false positive) and a cost for rejecting a positive instance (false negative). If in our problem we face a high cost for false positives, we want to choose a higher threshold than in other applications where false negatives are costly.</p>
 <p>The choice of a threshold and its resulting trade-off between true positive rate and false positive rate can be neatly visualized with the help of an <em>ROC curve</em><span><label for="sn-5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-5" class="margin-toggle"/><span class="sidenote">ROC stands for <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic</a>.<br />
 <br />
-</span></span>.</p>
+</span></span>. Note that true positive rate equals 1 - false negative rate.</p>
 <figure>
 <img src="figures/roc_curve_1.svg" alt="Example of an ROC curve. Each point on the solid curve is realized by thresholding the score function at some value. The dashed line shows the trade-offs achieved by randomly accepting an instance irrespective of its features with some probability p\in[0,1]." style="width:75.0%" /><figcaption>Example of an ROC curve. Each point on the solid curve is realized by thresholding the score function at some value. The dashed line shows the trade-offs achieved by randomly accepting an instance irrespective of its features with some probability <span class="math inline">\(p\in[0,1].\)</span><span label="fig:roc"></span></figcaption>
 </figure>
@@ -281,7 +281,7 @@
 <br />
 </span></span></p>
 <p>The correlation on its own is too small to predict someone’s gender with high accuracy. However, if numerous such features are available, as is the case in a typical browsing history, the task of predicting gender becomes feasible at high accuracy levels.</p>
-<p>In other words, several slightly correlated features can be used to build high accuracy classifiers for the sensitive attribute.</p>
+<p>In other words, several features that are slightly predictive of the sensitive attribute can be used to build high accuracy classifiers for that attribute.</p>
 <figure>
 <img src="figures/redundant.svg" alt="On the left, we see the distribution of a single feature that differs only very slightly between the two groups. In both groups the feature follows a normal distribution. Only the means are slightly different in each group. Multiple features like this can be used to build a high accuracy group membership classifier. On the right, we see how the accuracy grows as more and more features become available." /><figcaption>On the left, we see the distribution of a single feature that differs only very slightly between the two groups. In both groups the feature follows a normal distribution. Only the means are slightly different in each group. Multiple features like this can be used to build a high accuracy group membership classifier. On the right, we see how the accuracy grows as more and more features become available.</figcaption>
 </figure>
@@ -326,7 +326,7 @@
 <span class="numenv Definition title">Definition 1.</span>
 <p>The random variables <span class="math inline">\((A, R)\)</span> satisfy <em>independence</em> if <span class="math inline">\(A\bot R.\)</span></p>
 </div>
-<p>Independence has been explored through many variants and relaxations, referred to as <em>demographic parity</em>, <em>statistical parity</em>, <em>group fairness</em>, <em>disparate impact</em> and others. In the case of binary classification, independence simplifies to the condition <span class="math display">\[\mathbb{P}\{R=1\mid A=a\}=\mathbb{P}\{R=1\mid A=b\}\,,\]</span> for all groups <span class="math inline">\(a, b.\)</span> Thinking of the event <span class="math inline">\(R=1\)</span> as “acceptance”, the condition requires the acceptance rate to be the same in all groups. A relaxation of the constraint introduces a positive amount of slack <span class="math inline">\(\epsilon&gt;0\)</span> and requires that <span class="math display">\[\mathbb{P}\{R=1\mid A=a\}\ge \mathbb{P}\{R=1\mid A=b\}-\epsilon\,.\]</span></p>
+<p>Independence has been explored through many equivalent terms or variants, referred to as <em>demographic parity</em>, <em>statistical parity</em>, <em>group fairness</em>, <em>disparate impact</em> and others. In the case of binary classification, independence simplifies to the condition <span class="math display">\[\mathbb{P}\{R=1\mid A=a\}=\mathbb{P}\{R=1\mid A=b\}\,,\]</span> for all groups <span class="math inline">\(a, b.\)</span> Thinking of the event <span class="math inline">\(R=1\)</span> as “acceptance”, the condition requires the acceptance rate to be the same in all groups. A relaxation of the constraint introduces a positive amount of slack <span class="math inline">\(\epsilon&gt;0\)</span> and requires that <span class="math display">\[\mathbb{P}\{R=1\mid A=a\}\ge \mathbb{P}\{R=1\mid A=b\}-\epsilon\,.\]</span></p>
 <p>Note that we can swap <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> to get an inequality in the other direction. An alternative relaxation is to consider a ratio condition, such as, <span class="math display">\[\frac{\mathbb{P}\{R=1\mid A=a\}}
 {\mathbb{P}\{R=1\mid A=b\}}\ge1-\epsilon\,.\]</span> Some have argued<span><label for="sn-12" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-12" class="margin-toggle"/><span class="sidenote">Michael Feldman et al., “Certifying and Removing Disparate Impact,” in <em>Proc. <span class="math inline">\(21\)</span>th ACM SIGKDD</em>, 2015.<br />
 <br />
@@ -444,8 +444,8 @@ r
 </div>
 <p>We conclude that sufficiency and calibration by group are essentially equivalent notions. In particular, this gives us a large repertoire of methods for achieving sufficiency. We could, for example, apply Platt scaling for each of the groups defined by the sensitive attribute.</p>
 </section>
-<section id="calibration-as-a-consequence-of-unconstrained-learning" class="level2">
-<h2>Calibration as a consequence of unconstrained learning</h2>
+<section id="calibration-by-group-as-a-consequence-of-unconstrained-learning" class="level2">
+<h2>Calibration by group as a consequence of unconstrained learning</h2>
 <p>Sufficiency is often satisfied by default without the need for any explicit intervention. Indeed, we generally expect a learned score to satisfy sufficiency in cases where the sensitive attribute can be predicted from the other attributes.</p>
 <p>To illustrate this point we look at the calibration values of a standard logistic regression model on the standard UCI adult data set.<span><label for="sn-22" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-22" class="margin-toggle"/><span class="sidenote"><a href="https://archive.ics.uci.edu/ml/datasets/adult">Source</a><br />
 <br />
@@ -649,7 +649,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 <p>The random variables in Scenario I and II admit identical joint distributions. In particular, no observational criterion distinguishes between the two scenarios.</p>
 </div>
 <p>The indistinguishability result has nothing to do with sample sizes or sampling errors. No matter how many data points we have, the size of our data does not resolve the indistinguishability.</p>
-<p>There’s another interesting consequence of this result. Observational criteria cannot even determine if the sensitive attribute was fed into the classifier or not. To see this, recall that the optimal constrained score in one secenario directly uses <em>gender</em>, in the other it does not.</p>
+<p>There’s another interesting consequence of this result. Observational criteria cannot even determine if the sensitive attribute was fed into the classifier or not. To see this, recall that the optimal constrained score in one scenario directly uses <em>gender</em>, in the other it does not.</p>
 </section>
 <section id="a-forced-perspective-problem" class="level2">
 <h2>A forced perspective problem</h2>
@@ -721,7 +721,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 <figure>
 <img src="figures/credit_roc_curve_(0,1)_(0,1).svg" alt="ROC curve of credit score by group." style="width:75.0%" /><figcaption>ROC curve of credit score by group.</figcaption>
 </figure>
-<p>The meaning of true positive rate is <em>the rate of positive performance given predicted positive performance.</em> Similarly, false positive rate is <em>the rate of negative performance given a positive predicted performance</em>.</p>
+<p>The meaning of true positive rate is <em>the rate of predicted positive performance given positive performance.</em> Similarly, false positive rate is <em>the rate of predicted negative performance given a positive performance</em>.</p>
 <figure>
 <img src="figures/credit_roc_curve_(0,0.3)_(0.4,1.0).svg" alt="ROC curve of credit score by group zoomed in on region of large differences." style="width:75.0%" /><figcaption>ROC curve of credit score by group zoomed in on region of large differences.</figcaption>
 </figure>
@@ -1039,9 +1039,9 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 <br />
 </span></span> under different names. Woodworth et al.<span><label for="sn-52" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-52" class="margin-toggle"/><span class="sidenote">Blake E. Woodworth et al., “Learning Non-Discriminatory Predictors,” in <em>Proc. <span class="math inline">\(30\)</span>th Colt</em>, 2017, 1920–53.<br />
 <br />
-</span></span> studied a relaxation of separation stated in terms of correlation coefficients. This relaxation corresponds to the third criterion studied by.<span><label for="sn-53" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-53" class="margin-toggle"/><span class="sidenote">Darlington, “Another Look at ‘Cultural Fairness’.”<br />
+</span></span> studied a relaxation of separation stated in terms of correlation coefficients. This relaxation corresponds to the third criterion studied by Darlington<span><label for="sn-53" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-53" class="margin-toggle"/><span class="sidenote">Darlington, “Another Look at ‘Cultural Fairness’.”<br />
 <br />
-</span></span></p>
+</span></span>.</p>
 <p>ProPublica<span><label for="sn-54" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-54" class="margin-toggle"/><span class="sidenote">Angwin et al., “Machine Bias.”<br />
 <br />
 </span></span> implicitly adopted equality of false positive rates as a fairness criterion in their article on COMPAS scores. Northpointe, the maker of the COMPAS software, emphasized the importance of calibration by group in their rebuttal to ProPublica’s article. Similar arguments were made quickly after the publication of ProPublica’s article by bloggers including Abe Gong.<span><label for="sn-55" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-55" class="margin-toggle"/><span class="sidenote">See <a href="https://medium.com/@AbeGong/ethics-for-powerful-algorithms-1-of-3-a060054efd84">this</a> and subsequent posts.<br />
@@ -1099,96 +1099,90 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 <td style="text-align: center;">Corbett-Davies et al. (2017)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Overall accuracy equality</td>
-<td style="text-align: center;">Independence</td>
-<td style="text-align: center;">Relaxation</td>
-<td style="text-align: center;">Berk et al. (2017)</td>
-</tr>
-<tr class="even">
 <td style="text-align: center;">Darlington criterion (4)</td>
 <td style="text-align: center;">Independence</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Darlington (1971)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Equal opportunity</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Hardt, Price, Srebro (2016)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Equalized odds</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Hardt, Price, Srebro (2016)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Conditional procedure accuracy</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Berk et al. (2017)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Avoiding disparate mistreatment</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Zafar et al. (2017)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Balance for the negative class</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Kleinberg, Mullainathan, Raghavan (2016)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Balance for the positive class</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Kleinberg, Mullainathan, Raghavan (2016)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Predictive equality</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Chouldechova (2016)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Equalized correlations</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Woodworth (2017)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Darlington criterion (3)</td>
 <td style="text-align: center;">Separation</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Darlington (1971)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Cleary model</td>
 <td style="text-align: center;">Sufficiency</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Cleary (1966)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Conditional use accuracy</td>
 <td style="text-align: center;">Sufficiency</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Berk et al. (2017)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Predictive parity</td>
 <td style="text-align: center;">Sufficiency</td>
 <td style="text-align: center;">Relaxation</td>
 <td style="text-align: center;">Chouldechova (2016)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: center;">Calibration within groups</td>
 <td style="text-align: center;">Sufficiency</td>
 <td style="text-align: center;">Equivalent</td>
 <td style="text-align: center;">Chouldechova (2016)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: center;">Darlington criterion (1), (2)</td>
 <td style="text-align: center;">Sufficiency</td>
 <td style="text-align: center;">Relaxation</td>
@@ -1280,7 +1274,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 </div>
 </section>
 <div id="lastupdate">
-Last updated: Tue Jul 17 19:07:03 PDT 2018
+Last updated: Wed Aug  1 15:19:00 PDT 2018
 </div>
 </article>
 </body>

@@ -632,15 +632,11 @@ code > span.in { color: #93A1A1; font-weight: normal; font-style: italic; } /* I
    text-decoration: none; */
    list-style-type: none;
    -webkit-font-smoothing: antialiased;
-   /* to stop flickering of text in safari */
-
-   transform-origin: 0% 0%;
-   transform: translate(-100%, 0);
-
-   transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
-
+   opacity: 0;
+   visibility: hidden;
+   transition: visibility 2s;
    overflow: auto;
-   z-index:3;
+   z-index:-1;
  }
 
  #TOC ul li {
@@ -681,12 +677,7 @@ code > span.in { color: #93A1A1; font-weight: normal; font-style: italic; } /* I
 
 }
 
-/*
- * And let's slide it in from the left
- */
-
 #menuToggle a.toggle:focus {
-    /* clicking on label should toggle the menu */
     outline:none;
     pointer-events: none;
     cursor: pointer;
@@ -696,7 +687,9 @@ code > span.in { color: #93A1A1; font-weight: normal; font-style: italic; } /* I
 {
   outline:none;
   cursor: pointer;
-  transform: none;
+  opacity: 1;
+  z-index: 3;
+  visibility: visible;
 }
 
 @media (max-width: 760px) {
