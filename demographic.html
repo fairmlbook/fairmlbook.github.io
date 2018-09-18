@@ -231,7 +231,7 @@
 </section>
 <section id="score-functions" class="level2">
 <h2>Score functions</h2>
-<p>Classification is often attacked by first solving a regression problem to summarize the data in a single real-valued variable. We will refer to such a variable as <em>score</em> or <em>regressor</em>. We can turn a score into a classifier by thresholding it somewhere on the real line.</p>
+<p>Classification is often attacked by first solving a regression problem to summarize the data in a single real-valued variable. We will refer to such a variable as <em>score</em>. We can turn a score into a classifier by thresholding it somewhere on the real line.</p>
 <p>For a simple example consider the well-known <a href="https://en.wikipedia.org/wiki/Body_mass_index">body mass index</a> which summarizes <em>weight</em> and <em>height</em> of a person into a single real number. In our formal notation, the features are <span class="math inline">\(X=(H, W)\)</span> where <span class="math inline">\(H\)</span> denotes height in meters and <span class="math inline">\(W\)</span> denotes weight in kilograms. The body mass index corresponds to the score function <span class="math inline">\(R=W/H^2.\)</span></p>
 <figure>
 <img src="figures/bmi1.svg" alt="Plot of the body mass index." style="width:75.0%" /><figcaption>Plot of the body mass index.</figcaption>
@@ -243,7 +243,7 @@
 </section>
 <section id="the-conditional-expectation" class="level2">
 <h2>The conditional expectation</h2>
-<p>From a mathematical perspective, a natural score function is the expectation of the target variable <span class="math inline">\(Y\)</span> conditional on the features <span class="math inline">\(X\)</span> we have observed. We can write this score as <span class="math inline">\(R=r(X)\)</span> where <span class="math inline">\(r(x)=\mathbb{E}[Y\mid X=x],\)</span> or more succinctly, <span class="math inline">\(R=\mathbb{E}[Y\mid X].\)</span> In a sense, this score function gives us the <em>best guess</em> for the target variable given the observations we have.<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle"/><span class="sidenote">We can make this statement more precise. This score is sometimes called the <em>Bayes optimal score</em> or <em>Bayes optimal regressor</em> as it minimizes the squared error <span class="math inline">\(\mathbb{E}(Y-R)^2\)</span> among all score functions.<br />
+<p>From a mathematical perspective, a natural score function is the expectation of the target variable <span class="math inline">\(Y\)</span> conditional on the features <span class="math inline">\(X\)</span> we have observed. We can write this score as <span class="math inline">\(R=r(X)\)</span> where <span class="math inline">\(r(x)=\mathbb{E}[Y\mid X=x],\)</span> or more succinctly, <span class="math inline">\(R=\mathbb{E}[Y\mid X].\)</span> In a sense, this score function gives us the <em>best guess</em> for the target variable given the observations we have.<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle"/><span class="sidenote">We can make this statement more precise. This score is sometimes called the <em>Bayes optimal score</em> or <em>Bayes optimal score</em> as it minimizes the squared error <span class="math inline">\(\mathbb{E}(g(X)-R)^2\)</span> among all functions <span class="math inline">\(g(X)\)</span>.<br />
 <br />
 </span></span></p>
 <p>The conditional expectation also makes sense for our example of scoring risk of heart disease. What it would do here is to tell us for every setting of weight (say, rounded to the nearest kg unit) and every physical height (rounded to the nearest cm unit), the incidence rate of heart disease among individuals with these values of weight and height. The target variable in this case is a binary indicator of heart disease. So, <span class="math inline">\(r((176, 68))\)</span> would be the incidence rate of heart disease among individuals who are 1.76m tall and weigh 68kg. Intuitively, we can think of the conditional expectation as a big lookup table of incidence rates given some setting of characteristics.</p>
@@ -273,7 +273,7 @@
 <p>In many classification tasks, the features <span class="math inline">\(X\)</span> contain or implicitly encode sensitive characteristics of an individual. We will set aside the letter <span class="math inline">\(A\)</span> to designate a discrete random variable that captures one or multiple sensitive characteristics<span><label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle"/><span class="sidenote">Note that formally we can always represent any number of discrete sensitive attributes as a single discrete attribute whose support corresponds to each of the possible settings of the original attributes.<br />
 <br />
 </span></span>. Different settings of <span class="math inline">\(A\)</span> correspond to different groups of the population. This notational choice is not meant to suggest that we can cleanly partition the set of features into two independent categories such as “neutral” and “sensitive”. In fact, we will see shortly that sufficiently many seemingly neutral features can often give high accuracy predictions of sensitive characteristics. This should not be surprising. After all, if we think of <span class="math inline">\(A\)</span> as the target variable in a classification problem, there is reason to believe that the remaining features would give a non-trivial classifier for <span class="math inline">\(A.\)</span></p>
-<p>The choice of sensitive attributes will generally have profound consequences as it decides which groups of the population we highlight, and what conclusions we draw from our investigation. The taxonomy induced by discretization can on its own be a source of harm if it is too coarse, too granular, misleading, or inaccurate. Even the act of introducing a sensitive attribute on its own can be problematic. We will revisit this important discussion in Chapter.</p>
+<p>The choice of sensitive attributes will generally have profound consequences as it decides which groups of the population we highlight, and what conclusions we draw from our investigation. The taxonomy induced by discretization can on its own be a source of harm if it is too coarse, too granular, misleading, or inaccurate. Even the act of introducing a sensitive attribute on its own can be problematic. We will revisit this important discussion in the next chapter.</p>
 <section id="no-fairness-through-unawareness" class="level2">
 <h2>No fairness through unawareness</h2>
 <p>Some have hoped that removing or ignoring sensitive attributes would somehow ensure the impartiality of the resulting classifier. Unfortunately, this practice is usually somewhere on the spectrum between ineffective and harmful.</p>
@@ -538,7 +538,7 @@ R\bot Y
 pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 \]</span></p>
 <p>Equivalently, <span class="math inline">\(p(r_0 -r_1) = p_a(r_0-r_1).\)</span></p>
-<p>This equation can only be satified if <span class="math inline">\(r_0=r_1,\)</span> in which case <span class="math inline">\(R\bot Y\)</span>, or if <span class="math inline">\(p = p_a\)</span> for all <span class="math inline">\(a,\)</span> in which case <span class="math inline">\(Y\bot A.\)</span></p>
+<p>This equation can only be satisfied if <span class="math inline">\(r_0=r_1,\)</span> in which case <span class="math inline">\(R\bot Y\)</span>, or if <span class="math inline">\(p = p_a\)</span> for all <span class="math inline">\(a,\)</span> in which case <span class="math inline">\(Y\bot A.\)</span></p>
 </div>
 <p>The claim is not true when the target variable can assume more than two values, which is a natural case to consider.</p>
 <div class="numenv Exercise">
@@ -1044,7 +1044,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 </span></span>.</p>
 <p>ProPublica<span><label for="sn-54" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-54" class="margin-toggle"/><span class="sidenote">Angwin et al., “Machine Bias.”<br />
 <br />
-</span></span> implicitly adopted equality of false positive rates as a fairness criterion in their article on COMPAS scores. Northpointe, the maker of the COMPAS software, emphasized the importance of calibration by group in their rebuttal to ProPublica’s article. Similar arguments were made quickly after the publication of ProPublica’s article by bloggers including Abe Gong.<span><label for="sn-55" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-55" class="margin-toggle"/><span class="sidenote">See <a href="https://medium.com/@AbeGong/ethics-for-powerful-algorithms-1-of-3-a060054efd84">this</a> and subsequent posts.<br />
+</span></span> implicitly adopted equality of false positive rates as a fairness criterion in their article on COMPAS scores. Northpointe, the maker of the COMPAS software, emphasized the importance of calibration by group in their rebuttal<span class="math display">\[dieterich16compas\]</span> to ProPublica’s article. Similar arguments were made quickly after the publication of ProPublica’s article by bloggers including Abe Gong.<span><label for="sn-55" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-55" class="margin-toggle"/><span class="sidenote">See <a href="https://medium.com/@AbeGong/ethics-for-powerful-algorithms-1-of-3-a060054efd84">this</a> and subsequent posts.<br />
 <br />
 </span></span> There has been extensive scholarship on the actuarial risk assessment in criminal justice that long predates the ProPublica debate; Berk et al.<span><label for="sn-56" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-56" class="margin-toggle"/><span class="sidenote">Richard Berk et al., “Fairness in Criminal Justice Risk Assessments: The State of the Art,” <em>ArXiv E-Prints</em> 1703.09207 (2017).<br />
 <br />
@@ -1274,7 +1274,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 </div>
 </section>
 <div id="lastupdate">
-Last updated: Wed Aug  1 15:19:00 PDT 2018
+Last updated: Tue Sep  4 14:12:42 PDT 2018
 </div>
 </article>
 </body>
