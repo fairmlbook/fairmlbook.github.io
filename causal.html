@@ -24,8 +24,8 @@
 </header>
 <nav id="TOC">
 <div id="menuToggle">
-<a class="toggle" tabindex="0" ><img src="figures/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
-<a id="index" href="index.html"><img src="figures/home.png" alt="home" id="home"></a>
+<a class="toggle" tabindex="0" ><img src="assets/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
+<a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
 <ul>
 <li><a href="#the-limitations-of-observation">The limitations of observation</a></li>
 <li><a href="#causal-models">Causal models</a><ul>
@@ -280,7 +280,7 @@ X_i := f_i(P_i, U_i),\quad\quad i=1,..., d\,.
 <p>We saw how structural causal models naturally give rise to <em>causal graphs</em> that represent the assignment structure of the model graphically. We can go the other way as well by simply looking at directed graphs as placeholders for an unspecified structural causal model which has the assignment structure given by the graph. Causal graphs are often called <em>causal diagrams</em>. We’ll use these terms interchangeably.</p>
 <p>Below we see causal graphs for the two hypothetical populations from our heart disease example.</p>
 <figure>
-<img src="figures/causal-ex.svg" alt="Causal diagrams for the heart disease examples." style="width:70.0%" /><figcaption>Causal diagrams for the heart disease examples.</figcaption>
+<img src="assets/causal-ex.svg" alt="Causal diagrams for the heart disease examples." style="width:70.0%" /><figcaption>Causal diagrams for the heart disease examples.</figcaption>
 </figure>
 <p>The scenarios differ in the direction of the link between exercise and weight gain.</p>
 <p>Causal graphs are convenient when the exact assignments in a structural causal models are of secondary importance, but what matters are the paths present and absent in the graph. Graphs also let us import the established language of graph theory to discuss causal notions. We can say, for example, that an <em>indirect cause</em> of a node is any ancestor of the node in a given causal graph. In particular, causal graphs allow us to distinguish cause and effect based on whether a node is an ancestor or descendant of another node.</p>
@@ -289,7 +289,7 @@ X_i := f_i(P_i, U_i),\quad\quad i=1,..., d\,.
 <h2>Forks</h2>
 <p>A <em>fork</em> is a node <span class="math inline">\(Z\)</span> in a graph that has outgoing edges to two other variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Put differently, the node <span class="math inline">\(Z\)</span> is a common cause of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
 <figure>
-<img src="figures/causal-conf.svg" alt="Example of a fork." style="width:30.0%" /><figcaption>Example of a fork.</figcaption>
+<img src="assets/causal-conf.svg" alt="Example of a fork." style="width:30.0%" /><figcaption>Example of a fork.</figcaption>
 </figure>
 <p>We already saw an example of a fork in our weight and exercise example: <span class="math inline">\(W\leftarrow X \rightarrow H\)</span>. Here, exercise <span class="math inline">\(X\)</span> influences both weight and heart disease. We also learned from the example that <span class="math inline">\(Z\)</span> has a <em>confounding</em> effect: Ignoring exercise <span class="math inline">\(X\)</span>, we saw that <span class="math inline">\(W\)</span> and <span class="math inline">\(H\)</span> appear to be positively correlated. However, the correlation is a mere result of confounding. Once we hold exercise levels constant (via the do-operation), weight has no effect on heart disease in our example.</p>
 <p>Confounding leads to a disagreement between the calculus of conditional probabilities (observation) and do-interventions (actions).</p>
@@ -299,7 +299,7 @@ X_i := f_i(P_i, U_i),\quad\quad i=1,..., d\,.
 <h2>Mediators</h2>
 <p>The case of a fork is quite different from the situation where <span class="math inline">\(Z\)</span> lies on a directed path from <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span>:</p>
 <figure>
-<img src="figures/causal-chain.svg" alt="Example of a chain." style="width:30.0%" /><figcaption>Example of a chain.</figcaption>
+<img src="assets/causal-chain.svg" alt="Example of a chain." style="width:30.0%" /><figcaption>Example of a chain.</figcaption>
 </figure>
 <p>In this case, the path <span class="math inline">\(X\to Z\to Y\)</span> contributes to the total effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>. It’s a causal path and thus one of the ways in which <span class="math inline">\(X\)</span> causally influences <span class="math inline">\(Y\)</span>. That’s why <span class="math inline">\(Z\)</span> is not a confounder. We call <span class="math inline">\(Z\)</span> a <em>mediator</em> instead.</p>
 <p>We saw a plausible example of a mediator in our UC Berkeley admissions example. In one plausible causal graph, department choice mediates the influences of gender on the admissions decision.</p>
@@ -309,7 +309,7 @@ X_i := f_i(P_i, U_i),\quad\quad i=1,..., d\,.
 <h2>Colliders</h2>
 <p>Finally, let’s consider another common situation: the case of a <em>collider</em>.</p>
 <figure>
-<img src="figures/causal-collider.svg" alt="Example of a collider." style="width:30.0%" /><figcaption>Example of a collider.</figcaption>
+<img src="assets/causal-collider.svg" alt="Example of a collider." style="width:30.0%" /><figcaption>Example of a collider.</figcaption>
 </figure>
 <p>Colliders aren’t confounders. In fact, in the above graph, <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are unconfounded, meaning that we can replace do-statements by conditional probabilities. However, something interesting happens when we condition on a collider. The conditioning step can create correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, a phenomenon called <em>explaining away</em>. A good example of the explaining away effect, or <em>collider bias</em>, is due to Berkson. Two independent diseases can become negatively correlated when analyzing hospitalized patients. The reason is that when either disease (<span class="math inline">\(X\)</span> or <span class="math inline">\(Y\)</span>) is sufficient for admission to the hospital (indicated by variable <span class="math inline">\(Z\)</span>), observing that a patient has one disease makes the other statistically less likely.<span><label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle" /><span class="sidenote">See the <a href="https://en.wikipedia.org/wiki/Berkson%27s_paradox">Wikipedia article</a> and the reprint of Berkson’s original article, Joseph Berkson, “Limitations of the Application of Fourfold Table Analysis to Hospital Data,” <em>International Journal of Epidemiology</em> 43, no. 2 (2014): 511–15.</span></span></p>
 <p>Berkson’s law is a cautionary tale for statistical analysis when we’re studying a cohort that has been subjected to a selection rule. For example, there’s an ongoing debate about the effectiveness of GRE scores in higher education. Recent studies<span><label for="sn-8" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-8" class="margin-toggle" /><span class="sidenote">Abigail M. AND Petrie Moneta-Koehler Liane AND Brown, “The Limitations of the Gre in Predicting Success in Biomedical Graduate School,” <em>PLOS ONE</em> 12, no. 1 (January 2017): 1–17; Anna B. AND Cook Hall Joshua D. AND O’Connell, “Predictors of Student Productivity in Biomedical Graduate School Applications,” <em>PLOS ONE</em> 12, no. 1 (January 2017): 1–14.</span></span> argue that GRE scores are not predictive of various success outcomes in a graduate student population. However, care must be taken when studying the effectiveness of educational tests, such as the GRE, by examining a sample of admitted students. After all, students were in part admitted on the basis of the test score. It’s the selection rule that introduces the potential for collider bias.</p>
@@ -331,7 +331,7 @@ X := x
 <p>We will denote the resulting model by <span class="math inline">\(M&#39;=M[X:=x]\)</span> to indicate the surgery we performed on the original model <span class="math inline">\(M\)</span>. Under this assignment we hold <span class="math inline">\(X\)</span> constant by removing the influence of its parent nodes and thereby any other variables in the model.</p>
 <p>Graphically, the operation corresponds to eliminating all incoming edges to the node <span class="math inline">\(X\)</span>. The children of <span class="math inline">\(X\)</span> in the graph now receive a fixed message <span class="math inline">\(x\)</span> from <span class="math inline">\(X\)</span> when they query the node’s value.</p>
 <figure>
-<img src="figures/causal-sub.svg" alt="Graph before and after substitution." style="width:60.0%" /><figcaption>Graph before and after substitution.</figcaption>
+<img src="assets/causal-sub.svg" alt="Graph before and after substitution." style="width:60.0%" /><figcaption>Graph before and after substitution.</figcaption>
 </figure>
 <p>The assignment operator is also called the <em>do-operator</em> to emphasize that it corresponds to performing an action or intervention. We already have notation to compute probabilities after applying the do-operator, namely, <span class="math inline">\(\mathbb{P}_{M[X:=x]}(E).\)</span></p>
 <p>Another notation is popular and common: <span class="math display">\[
@@ -380,7 +380,7 @@ X := x
 <h2>Unobserved confounding</h2>
 <p>The adjustment formula might suggest that we can always eliminate confounding bias by conditioning on the parent nodes. However, this is only true in the absence of <em>unobserved confounding</em>. In practice often there are variables that are hard to measure, or were simply left unrecorded. We can still include such unobserved nodes in a graph, typically denoting their influence with dashed lines, instead of solid lines.</p>
 <figure>
-<img src="figures/causal-unob-conf.svg" alt="Two cases of unobserved confounding." style="width:75.0%" /><figcaption>Two cases of unobserved confounding.</figcaption>
+<img src="assets/causal-unob-conf.svg" alt="Two cases of unobserved confounding." style="width:75.0%" /><figcaption>Two cases of unobserved confounding.</figcaption>
 </figure>
 <p>The above figure shows to cases of unobserved confounding. In the first example, the causal effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> is unidentifiable. In the second case, we can block the confounding backdoor path <span class="math inline">\(X\leftarrow Z\rightarrow W\rightarrow Y\)</span> by controlling for <span class="math inline">\(W\)</span> even though <span class="math inline">\(Z\)</span> is not observed. The backdoor criterion lets us work around unobserved confounders in some cases where the adjustment formula alone wouldn’t suffice.</p>
 <p>Unobserved confounding nonetheless remains a major obstacle in practice. The issue is not just lack of measurement, but often lack of anticipation or awareness of a counfounding variable. We can try to combat unobserved confounding by increasing the number of variables under consideration. But as we introduce more variables into our study, we also increase the burden of coming up with a valid causal model for all variables under consideration. In practice, it is not uncommon to control for as many variables as possible in a hope to disable confounding bias. However, as we saw, controlling for mediators or colliders can be harmful.</p>
@@ -405,7 +405,7 @@ X := x
 <p>The truth is that we don’t know the exact mechanism by which the thing referenced by <span class="math inline">\(A\)</span> influences department choice. In drawing the arrow <span class="math inline">\(A\)</span> to <span class="math inline">\(Z\)</span> we assert—perhaps with some naivety or ignorance—that there exists such a mechanism.</p>
 <p>We will discuss the important difficulty we encountered here in depth later on. For now, we commit to this modeling choice and thus arrive at the following graph.</p>
 <figure>
-<img src="figures/causal-berkeley-basic.svg" alt="Possible causal graph for the UC Berkeley graduate admissions scenario." style="width:30.0%" /><figcaption>Possible causal graph for the UC Berkeley graduate admissions scenario.</figcaption>
+<img src="assets/causal-berkeley-basic.svg" alt="Possible causal graph for the UC Berkeley graduate admissions scenario." style="width:30.0%" /><figcaption>Possible causal graph for the UC Berkeley graduate admissions scenario.</figcaption>
 </figure>
 <p>In this graph, department choice mediates the influence of gender on admissions. There’s a direct path from <span class="math inline">\(A\)</span> to <span class="math inline">\(Y\)</span> and an indirect path that goes through <span class="math inline">\(Z\)</span>.</p>
 <p>We will use this model to put pressure on the central claim in the original study, namely, that <em>there is no evidence of sex discrimination</em>.</p>
@@ -420,7 +420,7 @@ X := x
 <p>To obtain the direct effect of <span class="math inline">\(A\)</span> on <span class="math inline">\(Y\)</span> we need to disable all paths between <span class="math inline">\(A\)</span> and <span class="math inline">\(Y\)</span> except for the direct link. In our model, we can accomplish this by holding department choice <span class="math inline">\(Z\)</span> constant and evaluating the conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(A\)</span>. Recall that holding a variable constant is generally not the same as conditioning on the variable.</p>
 <p>Specifically, a problem would arise if department choice and admissions outcome were confounded by another variable, such as, state of residence <span class="math inline">\(R\)</span></p>
 <figure>
-<img src="figures/causal-berkeley-residence.svg" alt="Alternative causal graph for the UC Berkeley graduate admissions scenario showing influence of residence." style="width:30.0%" /><figcaption>Alternative causal graph for the UC Berkeley graduate admissions scenario showing influence of residence.</figcaption>
+<img src="assets/causal-berkeley-residence.svg" alt="Alternative causal graph for the UC Berkeley graduate admissions scenario showing influence of residence." style="width:30.0%" /><figcaption>Alternative causal graph for the UC Berkeley graduate admissions scenario showing influence of residence.</figcaption>
 </figure>
 <p>Department choice is now a collider between <span class="math inline">\(A\)</span> and <span class="math inline">\(R\)</span>. Conditioning on a collider opens the backdoor path <span class="math inline">\(A\rightarrow Z\leftarrow R\rightarrow Y\)</span>. In this graph, conditioning on department choice does <em>not</em> give us the desired direct effect.<span><label for="sn-14" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-14" class="margin-toggle" /><span class="sidenote">The possibility of a confounder between department choice and decision was the subject of an exchange between Bickel and Kruskal, as Pearl discusses in Pearl and Mackenzie, <em>The Book of Why</em>.</span></span></p>
 <p>If we assume, however, that department choice and admissions decisions are unconfounded, then Bickel’s approach indeed supports the first claim.</p>
@@ -435,7 +435,7 @@ X := x
 <p>We can easily think of natural alternative scenarios that are consistent with both the data and our causal model, in which the indirect path encodes a pattern of discrimination.</p>
 <p>For example, the department may have advertised the program in a manner that strongly discouraged women from applying. In this case, department preference in part measures exposure to this hostile advertising campaign. Or, the department could have a track record of hostile behavior against women and it is awareness of such that shapes preferences in an applicant. Finally, blatant discriminatory practices, such as compensating women at a lower rate than equally qualified male graduate students can obviously shape an applicant’s preference.</p>
 <figure>
-<img src="figures/causal-berkeley-fear.svg" alt="Alternative causal graph for the UC Berkeley graduate admissions scenario where department preferences are shaped by fear of discrimination." style="width:40.0%" /><figcaption>Alternative causal graph for the UC Berkeley graduate admissions scenario where department preferences are shaped by fear of discrimination.</figcaption>
+<img src="assets/causal-berkeley-fear.svg" alt="Alternative causal graph for the UC Berkeley graduate admissions scenario where department preferences are shaped by fear of discrimination." style="width:40.0%" /><figcaption>Alternative causal graph for the UC Berkeley graduate admissions scenario where department preferences are shaped by fear of discrimination.</figcaption>
 </figure>
 <p>Accepting the indirect path as <em>non-discriminatory</em> is to assert that all these scenarios we described are deemed implausible. Fundamentally, we are confronted with a normative question. The path <span class="math inline">\(A\rightarrow Z\rightarrow Y\)</span> could either be where discrimination occurs or what explains the absence thereof. Which case we’re in isn’t a purely technical matter and cannot be resolved without subject matter knowledge. Causal modeling gives us a framework for exposing these normative questions, but not necessarily one to resolve them.</p>
 </section>
@@ -472,7 +472,7 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 \]</span></p>
 <p>In words, when <span class="math inline">\(X=0\)</span> the first term disappears and so traffic is determined by the larger of the two values <span class="math inline">\(U\)</span> and <span class="math inline">\(U_0\)</span>. Similarly, when <span class="math inline">\(X=1\)</span> traffic is determined by the larger of <span class="math inline">\(U\)</span> and <span class="math inline">\(U_1\)</span>.</p>
 <figure>
-<img src="figures/causal-counterf.svg" alt="Causal diagram for our traffic scenario." style="width:25.0%" /><figcaption>Causal diagram for our traffic scenario.</figcaption>
+<img src="assets/causal-counterf.svg" alt="Causal diagram for our traffic scenario." style="width:25.0%" /><figcaption>Causal diagram for our traffic scenario.</figcaption>
 </figure>
 <p>Now, suppose one morning we have <span class="math inline">\(X=1\)</span> and we observe bad traffic <span class="math inline">\(Y=1.\)</span> Would we have been better off taking the alternative route this morning?</p>
 <p>A natural attempt to answer this question is to compute the likelihood of <span class="math inline">\(Y=0\)</span> after the do-operation <span class="math inline">\(X:=0\)</span>, that is, <span class="math inline">\(\mathbb{P}_{M[X:=0]}(Y=0).\)</span> A quick calculation reveals that this probability is <span class="math inline">\(\frac12 \cdot \frac12 = 1/4.\)</span> Indeed, given the substitution <span class="math inline">\(X:=0\)</span> in our model, for the traffic to be good we need that <span class="math inline">\(\max\{U, U_0\}=0.\)</span> This can only happen when both <span class="math inline">\(U=0\)</span> (probability <span class="math inline">\(1/2\)</span>) and <span class="math inline">\(U_0=0\)</span> (probability <span class="math inline">\(1/2\)</span>).</p>
@@ -643,7 +643,7 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 <p>Mediation analysis is a venerable subject dating back decades<span><label for="sn-22" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-22" class="margin-toggle" /><span class="sidenote">Reuben M Baron and David A Kenny, “The Moderator–Mediator Variable Distinction in Social Psychological Research: Conceptual, Strategic, and Statistical Considerations.” <em>Journal of Personality and Social Psychology</em> 51, no. 6 (1986): 1173.</span></span>. Generally speaking, the goal of mediation analysis is to identify a mechanism through which a cause has an effect. We will review some recent developments and how they relate to questions of discrimination.</p>
 <p>In the language of our formal framework, mediation analysis aims to decompose a total causal effect into path-specific components. We will illustrate the concepts in the case of a basic three variable case of a mediator, although the ideas extent to more complicated structures.</p>
 <figure>
-<img src="figures/causal-chain.svg" alt="Causal graph with mediator Z." style="width:30.0%" /><figcaption>Causal graph with mediator <span class="math inline">\(Z\)</span>.</figcaption>
+<img src="assets/causal-chain.svg" alt="Causal graph with mediator Z." style="width:30.0%" /><figcaption>Causal graph with mediator <span class="math inline">\(Z\)</span>.</figcaption>
 </figure>
 <p>There are two different paths from <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span>. A direct path and a path through the mediator <span class="math inline">\(Z\)</span>. The conditional expectation <span class="math inline">\(\mathbb{E}[Y\mid X=x]\)</span> lumps together influence from both paths. If there were another confounding variable in our graph influencing both <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, then the conditional expectation would also include whatever correlation is the result of confounding. We can eliminate the confounding path by virtue of the do-operator <span class="math inline">\(\mathbb{E}[Y\mid \mathrm{do}(X:=x)]\)</span>. This gives us the total effect of the action <span class="math inline">\(X:=x\)</span> on <span class="math inline">\(Y\)</span>. But the total effect still conflates the two causal pathways, the direct effect and the indirect effect. We will now see how we can identify the direct and indirect effects separately.</p>
 <p>The direct effect we already dealt with earlier as it did not require any counterfactuals. Recall, we can hold the mediator fixed at level <span class="math inline">\(Z:=z\)</span> and consider the effect of treatment <span class="math inline">\(X:=1\)</span> compared with no treatment <span class="math inline">\(X:=0\)</span> as follows:</p>
@@ -754,13 +754,13 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 <p>What we will see is how two different ontological representations of <em>religious affiliation</em> lead to fundamentally different causal models. Each model in turn leads to different conclusions and comes with modeling challenges that raise difficult questions.</p>
 <p>Our first attempt is to model <em>religious affiliation</em> as a personal trait or characteristic that someone either does or does not possess. This trait, call it <span class="math inline">\(A\)</span>, may influence choices relating to one’s appearance, social practices, and variables relevant to the job, such as, the person’s level of education <span class="math inline">\(Z\)</span>. So, we might like to start with a model such as the following:</p>
 <figure>
-<img src="figures/causal-race1.svg" alt="Religion as a root node." style="width:25.0%" /><figcaption>Religion as a root node.</figcaption>
+<img src="assets/causal-race1.svg" alt="Religion as a root node." style="width:25.0%" /><figcaption>Religion as a root node.</figcaption>
 </figure>
 <p>Religious affiliation <span class="math inline">\(A\)</span> is a source node in this graph, which influences the person’s level of education <span class="math inline">\(Z\)</span>. Members of certain religions may be steered away from or encouraged towards obtaining a higher level of education by their social peer group. This story is similar to how in our Berkeley admissions graph <em>sex</em> influences <em>department choice</em>.</p>
 <p>This view of religion places burden on understanding the possible indirect pathways, such as <span class="math inline">\(A\rightarrow Z\rightarrow Y\)</span>, through which religion can influence the outcome. There may be insufficient understanding of how a religious affiliation affects numerous other relevant variables throughout life. If we think of religion as a source node in a causal graph, changing it will potentially affect all downstream nodes. For each such downstream node we would need a clear understanding of the mechanisms by which religion influence the node. Where would such <em>scientific knowledge</em> of such relationships come from?</p>
 <p>But the causal story around religion might also be different. It could be that obtaining a higher level of education causes an individual to lose their religious beliefs.<span><label for="sn-32" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-32" class="margin-toggle" /><span class="sidenote">In fact this modeling choice was put forward in a recent paper on this topic., Junzhe Zhang and Elias Bareinboim, “Fairness in Decision-Making — the Causal Explanation Formula,” in <em>Proc. <span class="math inline">\(32\)</span>nd AAAI</em>, 2018.</span></span> From this perspective, religious affiliation becomes an ancestor of level of education and so the graph might look like this:</p>
 <figure>
-<img src="figures/causal-race2.svg" alt="Religion as ancestor." style="width:25.0%" /><figcaption>Religion as ancestor.</figcaption>
+<img src="assets/causal-race2.svg" alt="Religion as ancestor." style="width:25.0%" /><figcaption>Religion as ancestor.</figcaption>
 </figure>
 <p>This view of religion forces us to correctly identify the variables that influence religious affiliation and are also relevant to the decision. Perhaps it is not just level of education, but also socioeconomic status and other factors that have a similar confounding influence.</p>
 <p>What is troubling is that in our first graph level of education is a mediator, while in our second graph it is a confounder. The difference is important; to quote Pearl:</p>
@@ -780,7 +780,7 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 <p>Moreover, the act of assigning racial categories to individuals is inextricably tied to a long history of oppression, segregation, and discriminatory practices.<span><label for="sn-35" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-35" class="margin-toggle" /><span class="sidenote">For an entry point to this topic, see for example Geoffrey C. Bowker and Susan Leigh Star, <em>Sorting Things Out: Classification and Its Consequences</em> (MIT Press, 2000); Karen E. Fields and Barbara J. Fields, <em>Racecraft: The Soul of Inequality in American Life</em> (Verso, 2014); Ruha Benjamin, <em>Race After Technology</em> (Polity, 2019).</span></span></p>
 <p>In the technical literature around discrimination and causality, it’s common for researchers to model <em>race</em> as a source node in a causal graph, which is to say that race has no incoming arrows. As a source node it can directly and indirectly influence an outcome variable, say, <em>getting a job offer</em>.<span><label for="sn-36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-36" class="margin-toggle" /><span class="sidenote">A recent example of this kind of modeling approach can be found in Kusner et al., “Counterfactual Fairness.”.</span></span></p>
 <p>Implicit in this modeling choice is a kind of naturalistic perspective that views race as a biologically grounded trait, similar to <em>sex</em>. The trait exists at the beginning of one’s life. Other variables that come later in life, education and income, for example, thus become ancestors in the causal graph.</p>
-<p>This view of race challenges us to identify all the possible indirect pathways through which race can influence the outcome. But it’s not just this modeling challenge that we need to confront. The view of race as a biologically grounded trait stands in contrast with the <em>social constructivist</em> account of race.<span><label for="sn-37" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-37" class="margin-toggle" /><span class="sidenote">For a recent entry point to this literature, see Ron Mallon, <em>The Construction of Human Kinds</em> (Oxford University Press, 2018); Joshua Glasgow et al., “What Is Race?: Four Philosophical Views,” 2019.</span></span></p>
+<p>This view of race challenges us to identify all the possible indirect pathways through which race can influence the outcome. But it’s not just this modeling challenge that we need to confront. The view of race as a biologically grounded trait stands in contrast with the <em>social constructivist</em> account of race.<span><label for="sn-37" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-37" class="margin-toggle" /><span class="sidenote">For an entry points to this literature, see Ian Hacking, <em>The Social Construction of What?</em> (Harvard University Press, 2000); Sally Haslanger, <em>Resisting Reality: Social Construction and Social Critique</em> (Oxford University Press, 2012); Ron Mallon, <em>The Construction of Human Kinds</em> (Oxford University Press, 2018); Joshua Glasgow et al., “What Is Race?: Four Philosophical Views,” 2019.</span></span></p>
 <p>In this view, roughly speaking, race has no strong biological grounding but rather is a social construct. Race stems from a particular classification of individuals by society, and the shared experiences that stem from the classification. As such, the surrounding social system of an individual influences what race is and how it is perceived. In the constructivist view, <em>race</em> is a socially constructed category that individuals are assigned to.</p>
 <p>The challenge with adopting this view is that it is difficult to tease out a set of nodes that faithfully represent the influence that society has on race, and perceptions of race. The social constructivist perspective does not come with a simple operational guide for identifying causal structures.</p>
 </section>
@@ -928,8 +928,14 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 <div id="ref-hacking2006making">
 <p>Hacking, Ian. “Making up People.” <em>London Review of Books</em> 28, no. 16 (2006).</p>
 </div>
+<div id="ref-hacking2000the">
+<p>———. <em>The Social Construction of What?</em> Harvard University Press, 2000.</p>
+</div>
 <div id="ref-hall2017predictors">
 <p>Hall, Anna B. AND Cook, Joshua D. AND O’Connell. “Predictors of Student Productivity in Biomedical Graduate School Applications.” <em>PLOS ONE</em> 12, no. 1 (January 2017): 1–14.</p>
+</div>
+<div id="ref-haslanger2012resisting">
+<p>Haslanger, Sally. <em>Resisting Reality: Social Construction and Social Critique</em>. Oxford University Press, 2012.</p>
 </div>
 <div id="ref-hernan2011simpson">
 <p>Hernán, Miguel A, David Clayton, and Niels Keiding. “The Simpson’s paradox unraveled.” <em>International Journal of Epidemiology</em> 40, no. 3 (March 2011): 780–85. <a href="https://doi.org/10.1093/ije/dyr041" class="uri">https://doi.org/10.1093/ije/dyr041</a>.</p>
@@ -1021,7 +1027,7 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 </div>
 </section>
 <div id="lastupdate">
-Last updated: Tue Sep 10 10:12:20 PDT 2019
+Last updated: Wed Sep 18 21:19:00 PDT 2019
 </div>
 </article>
 </body>
