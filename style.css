@@ -58,6 +58,15 @@ p, ol, ul, blockquote {
     vertical-align: baseline;
 }
 
+p.subtitle {
+     margin-top: -1.4rem;
+     font-size: 1.8rem;
+}
+
+p.author {
+     font-size: 2.0rem;
+}
+
 blockquote p { font-style:italic; }
 
 ul, ol, { 
@@ -532,12 +541,61 @@ a img {
   height:33px;
 }
 
+
+#indexcontents table {
+    width:58%;
+    border: 0;
+    border-collapse: collapse;
+}
+
+#indexcontents th, td {
+  padding: 10px 0;
+}
+
+#indexcontents .chapternumber {
+   color: #999;
+   vertical-align: top;
+   font-size: 2.2rem;
+   padding:5px 10px;
+}
+
+#indexcontents .chaptername {
+  font-size: 1.8rem;
+  font-variant: small-caps;
+  letter-spacing: 2pt;
+}
+
+#indexcontents table p {
+   width:100%;
+   line-height: 1.8rem;
+}
+
+#indexcontents tbody tr {
+  border-top:0px solid #ccc; /* change this to 1px for horizontal separators between chapters*/
+  padding-top: 20px;
+}
+
+#indexcontents thead td {
+   text-align:center;
+   font-size:2rem;
+   font-variant:small-caps;
+   letter-spacing:3pt;
+   padding-top:20px;
+}
+
+#indexcontents tr:nth-child(odd) {
+  background-color: #fff;
+}
+
 @media (max-width: 860px) {
   #index {
      display: none;
   }
-
+  #indexcontents table {
+     width:100%;
+  }
 }
+
 /* #cheatsheet {
   position:fixed;
   border:none;
