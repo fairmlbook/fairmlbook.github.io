@@ -25,7 +25,6 @@
 <a class="toggle" tabindex="0" ><img src="assets/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
 <a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
 <ul>
-<li><a href="#table-of-contents">Table of contents</a></li>
 <li><a href="#video-tutorials">Video tutorials</a></li>
 <li><a href="#course-materials">Course materials</a></li>
 <li><a href="#contact-us">Contact us</a></li>
@@ -37,51 +36,149 @@
 <span class="numenv EmphBox title">EmphBox.</span>
 <p>This online textbook is an incomplete work in progress. Essential chapters are still missing. In the spirit of open review, we solicit broad feedback that will influence existing chapters, as well as the development of later material.</p>
 </div>
-<section id="table-of-contents" class="level1">
-<h1>Table of contents</h1>
-<p><a href="about.html">About this book</a></p>
-<ol type="1">
-<li><a href="introduction.html">Introduction</a> (<a href="pdf/introduction.pdf">pdf</a>)</li>
-<li><a href="classification.html">Classification</a> (<a href="pdf/classification.pdf">pdf</a>)</li>
-</ol>
-<blockquote>
-<p>We introduce formal non-discrimination criteria, establish their relationships, and illustrate their limitations.</p>
-</blockquote>
-<ol start="3" type="1">
-<li>Legal background and normative questions</li>
-</ol>
-<blockquote>
-<p>We survey the literature on discrimination in law, sociology, and philosophy. We then discuss the challenges that arise in translating these ideas of fairness to the statistical decision-making setting.</p>
-</blockquote>
-<ol start="4" type="1">
-<li><a href="causal.html">Causality</a> (<a href="pdf/causal.pdf">pdf</a>)</li>
-</ol>
-<blockquote>
-<p>We dive into the rich technical repertoire of causal inference and how it helps articulate and address shortcomings of the classification paradigm, while raising new conceptual and normative questions.</p>
-</blockquote>
-<ol start="5" type="1">
-<li>Measurement</li>
-</ol>
-<blockquote>
-<p>Considerations of fairness begin with measurement, the process of assigning empirical relationships to numerical representations.</p>
-</blockquote>
-<ol start="6" type="1">
-<li>Algorithmic interventions</li>
-</ol>
-<blockquote>
-<p>We survey and systematize a burgeoning set of algorithmic interventions aimed at promoting fairness, while highlighting the limitations of this paradigm.</p>
-</blockquote>
-<ol start="7" type="1">
-<li>Related concepts</li>
-</ol>
-<blockquote>
-<p>We discuss privacy, interpretability, transparency, and accountability, and how each of these concepts relates to fairness.</p>
-</blockquote>
-<ul>
-<li>Appendix: Technical background</li>
-</ul>
+<div id="indexcontents">
+<table>
+<thead>
+<tr>
+<td colspan="3">
+CONTENTS
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+</td>
+<td>
+<a class="chaptername" href="about.html">About this book</a>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+1
+</td>
+<td>
+<a class="chaptername" href="introduction.html">Introduction</a>
+</td>
+<td>
+<a href="pdf/introduction.pdf">PDF</a>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+2
+</td>
+<td>
+<a class="chaptername" href="classification.html">Classification</a>
+<p>
+We introduce formal non-discrimination criteria, establish their
+relationships, and illustrate their limitations.
+</p>
+</td>
+<td>
+<a href="pdf/classification.pdf">PDF</a>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+3
+</td>
+<td>
+[Legal background and normative questions]{.chaptername}
+<p>
+We survey the literature on discrimination in law, sociology, and
+philosophy. We then discuss the challenges that arise in translating
+these ideas of fairness to the statistical decision-making setting.
+</p>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+4
+</td>
+<td>
+<a class="chaptername" href="causal.html">Causality</a>
+<p>
+We dive into the rich technical repertoire of causal inference and how
+it helps articulate and address shortcomings of the classification
+paradigm, while raising new conceptual and normative questions.
+</p>
+</td>
+<td>
+<a href="pdf/causal.pdf">PDF</a>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+5
+</td>
+<td>
+<a class="chaptername" href="testing.html">Testing discrimination in
+practice</a>
+<p>
+We systematize tests of discrimination and discuss the practical
+complexities of applying them, both to traditional decision-making
+systems and to algorithmic systems.
+</p>
+</td>
+<td>
+<a href="pdf/testing.pdf">PDF</a>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+6
+</td>
+<td>
+[A broader view of discrimination]{.chaptername}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+7
+</td>
+<td>
+[Measurement]{.chaptername}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+8
+</td>
+<td>
+[Algorithmic interventions]{.chaptername}
+<p>
+We survey and systematize a burgeoning set of algorithmic interventions
+aimed at promoting fairness, while highlighting the limitations of this
+paradigm.
+</p>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+<a class="chaptername" href="background.html">Appendix: Technical
+background</a>
+</td>
+<td>
+<a href="pdf/background.pdf">PDF</a>
+</td>
+</tr>
+<tbody>
+</table>
+</div>
 <p><a href="pdf/fairmlbook.pdf">PDF version</a> (all available chapters)</p>
-</section>
 <section id="video-tutorials" class="level1">
 <h1>Video tutorials</h1>
 <ul>
@@ -113,7 +210,7 @@
 }</code></pre>
 </section>
 <div id="lastupdate">
-Last updated: Tue Sep 17 22:49:17 PDT 2019
+Last updated: Sun Dec  1 19:51:41 PST 2019
 </div>
 </article>
 </body>

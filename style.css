@@ -58,6 +58,15 @@ p, ol, ul, blockquote {
     vertical-align: baseline;
 }
 
+p.subtitle {
+     margin-top: -1.4rem;
+     font-size: 1.8rem;
+}
+
+p.author {
+     font-size: 2.0rem;
+}
+
 blockquote p { font-style:italic; }
 
 ul, ol, { 
@@ -121,7 +130,7 @@ figcaption {
     clear: both;
 }
 
-.sidenote-number { counter-increment: sidenote-counter; }
+.sidenote-number { font-size:0.9rem; counter-increment: sidenote-counter; }
 
 figcaption { counter-increment: figure-counter; }
 
@@ -132,7 +141,7 @@ figcaption { counter-increment: figure-counter; }
 }
 
 figcaption:before  { 
-    content: "Figure: " counter(figure-counter) " ";
+    content: "Figure " counter(figure-counter) ": ";
     position: relative;
     vertical-align: baseline;
     clear: right;
@@ -141,14 +150,17 @@ figcaption:before  {
 
 .sidenote-number:after { 
     content: counter(sidenote-counter);
+    font-family: monospace;
     font-size: 1rem;
     top: -0.5rem;
     left: 0.1rem; 
 }
 
 .sidenote:before { 
-    content: counter(sidenote-counter) " ";
-    top: -0.5rem; 
+    content: counter(sidenote-counter) ":";
+    /* top: -0.4rem; */
+    font-family:monospace;
+    margin-right:0.3rem;
 }
 
 p, footer, pre { width: 60%; }
@@ -532,12 +544,61 @@ a img {
   height:33px;
 }
 
+
+#indexcontents table {
+    width:58%;
+    border: 0;
+    border-collapse: collapse;
+}
+
+#indexcontents th, td {
+  padding: 10px 0;
+}
+
+#indexcontents .chapternumber {
+   color: #999;
+   vertical-align: top;
+   font-size: 2.2rem;
+   padding:5px 10px;
+}
+
+#indexcontents .chaptername {
+  font-size: 1.8rem;
+  font-variant: small-caps;
+  letter-spacing: 2pt;
+}
+
+#indexcontents table p {
+   width:100%;
+   line-height: 1.8rem;
+}
+
+#indexcontents tbody tr {
+  border-top:0px solid #ccc; /* change this to 1px for horizontal separators between chapters*/
+  padding-top: 10px;
+}
+
+#indexcontents thead td {
+   text-align:center;
+   font-size:2rem;
+   font-variant:small-caps;
+   letter-spacing:3pt;
+   padding-top:20px;
+}
+
+#indexcontents tr:nth-child(odd) {
+  background-color: #fff;
+}
+
 @media (max-width: 860px) {
   #index {
      display: none;
   }
-
+  #indexcontents table {
+     width:100%;
+  }
 }
+
 /* #cheatsheet {
   position:fixed;
   border:none;
