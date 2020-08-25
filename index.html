@@ -4,10 +4,9 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="author" content="Solon Barocas">
-  <meta name="author" content="Moritz Hardt">
-  <meta name="author" content="Arvind Narayanan">
-  <title>Fairness and machine learning</title>
+  <meta name="author" content="Stanford Open Data Project">
+  <meta name="author" content="Northwestern Open Data Initiative">
+  <title>Open Data Handbook for College Students</title>
   <link rel="stylesheet" href="style.css">
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -16,17 +15,16 @@
 <body>
 <article>
 <header>
-<h1 class="title">Fairness and machine learning</h1>
-<p class="subtitle">Limitations and Opportunities</p>
-<p class="author">Solon Barocas, Moritz Hardt, Arvind Narayanan</p>
+<h1 class="title">Open Data Handbook for College Students</h1>
+<p class="subtitle">A guide to harnessing the power of open data at your university</p>
+<p class="author">Stanford Open Data Project and the Northwestern Open Data Initiative</p>
 </header>
 <nav id="TOC">
 <div id="menuToggle">
 <a class="toggle" tabindex="0" ><img src="assets/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
 <a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
 <ul>
-<li><a href="#video-tutorials">Video tutorials</a></li>
-<li><a href="#course-materials">Course materials</a></li>
+<li><a href="#related-sites">Related Sites</a></li>
 <li><a href="#contact-us">Contact us</a></li>
 <li><a href="#citations">Citations</a></li>
 </ul>
@@ -47,23 +45,13 @@ CONTENTS
 </thead>
 <tbody>
 <tr>
-<td>
-</td>
-<td>
-<a class="chaptername" href="about.html">About this book</a>
-</td>
-<td>
-</td>
-</tr>
-<tr>
 <td class="chapternumber">
 1
 </td>
 <td>
-<a class="chaptername" href="introduction.html">Introduction</a>
+<a class="chaptername" href="overview.html">Overview of the Handbook</a>
 </td>
 <td>
-<a href="pdf/introduction.pdf">PDF</a>
 </td>
 </tr>
 <tr>
@@ -71,38 +59,27 @@ CONTENTS
 2
 </td>
 <td>
-<a class="chaptername" href="classification.html">Classification</a>
-<td>
-<a href="pdf/classification.pdf">PDF</a>
-</td>
-</tr>
-<tr>
-<td>
+<a class="chaptername" href="constructing.html">Constructing a Vision</a>
 </td>
 <td>
-We introduce formal non-discrimination criteria, establish their
-relationships, and illustrate their limitations.
-</td>
-<td>
+<a href="pdf/constructing.pdf">PDF</a>
 </td>
 </tr>
 <tr>
 <td class="chapternumber">
 3
 </td>
-<td class="chaptername">
-Legal background and normative questions
-</td>
 <td>
+<a class="chaptername" href="building.html">Building an Open Data Portal</a>
+<td>
+<a href="pdf/building.pdf">PDF</a>
 </td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-We survey the literature on discrimination in law, sociology, and
-philosophy. We then discuss the challenges that arise in translating
-these ideas of fairness to the statistical decision-making setting.
+We detail the tools and workflows to build an open data portal.
 </td>
 <td>
 </td>
@@ -112,19 +89,17 @@ these ideas of fairness to the statistical decision-making setting.
 4
 </td>
 <td>
-<a class="chaptername" href="causal.html">Causality</a>
+<a class="chaptername" href = "governance.html">Data Governance</a>
 </td>
 <td>
-<a href="pdf/causal.pdf">PDF</a>
-</td>
+  <a href="pdf/governance.pdf">PDF</a>
+  </td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-We dive into the rich technical repertoire of causal inference and how
-it helps articulate and address shortcomings of the classification
-paradigm, while raising new conceptual and normative questions.
+We provide a data governance protocol to determine which datasets are safe to release.
 </td>
 <td>
 </td>
@@ -134,19 +109,17 @@ paradigm, while raising new conceptual and normative questions.
 5
 </td>
 <td>
-<a class="chaptername" href="testing.html">Testing discrimination in
-practice</a>
+<a class="chaptername" href="useful.html">Making your Data Portal Useful</a>
+</td>
 <td>
-<a href="pdf/testing.pdf">PDF</a>
+<a href="pdf/useful.pdf">PDF</a>
 </td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-We systematize tests of discrimination and discuss the practical
-complexities of applying them, both to traditional decision-making
-systems and to algorithmic systems.
+We provide a number of suggestions for how to maximize the impact of the data portal to your campus community.
 </td>
 <td>
 </td>
@@ -155,77 +128,28 @@ systems and to algorithmic systems.
 <td class="chapternumber">
 6
 </td>
-<td class="chaptername">
-A broader view of discrimination
+<td>
+<a class="chaptername" href="case-studies.html">Appendix: Case Studies</a>
 </td>
 <td>
-</td>
-</tr>
-<tr>
-<td class="chapternumber">
-7
-</td>
-<td class="chaptername">
-Measurement
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td class="chapternumber">
-8
-</td>
-<td class="chaptername">
-Algorithmic interventions
-</td>
-<td>
-<td>
-</tr>
-<tr>
-<td>
-</td>
-<td>
-We survey and systematize a burgeoning set of algorithmic interventions
-aimed at promoting fairness, while highlighting the limitations of this
-paradigm.
-</td>
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td>
-<a class="chaptername" href="background.html">Appendix: Technical
-background</a>
-</td>
-<td>
-<a href="pdf/background.pdf">PDF</a>
+<a href="pdf/case-studies.pdf">PDF</a>
 </td>
 </tr>
 <tbody>
 </table>
 </div>
-<p><a href="pdf/fairmlbook.pdf">PDF version</a> (all available chapters)</p>
-<section id="video-tutorials" class="level1">
-<h1>Video tutorials</h1>
+<p><a href="pdf/open-data-handbook.pdf">PDF version</a> (all available chapters)</p>
+<section id="related-sites" class="level1">
+<h1>See the finished product</h1>
 <ul>
-<li><a href="tutorial1.html">Fairness in machine learning (NIPS 2017)</a></li>
-<li><a href="tutorial2.html">21 fairness definitions and their politics (FAT* 2018)</a></li>
+<li><a href="opendata.stanforddaily.com">Stanford Open Data Project</a></li>
+<li><a href="northwestern.html">Northwestern Open Data Initiative</a></li>
 </ul>
 </section>
-<section id="course-materials" class="level1">
-<h1>Course materials</h1>
-<ul>
-<li><a href="https://fairmlclass.github.io/">Berkeley CS 294: Fairness in machine learning</a></li>
-<li><a href="https://docs.google.com/document/d/1GV97qqvjQNvyM2I01vuRaAwHe9pQAZ9pbP7KkKveg1o/edit">Cornell INFO 4270: Ethics and policy in data science</a></li>
-<li><a href="https://docs.google.com/document/d/1XnbJXELA0L3CX41MxySdPsZ-HNECxPtAw4-kZRc7OPI/edit?usp=sharing">Princeton COS 597E: Fairness in machine learning</a></li>
-</ul>
-</section>
+
 <section id="contact-us" class="level1">
 <h1>Contact us</h1>
-<p>We welcome your feedback. For all book related questions and comments, please send an email to <em>contact@fairmlbook.org</em>.</p>
+<p>We welcome your feedback. For all book related questions and comments, please send an email to <em>open-data-campus@gmail.com (placeholder)</em>.</p>
 </section>
 <section id="citations" class="level1">
 <h1>Citations</h1>
