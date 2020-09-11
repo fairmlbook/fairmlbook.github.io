@@ -9,14 +9,20 @@
   <meta name="author" content="Arvind Narayanan">
   <title>Causality</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
-    var mathElements = document.getElementsByClassName("math");
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") { katex.render(texText.data, mathElements[i], { displayMode: mathElements[i].classList.contains("display"), throwOnError: false } );
-    }}});</script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" />
+   var mathElements = document.getElementsByClassName("math");
+   for (var i = 0; i < mathElements.length; i++) {
+    var texText = mathElements[i].firstChild;
+    if (mathElements[i].tagName == "SPAN") {
+     katex.render(texText.data, mathElements[i], {
+      displayMode: mathElements[i].classList.contains('display'),
+      throwOnError: false,
+      fleqn: false
+     });
+  }}});
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -33,42 +39,50 @@
 <a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
 <ul>
 <li><a href="#the-limitations-of-observation">The limitations of observation</a></li>
-<li><a href="#causal-models">Causal models</a><ul>
+<li><a href="#causal-models">Causal models</a>
+<ul>
 <li><a href="#a-first-example">A first example</a></li>
 <li><a href="#structural-causal-models-more-formally">Structural causal models, more formally</a></li>
 </ul></li>
-<li><a href="#causal-graphs">Causal graphs</a><ul>
+<li><a href="#causal-graphs">Causal graphs</a>
+<ul>
 <li><a href="#forks">Forks</a></li>
 <li><a href="#mediators">Mediators</a></li>
 <li><a href="#colliders">Colliders</a></li>
 </ul></li>
-<li><a href="#interventions-and-causal-effects">Interventions and causal effects</a><ul>
+<li><a href="#interventions-and-causal-effects">Interventions and causal effects</a>
+<ul>
 <li><a href="#substitutions-and-the-do-operator">Substitutions and the do-operator</a></li>
 <li><a href="#causal-effects">Causal effects</a></li>
 </ul></li>
-<li><a href="#confounding">Confounding</a><ul>
+<li><a href="#confounding">Confounding</a>
+<ul>
 <li><a href="#the-backdoor-criterion">The backdoor criterion</a></li>
 <li><a href="#unobserved-confounding">Unobserved confounding</a></li>
 <li><a href="#randomization">Randomization</a></li>
 </ul></li>
-<li><a href="#graphical-discrimination-analysis">Graphical discrimination analysis</a><ul>
+<li><a href="#graphical-discrimination-analysis">Graphical discrimination analysis</a>
+<ul>
 <li><a href="#direct-effects">Direct effects</a></li>
 <li><a href="#indirect-paths">Indirect paths</a></li>
 <li><a href="#path-inspection">Path inspection</a></li>
 <li><a href="#structural-discrimination">Structural discrimination</a></li>
 </ul></li>
-<li><a href="#counterfactuals">Counterfactuals</a><ul>
+<li><a href="#counterfactuals">Counterfactuals</a>
+<ul>
 <li><a href="#a-simple-counterfactual">A simple counterfactual</a></li>
 <li><a href="#the-general-recipe">The general recipe</a></li>
 <li><a href="#potential-outcomes">Potential outcomes</a></li>
 </ul></li>
-<li><a href="#counterfactual-discrimination-analysis">Counterfactual discrimination analysis</a><ul>
+<li><a href="#counterfactual-discrimination-analysis">Counterfactual discrimination analysis</a>
+<ul>
 <li><a href="#quantitative-path-analysis">Quantitative path analysis</a></li>
 <li><a href="#counterfactual-discrimination-criteria">Counterfactual discrimination criteria</a></li>
 <li><a href="#counterfactuals-in-the-law">Counterfactuals in the law</a></li>
 <li><a href="#harvard-college-admissions">Harvard college admissions</a></li>
 </ul></li>
-<li><a href="#validity-of-causal-models">Validity of causal models</a><ul>
+<li><a href="#validity-of-causal-models">Validity of causal models</a>
+<ul>
 <li><a href="#a-motivating-example">A motivating example</a></li>
 <li><a href="#social-construction-and-human-categories">Social construction and human categories</a></li>
 <li><a href="#lack-of-modularity">Lack of modularity</a></li>
@@ -77,7 +91,8 @@
 <li><a href="#looking-ahead">Looking ahead</a></li>
 </ul></li>
 <li><a href="#problem-set">Problem set</a></li>
-<li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a><ul>
+<li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a>
+<ul>
 <li><a href="#introductions-to-causality">Introductions to causality</a></li>
 <li><a href="#recent-technical-work">Recent technical work</a></li>
 <li><a href="#sociological-and-philosophical-debate">Sociological and philosophical debate</a></li>
@@ -271,7 +286,7 @@ X_i := f_i(P_i, U_i),\quad\quad i=1,..., d\,.
 <p>The directed graph corresponding to the model has one node for each variable <span class="math inline">X_i,</span> which has incoming edges from all the parents <span class="math inline">P_i.</span> We will call such a graph the <em>causal graph</em> corresponding to the structural causal model.</p>
 </div>
 <p>Let’s walk through the formal concepts introduced in this definition in a bit more detail.</p>
-<p>The noise variables that appear in the definition model <em>exogenous factors</em> that influence the system. Consider, for example, how the weather influences the delay on a traffic route you choose. Due to the difficulty of modeling the influence of weather more precisely, we could take the weather induced to delay to be an exogenous factor that enters the model as a noise variable. The choice of exogenous variables and their distribution can have important consequences for what conclusions we draw from a model.</p>
+<p>The noise variables that appear in the definition model <em>exogenous factors</em> that influence the system. Consider, for example, how the weather influences the delay on a traffic route you choose. Due to the difficulty of modeling the influence of weather more precisely, we could take the weather induced delay to be an exogenous factor that enters the model as a noise variable. The choice of exogenous variables and their distribution can have important consequences for what conclusions we draw from a model.</p>
 <p>The parent nodes <span class="math inline">P_i</span> of node <span class="math inline">i</span> in a structural causal model are often called the <em>direct causes</em> of <span class="math inline">X_i.</span> Similarly, we call <span class="math inline">X_i</span> the direct effect of its direct causes <span class="math inline">P_i.</span> Recall our hypothetical population in which weight gain was determined by lack of exercise via the assignment <span class="math inline">W:=\min\{U_1,1-X\}.</span> Here we would say that exercise (or lack thereof) is a direct cause of weight gain.</p>
 <p>Structural causal model are a collection of formal <em>assumptions</em> about how certain variables interact. Each assignment specifies a <em>response function</em>. We can think of nodes as receiving messages from their parents and acting according to these messages as well as the influence of an exogenous noise variable.</p>
 <p>To which extent a structural causal model conforms to reality is a separate and difficult question that we will return to in more detail later. For now, think of a structural causal model as formalizing and exposing a set of assumptions about a data generating process. As such different models can expose different hypothetical scenarios and serve as a basis for discussion. When we make statements about cause and effect in reference to a model, we don’t mean to suggest that these relationship necessarily hold in the real world. Whether they do depends on the scope, purpose, and validity of our model, which may be difficult to substantiate.</p>
@@ -747,7 +762,7 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 <blockquote>
 <p>That department of the science of metaphysics which investigates and explains the nature and essential properties and relations of all beings, as such, or the principles and causes of being.</p>
 </blockquote>
-<p>In order to create a valid causal model, we need to provide clarity about what ontological entities each node references, and what relationships exist between these entities. This task may no longer be difficult for certain objects of study. We might have strong scientifically justified beliefs on how certain mechanical parts in an airplane interact. We can use this knowledge to reliable diagnose the cause of an airplane crash.</p>
+<p>In order to create a valid causal model, we need to provide clarity about what ontological entities each node references, and what relationships exist between these entities. This task may no longer be difficult for certain objects of study. We might have strong scientifically justified beliefs on how certain mechanical parts in an airplane interact. We can use this knowledge to reliably diagnose the cause of an airplane crash.</p>
 <p>In other domains, our subject matter knowledge is less stable and subject to debate. This is where <em>epistemology</em> comes in, which the Oxford dictionary defines as:</p>
 <blockquote>
 <p>The theory of knowledge, especially with regard to its methods, validity, and scope, and the distinction between justified belief and opinion.</p>
@@ -866,8 +881,8 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 </section>
 </section>
 <section id="bibliography" class="level1 unnumbered">
-<h1>References</h1>
-<div id="refs" class="references" role="doc-bibliography">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent" role="doc-bibliography">
 <div id="ref-angrist2009mostly">
 <p>Angrist, Joshua D., and Pischke Jörn-Steffen. <em>Mostly Harmless Econometrics: An Empiricist’s Companion</em>. Princeton University Press, 2009.</p>
 </div>
@@ -1036,7 +1051,7 @@ Y := X\cdot \max\{U, U_1\} + (1-X)\max\{U, U_0\} \,.
 </div>
 </section>
 <div id="lastupdate">
-Last updated: Fri Feb 21 10:10:01 PST 2020
+Last updated: Fri Sep 11 16:06:05 PDT 2020
 </div>
 </article>
 </body>

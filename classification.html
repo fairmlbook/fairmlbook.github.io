@@ -9,14 +9,20 @@
   <meta name="author" content="Arvind Narayanan">
   <title>Classification</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
-    var mathElements = document.getElementsByClassName("math");
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") { katex.render(texText.data, mathElements[i], { displayMode: mathElements[i].classList.contains("display"), throwOnError: false } );
-    }}});</script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" />
+   var mathElements = document.getElementsByClassName("math");
+   for (var i = 0; i < mathElements.length; i++) {
+    var texText = mathElements[i].firstChild;
+    if (mathElements[i].tagName == "SPAN") {
+     katex.render(texText.data, mathElements[i], {
+      displayMode: mathElements[i].classList.contains('display'),
+      throwOnError: false,
+      fleqn: false
+     });
+  }}});
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -32,16 +38,19 @@
 <a class="toggle" tabindex="0" ><img src="assets/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
 <a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
 <ul>
-<li><a href="#supervised-learning">Supervised learning</a><ul>
+<li><a href="#supervised-learning">Supervised learning</a>
+<ul>
 <li><a href="#statistical-classification-criteria">Statistical classification criteria</a></li>
 <li><a href="#score-functions">Score functions</a></li>
 <li><a href="#the-conditional-expectation">The conditional expectation</a></li>
 <li><a href="#from-scores-to-classifiers">From scores to classifiers</a></li>
 </ul></li>
-<li><a href="#sensitive-characteristics">Sensitive characteristics</a><ul>
+<li><a href="#sensitive-characteristics">Sensitive characteristics</a>
+<ul>
 <li><a href="#no-fairness-through-unawareness">No fairness through unawareness</a></li>
 </ul></li>
-<li><a href="#formal-non-discrimination-criteria">Formal non-discrimination criteria</a><ul>
+<li><a href="#formal-non-discrimination-criteria">Formal non-discrimination criteria</a>
+<ul>
 <li><a href="#independence">Independence</a></li>
 <li><a href="#limitations-of-independence">Limitations of independence</a></li>
 <li><a href="#interlude-how-to-satisfy-fairness-criteria">Interlude: How to satisfy fairness criteria</a></li>
@@ -49,40 +58,47 @@
 <li><a href="#achieving-separation">Achieving separation</a></li>
 <li><a href="#sufficiency">Sufficiency</a></li>
 </ul></li>
-<li><a href="#calibration-and-sufficiency">Calibration and sufficiency</a><ul>
+<li><a href="#calibration-and-sufficiency">Calibration and sufficiency</a>
+<ul>
 <li><a href="#calibration-by-group">Calibration by group</a></li>
 <li><a href="#calibration-by-group-as-a-consequence-of-unconstrained-learning">Calibration by group as a consequence of unconstrained learning</a></li>
 </ul></li>
-<li><a href="#relationships-between-criteria">Relationships between criteria</a><ul>
+<li><a href="#relationships-between-criteria">Relationships between criteria</a>
+<ul>
 <li><a href="#independence-versus-sufficiency">Independence versus Sufficiency</a></li>
 <li><a href="#independence-versus-separation">Independence versus Separation</a></li>
 <li><a href="#separation-versus-sufficiency">Separation versus Sufficiency</a></li>
 </ul></li>
-<li><a href="#inherent-limitations-of-observational-criteria">Inherent limitations of observational criteria</a><ul>
+<li><a href="#inherent-limitations-of-observational-criteria">Inherent limitations of observational criteria</a>
+<ul>
 <li><a href="#scenario-i">Scenario I</a></li>
 <li><a href="#scenario-ii">Scenario II</a></li>
 <li><a href="#different-interpretations">Different interpretations</a></li>
 <li><a href="#indistinguishability">Indistinguishability</a></li>
 <li><a href="#a-forced-perspective-problem">A forced perspective problem</a></li>
 </ul></li>
-<li><a href="#case-study-credit-scoring">Case study: Credit scoring</a><ul>
+<li><a href="#case-study-credit-scoring">Case study: Credit scoring</a>
+<ul>
 <li><a href="#score-distribution">Score distribution</a></li>
 <li><a href="#performance-variables-and-roc-curves">Performance variables and ROC curves</a></li>
 <li><a href="#comparison-of-different-criteria">Comparison of different criteria</a></li>
 <li><a href="#calibration-values">Calibration values</a></li>
 </ul></li>
-<li><a href="#problem-set-criminal-justice-case-study">Problem set: Criminal justice case study</a><ul>
+<li><a href="#problem-set-criminal-justice-case-study">Problem set: Criminal justice case study</a>
+<ul>
 <li><a href="#calibrationsufficiency">Calibration/sufficiency</a></li>
 <li><a href="#error-ratesseparation">Error rates/separation</a></li>
 <li><a href="#risk-factors-and-interventions">Risk factors and interventions</a></li>
 </ul></li>
-<li><a href="#problem-set-data-modeling-of-traffic-stops">Problem set: Data modeling of traffic stops</a><ul>
+<li><a href="#problem-set-data-modeling-of-traffic-stops">Problem set: Data modeling of traffic stops</a>
+<ul>
 <li><a href="#stop-rates">Stop rates</a></li>
 <li><a href="#post-stop-outcomes">Post-stop outcomes</a></li>
 <li><a href="#data-quality">Data quality</a></li>
 </ul></li>
 <li><a href="#what-is-the-purpose-of-a-fairness-criterion">What is the purpose of a fairness criterion?</a></li>
-<li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a><ul>
+<li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a>
+<ul>
 <li><a href="#a-dictionary-of-criteria">A dictionary of criteria</a></li>
 </ul></li>
 <li><a href="#bibliography">References</a></li>
@@ -527,7 +543,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 </div>
 <div class="numenv Proof">
 <span class="numenv Proof title">Proof.</span>
-<p>Since <span class="math inline">Y</span> is not independent of <span class="math inline">A</span> there must be two groups, call them <span class="math inline">0</span> and <span class="math inline">1</span>, such that <span class="math display">p_0=\mathbb{P}\{Y=1\mid A=0\}\ne \mathbb{P}\{Y=1\mid A=1\}=p_1\,.</span> Now suppose that separation holds. Since the classifier is imperfect this means that all groups have the same non-zero false positive rate <span class="math inline">\mathrm{FPR}&gt;0,</span> and the same positive true positive rate <span class="math inline">\mathrm{TPR}&gt;0.</span> We will show that sufficiency does not hold.</p>
+<p>Since <span class="math inline">Y</span> is not independent of <span class="math inline">A</span> there must be two groups, call them <span class="math inline">0</span> and <span class="math inline">1</span>, such that <span class="math display">p_0=\mathbb{P}\{Y=1\mid A=0\}\ne \mathbb{P}\{Y=1\mid A=1\}=p_1\,.</span> Now suppose that separation holds. Since the classifier is imperfect this means that all groups have the same non-zero false positive rate <span class="math inline">\mathrm{FPR}&gt;0,</span> and the same true positive rate <span class="math inline">\mathrm{TPR}\ge0.</span> We will show that sufficiency does not hold.</p>
 <p>Recall that in the binary case, sufficiency implies that all groups have the same positive predictive value. The positive predictive value in group <span class="math inline">a,</span> denoted <span class="math inline">\mathrm{PPV}_a</span> satisfies <span class="math display">\mathrm{PPV_a}
 = \frac{\mathrm{TPR}p_a}{\mathrm{TPR}p_a+\mathrm{FPR}(1-p_a)}\,.</span> From the expression we can see that <span class="math inline">\mathrm{PPV}_0=\mathrm{PPV}_1</span> only if <span class="math inline">\mathrm{TPR}=0</span> or <span class="math inline">\mathrm{FPR}=0.</span> The latter is ruled out by assumption. So it must be that <span class="math inline">\mathrm{TPR}=0.</span> However, in this case, we can verify that the negative predictive value <span class="math inline">\mathrm{NPV}_0</span> in group <span class="math inline">0</span> must be different from the negative predictive value <span class="math inline">\mathrm{NPV}_1</span> in group <span class="math inline">1.</span> This follows from the expression <span class="math display">\mathrm{NPV_a}
 = \frac{(1-\mathrm{FPR})(1-p_a)}{(1-\mathrm{TPR})p_a+(1-\mathrm{FPR})(1-p_a)}\,.</span> Hence, sufficiency does not hold.</p>
@@ -705,17 +721,17 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 <section id="calibrationsufficiency" class="level2">
 <h2>Calibration/sufficiency</h2>
 <ul>
-<li>Plot the fraction of defendants recidivating within two years (<code>two_year_recid == 1</code>) as a function of risk score (<code>decile_score</code>), for black defendants (<code>race == "African-American"</code>) and white defendants (<code>race == "Caucasian"</code>).</li>
+<li>Plot the fraction of defendants recidivating within two years (<code>two_year_recid == 1</code>) as a function of risk score (<code>decile_score</code>), for Black defendants (<code>race == "African-American"</code>) and White defendants (<code>race == "Caucasian"</code>).</li>
 <li>Based on these plots, does the risk score satisfy sufficiency across racial groups in this dataset? This is somewhat subjective, since we want to allow for approximate equality between groups; justify your answer in a sentence or two.</li>
 </ul>
 </section>
 <section id="error-ratesseparation" class="level2">
 <h2>Error rates/separation</h2>
 <ul>
-<li>Plot the distribution of scores received by the positive class (recidivists) and the distribution of scores received by the negative class (non-recidivists) for black defendants and for white defendants.</li>
+<li>Plot the distribution of scores received by the positive class (recidivists) and the distribution of scores received by the negative class (non-recidivists) for Black defendants and for White defendants.</li>
 <li>Based on these plots, does COMPAS achieve separation between the risk score and race?</li>
-<li>Report the Positive Predictive Value, False Positive Rate, and False Negative Rate for a risk threshold of 4 (i.e., defendants with <code>decile_score &gt;= 4</code> are classified as high risk), for black defendants and for white defendants.</li>
-<li>Can we pick two thresholds (one for black defendants, one for white defendants) such that FPR and FNR are roughly equal for the two groups (say, within 1% of each other)? What is the PPV for the two groups in this case? Note: trivial thresholds of 0 or 11 don’t count.</li>
+<li>Report the Positive Predictive Value, False Positive Rate, and False Negative Rate for a risk threshold of 4 (i.e., defendants with <code>decile_score &gt;= 4</code> are classified as high risk), for Black defendants and for White defendants.</li>
+<li>Can we pick two thresholds (one for Black defendants, one for White defendants) such that FPR and FNR are roughly equal for the two groups (say, within 1% of each other)? What is the PPV for the two groups in this case? Note: trivial thresholds of 0 or 11 don’t count.</li>
 </ul>
 </section>
 <section id="risk-factors-and-interventions" class="level2">
@@ -1085,8 +1101,8 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 </section>
 </section>
 <section id="bibliography" class="level1 unnumbered">
-<h1>References</h1>
-<div id="refs" class="references" role="doc-bibliography">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent" role="doc-bibliography">
 <div id="ref-angwin2016machine">
 <p>Angwin, Julia, Jeff Larson, Surya Mattu, and Lauren Kirchner. “Machine Bias.” <em>ProPublica</em>, May 2016. <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" class="uri">https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing</a>.</p>
 </div>
@@ -1171,7 +1187,7 @@ pr_0 + (1-p)r_1 = p_ar_0 + (1-p_a)r_1.
 </div>
 </section>
 <div id="lastupdate">
-Last updated: Sun Dec  1 09:38:40 PST 2019
+Last updated: Fri Sep 11 16:02:50 PDT 2020
 </div>
 </article>
 </body>

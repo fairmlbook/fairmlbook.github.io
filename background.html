@@ -9,14 +9,20 @@
   <meta name="author" content="Arvind Narayanan">
   <title>Appendix — Technical background</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
-    var mathElements = document.getElementsByClassName("math");
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") { katex.render(texText.data, mathElements[i], { displayMode: mathElements[i].classList.contains("display"), throwOnError: false } );
-    }}});</script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" />
+   var mathElements = document.getElementsByClassName("math");
+   for (var i = 0; i < mathElements.length; i++) {
+    var texText = mathElements[i].firstChild;
+    if (mathElements[i].tagName == "SPAN") {
+     katex.render(texText.data, mathElements[i], {
+      displayMode: mathElements[i].classList.contains('display'),
+      throwOnError: false,
+      fleqn: false
+     });
+  }}});
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -31,10 +37,12 @@
 <a class="toggle" tabindex="0" ><img src="assets/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
 <a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
 <ul>
-<li><a href="#random-variables-and-conditional-probabilities">Random variables and conditional probabilities</a><ul>
+<li><a href="#random-variables-and-conditional-probabilities">Random variables and conditional probabilities</a>
+<ul>
 <li><a href="#sample-and-population">Sample and population</a></li>
 </ul></li>
-<li><a href="#building-predictive-models-from-data">Building predictive models from data</a><ul>
+<li><a href="#building-predictive-models-from-data">Building predictive models from data</a>
+<ul>
 <li><a href="#example-perceptron">Example: Perceptron</a></li>
 </ul></li>
 <li><a href="#a-note-on-representation">A note on representation</a></li>
@@ -159,8 +167,8 @@ w_{t+1} = w_t - \eta\nabla_{w_t} \ell(f(x_i), y_i)
 <p>There are numerous texts on machine learning and pattern classification, for example, the standard text book by Duda, Hart, and Stork<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle" /><span class="sidenote">R.O. Duda, P.E. Hart, and D.G. Stork, <em>Pattern Classification</em> (John Wiley &amp; Sons, 2012).</span></span>. For background on statistics, see Wasserman’s text<span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle" /><span class="sidenote">L. Wasserman, <em>All of Statistics: A Concise Course in Statistical Inference</em> (Springer, 2010).</span></span>.</p>
 </section>
 <section id="bibliography" class="level1 unnumbered">
-<h1>References</h1>
-<div id="refs" class="references" role="doc-bibliography">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent" role="doc-bibliography">
 <div id="ref-duda2012pattern">
 <p>Duda, Richard O., Peter E. Hart, and David G. Stork. <em>Pattern Classification</em>. John Wiley &amp; Sons, 2012.</p>
 </div>
@@ -176,7 +184,7 @@ w_{t+1} = w_t - \eta\nabla_{w_t} \ell(f(x_i), y_i)
 </div>
 </section>
 <div id="lastupdate">
-Last updated: Sat Dec  7 07:55:46 PST 2019
+Last updated: Wed Jun  3 22:16:00 MDT 2020
 </div>
 </article>
 </body>
