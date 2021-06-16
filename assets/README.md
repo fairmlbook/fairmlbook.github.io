@@ -1,2 +1,1 @@
-Directory should contain all files linked to from sources, such as figures,
-images, etc.
+This directory contains the compiled product. Do not delete.

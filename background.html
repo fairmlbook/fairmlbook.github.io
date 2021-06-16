@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="author" content="Solon Barocas">
-  <meta name="author" content="Moritz Hardt">
-  <meta name="author" content="Arvind Narayanan">
   <title>Appendix — Technical background</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
    var mathElements = document.getElementsByClassName("math");
+   var macros = [];
    for (var i = 0; i < mathElements.length; i++) {
     var texText = mathElements[i].firstChild;
     if (mathElements[i].tagName == "SPAN") {
      katex.render(texText.data, mathElements[i], {
       displayMode: mathElements[i].classList.contains('display'),
       throwOnError: false,
+      macros: macros,
       fleqn: false
      });
   }}});
@@ -32,33 +40,44 @@
 <header>
 <h1 class="title">Appendix — Technical background</h1>
 </header>
-<nav id="TOC">
-<div id="menuToggle">
-<a class="toggle" tabindex="0" ><img src="assets/hamburger_icon.svg" alt="hamburger" id="hamburger"></a>
-<a id="index" href="index.html"><img src="assets/home.png" alt="home" id="home"></a>
-<ul>
-<li><a href="#random-variables-and-conditional-probabilities">Random variables and conditional probabilities</a>
-<ul>
-<li><a href="#sample-and-population">Sample and population</a></li>
-</ul></li>
-<li><a href="#building-predictive-models-from-data">Building predictive models from data</a>
-<ul>
-<li><a href="#example-perceptron">Example: Perceptron</a></li>
-</ul></li>
-<li><a href="#a-note-on-representation">A note on representation</a></li>
-<li><a href="#a-note-on-optimization">A note on optimization</a></li>
-<li><a href="#a-note-on-generalization">A note on generalization</a></li>
-<li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a></li>
-<li><a href="#bibliography">References</a></li>
-</ul>
+
+
+
+<div id="collapsiblemenu">
+  <button class="collapsible">
+    <div class="shortthickbar"></div>
+    <div class="shortthickbar"></div>
+    <div class="shortthickbar"></div>
+  </button>
+  <div class="content">
+    <ul>
+    <li><a href="index.html">Home</a></li>
+    </ul>
+    <ul>
+    <li><a href="#random-variables-and-conditional-probabilities">Random variables and conditional probabilities</a>
+    <ul>
+    <li><a href="#sample-and-population">Sample and population</a></li>
+    </ul></li>
+    <li><a href="#building-predictive-models-from-data">Building predictive models from data</a>
+    <ul>
+    <li><a href="#example-perceptron">Example: Perceptron</a></li>
+    </ul></li>
+    <li><a href="#a-note-on-representation">A note on representation</a></li>
+    <li><a href="#a-note-on-optimization">A note on optimization</a></li>
+    <li><a href="#a-note-on-generalization">A note on generalization</a></li>
+    <li><a href="#bibliographic-notes-and-further-reading">Bibliographic notes and further reading</a></li>
+    <li><a href="#bibliography">References</a></li>
+    </ul>
+  </div>
 </div>
-</nav>
+
+
 <p>In this chapter we provide technical background on some of the mathematical concepts used in this book. We focus on two topics. The first is properties of random variables and how random variables can be used to model populations. The second is about the fundamentals of supervised learning and how we compute classifiers from data.</p>
 <section id="random-variables-and-conditional-probabilities" class="level1">
 <h1>Random variables and conditional probabilities</h1>
-<p>Throughout this book, it’s fine to think of all that all probabilities as counting things in a finite population <span class="math inline">P</span>. We can think of <span class="math inline">P</span> as a finite set of things or individuals. Probabilities therefore correspond to simple counts of things in the population. We can interpret the probability <span class="math inline">\mathbb{P}\{E\}</span> as the fraction of the population contained in the set <span class="math inline">E</span>, called <em>event</em> when it appears inside a probability statement. The <em>conditional probability</em> statement <span class="math inline">\mathbb{P}\{E\mid C\}</span> instructs us to restrict the population to the set <span class="math inline">C</span> and to compute probabilities within this subpopulation <span class="math inline">C</span> as if it were the whole population.</p>
-<p>We generally denote random variables with capital letters <span class="math inline">U, V, W, X, Y, Z</span>. Random variables are functions that assign values to elements of the probability space. A statement like <span class="math inline">\mathbb{P}\{U=u\}</span> corresponds to the probability that the random variable assumes the value <span class="math inline">u</span>. More formally, this is a shorthand for the probability of the event <span class="math inline">\{ i\in P \colon U(i)=u\}</span>.</p>
-<p>Two random variables <span class="math inline">U</span> and <span class="math inline">V</span> are <em>independent</em> if for all values <span class="math inline">u</span> and <span class="math inline">v</span> that the random variables might assume, we have:</p>
+<p>Throughout this book, it’s fine to think of all that all probabilities as counting things in a finite population&nbsp;<span class="math inline">P</span>. We can think of&nbsp;<span class="math inline">P</span> as a finite set of things or individuals. Probabilities therefore correspond to simple counts of things in the population. We can interpret the probability&nbsp;<span class="math inline">\mathbb{P}\{E\}</span> as the fraction of the population contained in the set&nbsp;<span class="math inline">E</span>, called <em>event</em> when it appears inside a probability statement. The <em>conditional probability</em> statement&nbsp;<span class="math inline">\mathbb{P}\{E\mid C\}</span> instructs us to restrict the population to the set&nbsp;<span class="math inline">C</span> and to compute probabilities within this subpopulation&nbsp;<span class="math inline">C</span> as if it were the whole population.</p>
+<p>We generally denote random variables with capital letters&nbsp;<span class="math inline">U, V, W, X, Y, Z</span>. Random variables are functions that assign values to elements of the probability space. A statement like&nbsp;<span class="math inline">\mathbb{P}\{U=u\}</span> corresponds to the probability that the random variable assumes the value&nbsp;<span class="math inline">u</span>. More formally, this is a shorthand for the probability of the event&nbsp;<span class="math inline">\{ i\in P \colon U(i)=u\}</span>.</p>
+<p>Two random variables&nbsp;<span class="math inline">U</span> and&nbsp;<span class="math inline">V</span> are <em>independent</em> if for all values&nbsp;<span class="math inline">u</span> and&nbsp;<span class="math inline">v</span> that the random variables might assume, we have:</p>
 <p><span class="math display">
 \mathbb{P}\{U=u,V=v\}=\mathbb{P}\{U=u\}\cdot \mathbb{P}\{V=v\}\,.
 </span></p>
@@ -66,25 +85,25 @@
 <p><span class="math display">
 \mathbb{P}\{U=u \mid V=v \}=\mathbb{P}\{U=u\}\,,
 </span></p>
-<p>This equivalent formulation has an intuitive interpretation. It says that observing that <span class="math inline">V</span> assumed value <span class="math inline">v</span> gives us no hint about the probability of observing the event <span class="math inline">U=u</span>. It’s this second characterization that we used in Chapter 2 when we argued that the independence criterion for binary classification (accept/reject) implies equal acceptance rates in all groups.</p>
-<p>The notion of independent random variables, extends to <em>conditional independence</em>. Two random variables <span class="math inline">U</span> and <span class="math inline">V</span> are <em>conditionally independent</em> given a third random variable <span class="math inline">W</span> if for all values <span class="math inline">u, v</span> and <span class="math inline">w</span> that the random variables might assume, we have:</p>
+<p>This equivalent formulation has an intuitive interpretation. It says that observing that&nbsp;<span class="math inline">V</span> assumed value&nbsp;<span class="math inline">v</span> gives us no hint about the probability of observing the event&nbsp;<span class="math inline">U=u</span>. It’s this second characterization that we used in Chapter 2 when we argued that the independence criterion for binary classification (accept/reject) implies equal acceptance rates in all groups.</p>
+<p>The notion of independent random variables, extends to <em>conditional independence</em>. Two random variables&nbsp;<span class="math inline">U</span> and&nbsp;<span class="math inline">V</span> are <em>conditionally independent</em> given a third random variable&nbsp;<span class="math inline">W</span> if for all values&nbsp;<span class="math inline">u, v</span> and&nbsp;<span class="math inline">w</span> that the random variables might assume, we have:</p>
 <p><span class="math display">
 \mathbb{P}\{U=u,V=v\mid W=w\}=\mathbb{P}\{U=u\mid W=w\}\cdot \mathbb{P}\{V=v\mid W=w\}\,.
 </span></p>
 <section id="sample-and-population" class="level2">
 <h2>Sample and population</h2>
-<p>We often think of random variables <span class="math inline">(X, Y)</span> as modeling a population of instances of a classification problem. In almost all decision making scenarios, however, we do not have access to the entire population of instances that we will encounter. Instead, we only have a sample of instances from this population. To give an example, consider a population consisting of all currently eligible voters in the United States and some of their features, such as, age, income, state of residence etc. An unbiased random sample would from this population would correspond to a subset of voters so that each voter has an equal probability of appearing the sample.</p>
+<p>We often think of random variables&nbsp;<span class="math inline">(X, Y)</span> as modeling a population of instances of a classification problem. In almost all decision making scenarios, however, we do not have access to the entire population of instances that we will encounter. Instead, we only have a sample of instances from this population. To give an example, consider a population consisting of all currently eligible voters in the United States and some of their features, such as, age, income, state of residence etc. An unbiased random sample would from this population would correspond to a subset of voters so that each voter has an equal probability of appearing the sample.</p>
 <p>Sampling is a difficult problem with numerous pitfalls that can strongly affect the performance of statistical estimators and the validity of what we learn from data. Even defining a good population for the problem we’re trying to solve is often tricky.</p>
 <p>The theory of machine learning largely ignores these issues. The focus is instead on the challenges that remain even if we have a well-defined population and an unbiased sample from it.</p>
-<p><em>Supervised learning</em> is the prevalent method for constructing classifiers from data. The essential idea is very simple. We assume we have labeled data, also called <em>training examples</em>, of the form <span class="math inline">(x_1,y_1), ..., (x_n, y_n),</span> where each <em>example</em> is a pair <span class="math inline">(x_i,y_i)</span> of an <em>instance</em> <span class="math inline">x_i</span> and a corresponding <em>label</em> <span class="math inline">y_i.</span></p>
+<p><em>Supervised learning</em> is the prevalent method for constructing classifiers from data. The essential idea is very simple. We assume we have labeled data, also called <em>training examples</em>, of the form&nbsp;<span class="math inline">(x_1,y_1), ..., (x_n, y_n),</span> where each <em>example</em> is a pair&nbsp;<span class="math inline">(x_i,y_i)</span> of an <em>instance</em> <span class="math inline">x_i</span> and a corresponding <em>label</em> <span class="math inline">y_i.</span></p>
 </section>
 </section>
 <section id="building-predictive-models-from-data" class="level1">
 <h1>Building predictive models from data</h1>
 <p>The exact process by which predictive models are derived from data is often secondary for questions of fairness. Nonetheless, in reading the book it is quite helpful to have a working grasp of what this process looks like.</p>
-<p>We’ll dive into the main method that machine learning practitioners use to construct classifiers from a sample of data points. We assume we have a sample <span class="math inline">S=((x_1,y_1),...,(x_n, y_n))</span> of labeled data points drawn independently from a population <span class="math inline">(X, Y)</span>.</p>
-<p>A <em>loss function</em> is a map <span class="math inline">\ell\colon\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}\,</span> that assigns a non-negative real-valued cost <span class="math inline">\ell(y&#39;, y)</span> for outputting the prediction <span class="math inline">y&#39;</span> when the correct label is <span class="math inline">y</span>.</p>
-<p>The <em>empirical risk</em> of a classifier <span class="math inline">f\colon \mathcal{X}\to\mathcal{Y}</span> with respect to the sample <span class="math inline">S</span> and a fixed loss function~<span class="math inline">\ell</span> is defined as</p>
+<p>We’ll dive into the main method that machine learning practitioners use to construct classifiers from a sample of data points. We assume we have a sample&nbsp;<span class="math inline">S=((x_1,y_1),...,(x_n, y_n))</span> of labeled data points drawn independently from a population&nbsp;<span class="math inline">(X, Y)</span>.</p>
+<p>A <em>loss function</em> is a map <span class="math inline">\ell\colon\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}\,</span> that assigns a non-negative real-valued cost&nbsp;<span class="math inline">\ell(y&#39;, y)</span> for outputting the prediction&nbsp;<span class="math inline">y&#39;</span> when the correct label is&nbsp;<span class="math inline">y</span>.</p>
+<p>The <em>empirical risk</em> of a classifier&nbsp;<span class="math inline">f\colon \mathcal{X}\to\mathcal{Y}</span> with respect to the sample&nbsp;<span class="math inline">S</span> and a fixed loss function~<span class="math inline">\ell</span> is defined as</p>
 <p><span class="math display">
 R_S(f) = \frac1n \sum_{i=1}^n \mathbb{\ell}( f(x_i), y_i )\,.
 </span></p>
@@ -99,19 +118,19 @@ R_S(f) = \frac1n \sum_{i=1}^n \mathbb{\ell}( f(x_i), y_i )\,.
 <li><strong>Generalization:</strong> Will the performance of classifier transfer gracefully from seen training examples to unseen instances of our problem? The most common way to measure generalization performance is to consider the difference between risk and empirical risk <span class="math inline">R(f)-R_S(f)</span>. We will see several mathematical frameworks for reasoning about the gap between risk and empirical risk.</li>
 </ul>
 <p>These three questions are intertwined. Our choice of representation influences both the difficulty of optimization and our generalization performance. Improvements in optimization may not help, or could even hurt, generalization.</p>
-<p>But there are also important differences between the three. If we can show that optimization works, it will typically be independent of how the sample was chosen. To reason about generalization, however, we will need assumptions about the data generating process. The most common one is that the samples <span class="math inline">(x_1,y_1),...,(x_n,y_n)</span> were drawn independently and identically (i.i.d.) from the population <span class="math inline">(X, Y)</span>.</p>
+<p>But there are also important differences between the three. If we can show that optimization works, it will typically be independent of how the sample was chosen. To reason about generalization, however, we will need assumptions about the data generating process. The most common one is that the samples&nbsp;<span class="math inline">(x_1,y_1),...,(x_n,y_n)</span> were drawn independently and identically (i.i.d.) from the population&nbsp;<span class="math inline">(X, Y)</span>.</p>
 <p>There are also aspects of the problem that don’t neatly fall into any of these categories. The choice of the loss function, for example, affects all of the three questions above.</p>
 <p>Let’s start with a good example to illustrate these questions.</p>
 <section id="example-perceptron" class="level2">
 <h2>Example: Perceptron</h2>
-<p>The <a href="https://www.nytimes.com/1958/07/08/archives/new-navy-device-learns-by-doing-psychologist-shows-embryo-of.html">New York Times</a> wrote in 1958 that the Perceptron algorithm<span><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle" /><span class="sidenote">F. Rosenblatt, “The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain,” <em>Psychological Review</em>, 1958, 65–386.</span></span> was:</p>
+<p>The <a href="https://www.nytimes.com/1958/07/08/archives/new-navy-device-learns-by-doing-psychologist-shows-embryo-of.html">New York Times</a> wrote in 1958 that the Perceptron algorithm<span class="citation" data-cites="rosenblatt58theperceptron"><span><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle" /><span class="sidenote">Rosenblatt, <span>“The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain,”</span> <em>Psychological Review</em>, 1958, 65–386.</span></span></span> was:</p>
 <blockquote>
 <p>the embryo of an electronic computer that (the Navy) expects will be able to walk, talk, see, write, reproduce itself and be conscious of its existence.</p>
 </blockquote>
-<p>So, what is this algorithm? Let’s assume we’re in a binary classification problem with labels in <span class="math inline">\{-1,1\}</span>. The Perceptron algorithm aims to find a linear separator <span class="math inline">w\in\mathbb{R}^d</span> so that <span class="math inline">y_i\langle w, x_i\rangle \ge 1.</span> In other words, the linear function <span class="math inline">f(x)=\langle w, x\rangle</span> agrees in sign with the labels on all training instances <span class="math inline">(x_i, y_i)</span>.</p>
+<p>So, what is this algorithm? Let’s assume we’re in a binary classification problem with labels in&nbsp;<span class="math inline">\{-1,1\}</span>. The Perceptron algorithm aims to find a linear separator&nbsp;<span class="math inline">w\in\mathbb{R}^d</span> so that&nbsp;<span class="math inline">y_i\langle w, x_i\rangle \ge 1.</span> In other words, the linear function&nbsp;<span class="math inline">f(x)=\langle w, x\rangle</span> agrees in sign with the labels on all training instances&nbsp;<span class="math inline">(x_i, y_i)</span>.</p>
 <p>The algorithm goes about it in the following way:</p>
 <ul>
-<li><p>At each step <span class="math inline">t=1,2,...</span>, select a random index <span class="math inline">i\in\{1,...,n\}</span> and perform the following update step:</p>
+<li><p>At each step&nbsp;<span class="math inline">t=1,2,...</span>, select a random index&nbsp;<span class="math inline">i\in\{1,...,n\}</span> and perform the following update step:</p>
 <ul>
 <li>If <span class="math inline">y_i\langle w_t, x_i\rangle &lt; 1</span>, put <span class="math display">
 w_{t+1} = w_t(1-\gamma) + \eta y_i x _i  
@@ -120,18 +139,18 @@ w_{t+1} = w_t(1-\gamma) + \eta y_i x _i
 </ul></li>
 </ul>
 <p>Can we represent the Perceptron algorithm as an instance of empirical risk minimization? The answer is that we can and it is instructive to see how.</p>
-<p>First, it’s clear from the description that we’re looking for a linear separator. Hence, our function class is the set of linear functions <span class="math inline">f(x)=\langle w, x\rangle,</span> where <span class="math inline">w\in\mathbb{R}^d</span>. We will sometimes call the vector <span class="math inline">w</span> the <em>weight vector</em> or vector of <em>model parameters</em>.</p>
+<p>First, it’s clear from the description that we’re looking for a linear separator. Hence, our function class is the set of linear functions&nbsp;<span class="math inline">f(x)=\langle w, x\rangle,</span> where&nbsp;<span class="math inline">w\in\mathbb{R}^d</span>. We will sometimes call the vector&nbsp;<span class="math inline">w</span> the <em>weight vector</em> or vector of <em>model parameters</em>.</p>
 <p>An optimization method that picks a random example at each step and makes an improvement to the model parameters is the popular stochastic gradient method specified by the updated rule: <span class="math display">
 w_{t+1} = w_t - \eta\nabla_{w_t} \ell(f(x_i), y_i)
-</span> Here, <span class="math inline">\nabla \ell(f(x), y_i)</span> is the gradient of the loss function with respect to the model parameters <span class="math inline">w_t</span> on a randomly chosen example <span class="math inline">(x_i, y_i)</span>. We will typically drop the vector <span class="math inline">w_t</span> from the subscript of the gradient when it’s clear from the context. The scalar <span class="math inline">\eta&gt;0</span> is a step sise parameter that we will discuss more carefully later. For now, think of it as a small constant.</p>
+</span> Here,&nbsp;<span class="math inline">\nabla \ell(f(x), y_i)</span> is the gradient of the loss function with respect to the model parameters&nbsp;<span class="math inline">w_t</span> on a randomly chosen example&nbsp;<span class="math inline">(x_i, y_i)</span>. We will typically drop the vector&nbsp;<span class="math inline">w_t</span> from the subscript of the gradient when it’s clear from the context. The scalar&nbsp;<span class="math inline">\eta&gt;0</span> is a step sise parameter that we will discuss more carefully later. For now, think of it as a small constant.</p>
 <p>Consider the loss function</p>
 <p><span class="math display">
 \ell(y, \langle w, x\rangle)
 = \max(1-y\langle w, x\rangle,\; 0)\,.
 </span></p>
-<p>This loss function is called . Its gradient is <span class="math inline">-yx</span> when <span class="math inline">y\langle w, x\rangle &lt; 1</span> and <span class="math inline">0</span> when <span class="math inline">y\langle w, x\rangle &gt;1</span>. Note that the gradient is not defined at <span class="math inline">y\langle w, x\rangle=1.</span><span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle" /><span class="sidenote">The loss function is not differentiable everywhere. This is why technically speaking the stochastic gradient method operates with what is called a <em>subgradient</em>.</span></span></p>
-<p>We can see that the hinge loss gives us part of the update rule in the Perceptron algorithm. The other part comes from adding a weight penalty <span class="math inline">\frac\gamma 2\|w\|^2</span> to the loss function that discourages the weights from growing out of bounds. This weight penality is called <em><span class="math inline">\ell_2</span>-regularization</em>, <em>weight decay</em>, or <em>Tikhonov regularization</em> depending on which field you work in. The purpose of regularization is to promote generalization. We will therefore return to regularization in detail when we discuss generalization in more depth.</p>
-<p>Putting the two loss functions together, we get the <span class="math inline">\ell_2</span>-regularized empirical risk minimization problem for the hinge loss:</p>
+<p>This loss function is called . Its gradient is&nbsp;<span class="math inline">-yx</span> when&nbsp;<span class="math inline">y\langle w, x\rangle &lt; 1</span> and&nbsp;<span class="math inline">0</span> when&nbsp;<span class="math inline">y\langle w, x\rangle &gt;1</span>. Note that the gradient is not defined at&nbsp;<span class="math inline">y\langle w, x\rangle=1.</span><span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle" /><span class="sidenote">The loss function is not differentiable everywhere. This is why technically speaking the stochastic gradient method operates with what is called a <em>subgradient</em>.</span></span></p>
+<p>We can see that the hinge loss gives us part of the update rule in the Perceptron algorithm. The other part comes from adding a weight penalty&nbsp;<span class="math inline">\frac\gamma 2\|w\|^2</span> to the loss function that discourages the weights from growing out of bounds. This weight penality is called <em><span class="math inline">\ell_2</span>-regularization</em>, <em>weight decay</em>, or <em>Tikhonov regularization</em> depending on which field you work in. The purpose of regularization is to promote generalization. We will therefore return to regularization in detail when we discuss generalization in more depth.</p>
+<p>Putting the two loss functions together, we get the&nbsp;<span class="math inline">\ell_2</span>-regularized empirical risk minimization problem for the hinge loss:</p>
 <p><span class="math display">
 \frac{1}{n}\sum_{i=1}^n \max(1-y_i\langle w, x_i\rangle,\; 0) + \frac\gamma 2 \|w\|_2^2
 </span></p>
@@ -146,7 +165,7 @@ w_{t+1} = w_t - \eta\nabla_{w_t} \ell(f(x_i), y_i)
 </section>
 <section id="a-note-on-optimization" class="level1">
 <h1>A note on optimization</h1>
-<p>If our goal is to minimize the accuracy of a predictor, why don’t we directly solve empirical risk minimization with respect to the <em>zero-one loss</em> <span class="math inline">\ell(y, z)=\mathbb{1}\{y\ne z\}</span> that gives us penalty <span class="math inline">1</span> if our label is incorrect, and penalty <span class="math inline">0</span> if our predicted label <span class="math inline">z</span> matches the true label <span class="math inline">y</span>?</p>
+<p>If our goal is to minimize the accuracy of a predictor, why don’t we directly solve empirical risk minimization with respect to the <em>zero-one loss</em> <span class="math inline">\ell(y, z)=\mathbb{1}\{y\ne z\}</span> that gives us penalty&nbsp;<span class="math inline">1</span> if our label is incorrect, and penalty&nbsp;<span class="math inline">0</span> if our predicted label&nbsp;<span class="math inline">z</span> matches the true label&nbsp;<span class="math inline">y</span>?</p>
 <p>The reason is that the zero one loss is hard to optimize. The gradients of the zero-one loss are zero everywhere they’re defined, and so we can’t expect the gradient-based methods to directly optimize the zero-one loss.</p>
 <p>This is why there are numerous loss functions that approximate the zero-one loss in different ways.</p>
 <ul>
@@ -160,32 +179,52 @@ w_{t+1} = w_t - \eta\nabla_{w_t} \ell(f(x_i), y_i)
 <h1>A note on generalization</h1>
 <p>When we use the term <em>generalization</em> colloquially, it often evokes the idea of extrapolating knowledge from one task to another task. It alludes to our ability of taking principles we’ve learned in one situation and applying them in another context.</p>
 <p>Generalization in machine learning, however, has a significantly more narrow definition. It essentially means for a model to be able to <em>do more of the same</em>. If the predictive model correctly labels cats and dogs on the training data, we want the model to be able to do the same on cats and dogs drawn from the very same distribution that the training data were drawn from. This kind of <em>generalization</em> is best thought of <em>interpolation</em>. The model is able to smooth the gaps between training data and perform well on the distribution that the data came from.</p>
-<p>It is important to recognize that even state-of-the-art models perform substantially worse when test data are drawn from a distribution that differs even slightly from the distribution of the training data. A striking illustration of this phenomenon comes from researchers who created a new test set for the popular ImageNet classification benchmark. The new test set was created according to the exact same protocol as the original test set, starting from the same source data. Still, the performance of all known models is substantially worse on the new test set as the old one.<span><label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle" /><span class="sidenote">B. Recht, R. Roelofs, L. Schmidt, and V. Shankar, “Do ImageNet Classifiers Generalize to ImageNet?” in <em>Proc. 36th ICML</em>, 2019.</span></span></p>
+<p>It is important to recognize that even state-of-the-art models perform substantially worse when test data are drawn from a distribution that differs even slightly from the distribution of the training data. A striking illustration of this phenomenon comes from researchers who created a new test set for the popular ImageNet classification benchmark. The new test set was created according to the exact same protocol as the original test set, starting from the same source data. Still, the performance of all known models is substantially worse on the new test set as the old one.<span class="citation" data-cites="recht2019imagenet"><span><label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle" /><span class="sidenote">Recht et al., <span>“Do <span>I</span>mage<span>N</span>et Classifiers Generalize to <span>I</span>mage<span>N</span>et?”</span> in <em>Proc. 36th <span>ICML</span></em>, 2019.</span></span></span></p>
 </section>
 <section id="bibliographic-notes-and-further-reading" class="level1">
 <h1>Bibliographic notes and further reading</h1>
-<p>There are numerous texts on machine learning and pattern classification, for example, the standard text book by Duda, Hart, and Stork<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle" /><span class="sidenote">R.O. Duda, P.E. Hart, and D.G. Stork, <em>Pattern Classification</em> (John Wiley &amp; Sons, 2012).</span></span>. For background on statistics, see Wasserman’s text<span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle" /><span class="sidenote">L. Wasserman, <em>All of Statistics: A Concise Course in Statistical Inference</em> (Springer, 2010).</span></span>.</p>
+<p>There are numerous texts on machine learning and pattern classification, for example, the standard text book by Duda, Hart, and Stork<span class="citation" data-cites="duda2012pattern">.<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle" /><span class="sidenote">Duda, Hart, and Stork, <em>Pattern Classification</em> (John Wiley &amp; Sons, 2012).</span></span></span> For background on statistics, see Wasserman’s text<span class="citation" data-cites="wasserman2010all">.<span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle" /><span class="sidenote">Wasserman, <em>All of Statistics: A Concise Course in Statistical Inference</em> (Springer, 2010).</span></span></span></p>
 </section>
 <section id="bibliography" class="level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references hanging-indent" role="doc-bibliography">
-<div id="ref-duda2012pattern">
-<p>Duda, Richard O., Peter E. Hart, and David G. Stork. <em>Pattern Classification</em>. John Wiley &amp; Sons, 2012.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-duda2012pattern" class="csl-entry" role="doc-biblioentry">
+Duda, Richard O., Peter E. Hart, and David G. Stork. <em>Pattern Classification</em>. John Wiley &amp; Sons, 2012.
 </div>
-<div id="ref-recht2019imagenet">
-<p>Recht, Benjamin, Rebecca Roelofs, Ludwig Schmidt, and Vaishaal Shankar. “Do ImageNet Classifiers Generalize to ImageNet?” In <em>Proc. 36th ICML</em>, 2019.</p>
+<div id="ref-recht2019imagenet" class="csl-entry" role="doc-biblioentry">
+Recht, Benjamin, Rebecca Roelofs, Ludwig Schmidt, and Vaishaal Shankar. <span>“Do <span>I</span>mage<span>N</span>et Classifiers Generalize to <span>I</span>mage<span>N</span>et?”</span> In <em>Proc. 36th <span>ICML</span></em>, 2019.
 </div>
-<div id="ref-rosenblatt58theperceptron">
-<p>Rosenblatt, Frank. “The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain.” <em>Psychological Review</em>, 1958, 65–386.</p>
+<div id="ref-rosenblatt58theperceptron" class="csl-entry" role="doc-biblioentry">
+Rosenblatt, Frank. <span>“The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain.”</span> <em>Psychological Review</em>, 1958, 65–386.
 </div>
-<div id="ref-wasserman2010all">
-<p>Wasserman, Larry. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer, 2010.</p>
+<div id="ref-wasserman2010all" class="csl-entry" role="doc-biblioentry">
+Wasserman, Larry. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer, 2010.
 </div>
 </div>
 </section>
+
 <div id="lastupdate">
-Last updated: Wed Jun  3 22:16:00 MDT 2020
+Last updated: Tue 08 Dec 2020 01:09:07 PM PST
 </div>
 </article>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
 </body>
 </html>

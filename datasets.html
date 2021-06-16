@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Datasets</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+   var mathElements = document.getElementsByClassName("math");
+   var macros = [];
+   for (var i = 0; i < mathElements.length; i++) {
+    var texText = mathElements[i].firstChild;
+    if (mathElements[i].tagName == "SPAN") {
+     katex.render(texText.data, mathElements[i], {
+      displayMode: mathElements[i].classList.contains('display'),
+      throwOnError: false,
+      macros: macros,
+      fleqn: false
+     });
+  }}});
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article>
+<header>
+<div id="chapter">7</div>
+<h1 class="title">Datasets</h1>
+</header>
+
+
+
+<div id="collapsiblemenu">
+  <button class="collapsible">
+    <div class="shortthickbar"></div>
+    <div class="shortthickbar"></div>
+    <div class="shortthickbar"></div>
+  </button>
+  <div class="content">
+    <ul>
+    <li><a href="index.html">Home</a></li>
+    </ul>
+    <ul>
+    <li><a href="#a-tour-of-datasets-in-different-domains">A tour of datasets in different domains</a>
+    <ul>
+    <li><a href="#timit">TIMIT</a></li>
+    <li><a href="#uci-machine-learning-repository">UCI Machine Learning Repository</a></li>
+    <li><a href="#mnist">MNIST</a></li>
+    <li><a href="#imagenet">ImageNet</a></li>
+    <li><a href="#the-netflix-prize">The Netflix Prize</a></li>
+    </ul></li>
+    <li><a href="#roles-datasets-play">Roles datasets play</a>
+    <ul>
+    <li><a href="#a-source-of-real-data">A source of real data</a></li>
+    <li><a href="#a-catalyst-and-measure-of-domain-specific-progress">A catalyst and measure of domain-specific progress</a></li>
+    <li><a href="#a-source-of-pre-training-data">A source of (pre-)training data</a></li>
+    <li><a href="#the-scientific-basis-of-machine-learning-benchmarks">The scientific basis of machine learning benchmarks</a></li>
+    <li><a href="#benchmark-praxis-and-culture">Benchmark praxis and culture</a></li>
+    </ul></li>
+    <li><a href="#harms-associated-with-data">Harms associated with data</a>
+    <ul>
+    <li><a href="#downstream-and-representational-harms">Downstream and representational harms</a></li>
+    <li><a href="#mitigating-harms-an-overview">Mitigating harms: an overview</a></li>
+    <li><a href="#mitigating-harms-by-separating-the-roles-of-datasets">Mitigating harms by separating the roles of datasets</a></li>
+    </ul></li>
+    <li><a href="#beyond-datasets">Beyond datasets</a>
+    <ul>
+    <li><a href="#lessons-from-measurement">Lessons from measurement</a></li>
+    <li><a href="#problem-framing-comparisons-with-humans">Problem framing: comparisons with humans</a></li>
+    <li><a href="#problem-framing-focusing-on-a-single-optimization-objective">Problem framing: focusing on a single optimization objective</a></li>
+    <li><a href="#limits-of-data-and-prediction">Limits of data and prediction</a></li>
+    </ul></li>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#chapter-notes">Chapter notes</a></li>
+    <li><a href="#bibliography">References</a></li>
+    </ul>
+  </div>
+</div>
+
+
+<p>It’s become commonplace to point out that machine learning models are only as good as the data they’re trained on. The old slogan “garbage in, garbage out” no doubt applies to machine learning practice, as does the related catchphrase “bias in, bias out.” Yet, these proverbs still understate—and somewhat misrepresent—the significance of data for machine learning.</p>
+<p>It’s not only the output of a learning algorithm that may suffer with poor input data. A dataset serves many other vital functions in the machine learning ecosystem. The dataset itself is an integral part of the problem formulation. It implicitly sorts out and operationalizes what the problem is that practitioners end up solving. Datasets have also shaped the course of entire scientific communities in their capacity to measure and benchmark progress, support competitions, and interface between researchers in academia and practitioners in industry.</p>
+<p>If so much hinges on data in machine learning, it might come as a surprise that there is no simple answer to the question of what makes data good for what purpose. The collection of data for machine learning applications has not followed any established theoretical framework, certainly not one that was recognized a priori.</p>
+<p>In this chapter, we take a closer look at popular datasets in the field of machine learning and the benchmarks that they support. We will use this to tease apart the different roles datasets play in scientific and engineering contexts. Then we will review the harms associated with data and discuss how they can be mitigated based on the dataset’s role. We will conclude with several broad directions for improving data practices.</p>
+<p>We limit the scope of this chapter in some important ways. Our focus will be largely on publicly available datasets that support training and testing purposes in machine learning research and applications. Our focus excludes large swaths of industrial data collection, surveillance, and data mining practices. It also excludes data purposefully collected to test specific scientific hypotheses, such as, experimental data gathered in a medical trial.</p>
+<section id="a-tour-of-datasets-in-different-domains" class="level1">
+<h1>A tour of datasets in different domains</h1>
+<p>The creation of datasets in machine learning does not follow a clear theoretical framework. Datasets aren’t collected to test a specific scientific hypothesis. In fact, we will see that there are many different roles data plays in machine learning. As a result, it makes sense to start by looking at a few influential datasets from different domains to get a better feeling for what they are, what motivated their creation, how they organized communities, and what impact they had.</p>
+<section id="timit" class="level2">
+<h2>TIMIT</h2>
+<p>Automatic speech recognition is a machine learning problem of significant commercial interest. Its roots date back to the early 20th century.<span class="citation" data-cites="li2019vocal"><span><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle" /><span class="sidenote">Li and Mills, <span>“Vocal Features: From Voice Identification to Speech Recognition by Machine,”</span> <em>Technology and Culture</em> 60, no. 2 (2019): S129–60.</span></span></span></p>
+<p>Interestingly, speech recognition also features one of the oldest benchmarks data sets, the TIMIT (Texas Instruments/Massachusetts Institute for Technology) data. The creation of the dataset was funded through a 1986 DARPA program on speech recognition. In the mid-eighties, artificial intelligence was in the middle of a “funding winter” where many governmental and industrial agencies were hesitant to sponsor AI research because it often promised more than it could deliver. DARPA program manager Charles Wayne proposed that a way around this problem was establishing more rigorous evaluation methods. Wayne enlisted the National Institute of Standards and Technology to create and curate shared datasets for speech, and he graded success in his program based on performance on recognition tasks on these datasets.</p>
+<p>Many now credit Wayne’s program with kick starting a revolution of progress in speech recognition.<span class="citation" data-cites="liberman2010fred"><span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle" /><span class="sidenote">Liberman, <span>“Fred Jelinek,”</span> <em>Computational Linguistics</em> 36, no. 4 (2010): 595–99.</span></span></span><span class="citation" data-cites="church2018emerging"><span><label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle" /><span class="sidenote">Church, <span>“Emerging Trends: A Tribute to Charles Wayne,”</span> <em>Natural Language Engineering</em> 24, no. 1 (2018): 155–60.</span></span></span> <span class="citation" data-cites="liberman2020human"><span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle" /><span class="sidenote">Liberman and Wayne, <span>“Human Language Technology.”</span> <em>AI Magazine</em> 41, no. 2 (2020).</span></span></span> According to Kenneth Ward Church,</p>
+<blockquote>
+<p>It enabled funding to start because the project was glamour-and-deceit-proof, and to continue because funders could measure progress over time. Wayne’s idea makes it easy to produce plots which help sell the research program to potential sponsors. A less obvious benefit of Wayne’s idea is that it enabled hill climbing. Researchers who had initially objected to being tested twice a year began to evaluate themselves every hour.</p>
+</blockquote>
+<p>A first prototype of the TIMIT dataset was released in December of 1988 on a CD-ROM. An improved release followed in October 1990. TIMIT already featured the training/test split typical for modern machine learning benchmarks. There’s a fair bit we know about the creation of the data due to its thorough documentation.<span class="citation" data-cites="garofolo1993darpa"><span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle" /><span class="sidenote">Garofolo et al., <span>“DARPA TIMIT Acoustic-Phonetic Continous Speech Corpus CD-ROM. NIST Speech Disc 1-1.1,”</span> <em>NASA STI/Recon Technical Report n</em> 93 (1993): 27403.</span></span></span></p>
+<p>TIMIT features a total of about 5 hours of speech, composed of 6300 utterances, specifically, 10 sentences spoken by each of 630 speakers. The sentences were drawn from a corpus of 2342 sentences such as the following.</p>
+<pre><code>She had your dark suit in greasy wash water all year. (sa1)
+Don&#39;t ask me to carry an oily rag like that. (sa2)
+This was easy for us. (sx3)
+Jane may earn more money by working hard. (sx4)
+She is thinner than I am. (sx5)
+Bright sunshine shimmers on the ocean. (sx6)
+Nothing is as offensive as innocence. (sx7)</code></pre>
+<p>The TIMIT documentation distinguishes between 8 major dialect regions<span><label for="sn-5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-5" class="margin-toggle" /><span class="sidenote">New England, Northern, North Midland, South Midland, Southern, New York City, Western, Army Brat (moved around)</span></span> in the United States. Of the speakers, 70% are male and 30% are female. All native speakers of American English, the subjects were primarily employees of Texas Instruments at the time. Many of them were new to the Dallas area where they worked.</p>
+<p>Racial information was supplied with the distribution of the data and coded as “White,” “Black,” “American Indian,” “Spanish-American,” “Oriental,” and “Unknown.” Of the 630 speakers, 578 were identified as White, 26 as Black, 2 as American Indian, 2 as Spanish-American, 3 as Oriental, and 17 as unknown.</p>
+<table>
+<caption>Demographic information about the TIMIT speakers</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th>Male</th>
+<th>Female</th>
+<th>Total (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>White</td>
+<td>402</td>
+<td>176</td>
+<td>578 (91.7%)</td>
+</tr>
+<tr class="even">
+<td>Black</td>
+<td>15</td>
+<td>11</td>
+<td>26 (4.1%)</td>
+</tr>
+<tr class="odd">
+<td>American Indian</td>
+<td>2</td>
+<td>0</td>
+<td>2 (0.3%)</td>
+</tr>
+<tr class="even">
+<td>Spanish-American</td>
+<td>2</td>
+<td>0</td>
+<td>2 (0.3%)</td>
+</tr>
+<tr class="odd">
+<td>Oriental</td>
+<td>3</td>
+<td>0</td>
+<td>3 (0.5%)</td>
+</tr>
+<tr class="even">
+<td>Unknown</td>
+<td>12</td>
+<td>5</td>
+<td>17 (2.6%)</td>
+</tr>
+</tbody>
+</table>
+<p>The documentation notes:</p>
+<blockquote>
+<p>In addition to these 630 speakers, a small number of speakers with foreign accents or other extreme speech and/or hearing abnormalities were recorded as “auxiliary” subjects, but they are not included on the CD-ROM.</p>
+</blockquote>
+<p>It comes to no surprise that early speech recognition models had significant demographic and racial biases in their performance.</p>
+<p>Today, several major companies, including Amazon, Apple, Google, and Microsoft, all use speech recognition models in a variety of products from cell phone apps to voice assistants. There is no longer a major open benchmark that would support training models competitive with the industrial counterparts. Industrial speech recognition pipelines are generally complex and use proprietary data sources that we don’t know a lot about. Nevertheless, today’s speech recognition systems continue to exhibit performance disparities along racial lines.<span class="citation" data-cites="koenecke2020racial"><span><label for="sn-6" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-6" class="margin-toggle" /><span class="sidenote">Koenecke et al., <span>“Racial Disparities in Automated Speech Recognition,”</span> <em>Proceedings of the National Academy of Sciences</em> 117, no. 14 (2020): 7684–89.</span></span></span></p>
+</section>
+<section id="uci-machine-learning-repository" class="level2">
+<h2>UCI Machine Learning Repository</h2>
+<p>The UCI Machine Learning Repository currently hosts more than 500 datasets, mostly for different classification and regression tasks. Most datasets are relatively small, consisting of a few hundred or a few thousand instances. The majority are structured tabular data sets with a handful or a few tens of attributes.</p>
+<p>The UCI Machine Learning Repository contributed to the adoption of the train-test paradigm in machine learning in the late 1980s. Pat Langley recalls:</p>
+<blockquote>
+<p>The experimental movement was aided by another development. David Aha, then a PhD student at UCI, began to collect data sets for use in empirical studies of machine learning. This grew into the UCI Machine Learning Repository (http://archive.ics.uci.edu/ml/), which he made available to the community by FTP in 1987. This was rapidly adopted by many researchers because it was easy to use and because it let them compare their results to previous findings on the same tasks.<span class="citation" data-cites="langley2011changing"><span><label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle" /><span class="sidenote">Langley, <span>“The Changing Science of Machine Learning”</span> (Springer, 2011).</span></span></span></p>
+</blockquote>
+<p>The most popular dataset in the repository is the Iris Data Set containing taxonomic measurements of 150 iris flowers, 50 from each of 3 species. The task is to classify the species given the measurements.</p>
+<p>The second most popular dataset in the UCI repository<span><label for="sn-8" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-8" class="margin-toggle" /><span class="sidenote">As of October, 2020.</span></span> is the <em>Adult</em> dataset. Extracted from the 1994 Census database, it features nearly 50,000 instances describing individuals in the United States, each having 14 attributes. The task is to classify whether an individual earns more than 50,000 US dollars or less.</p>
+<p>The Adult dataset remains popular in the algorithmic fairness community, largely because it is one of the few publicly available datasets that features demographic information including <em>gender</em> (coded in binary as male/female), as well as <em>race</em> (coded as Amer-Indian-Eskimo, Asian-Pac-Islander, Black, Other, and White).</p>
+<p>Unfortunately, the data has some idiosyncrasies that make it less than ideal for understanding biases in machine learning models. Due to the age of the data, and the income cutoff at $50,000, almost all instances labeled <em>Black</em> are below the cutoff, as are almost all instances labeled <em>female</em>. Indeed, a standard logistic regression model trained on the data achieves about 85% accuracy overall, while the same model achieves 91% accuracy on Black instances, and nearly 93% accuracy on female instances. Likewise, the ROC curves for the latter two groups enclose actually more area than the ROC curve for male instances. This is an atypical situation: more often, machine learning models perform worse on historically disadvantaged groups.</p>
+</section>
+<section id="mnist" class="level2">
+<h2>MNIST</h2>
+<p>The MNIST dataset contains images of handwritten digits. Its most common version has 60,000 training images and 10,000 test images, each having 28x28 black and white pixels.</p>
+<figure>
+<img src="assets/datasets_mnist-examples.png" alt="A sample of MNIST digits" /><figcaption aria-hidden="true">A sample of MNIST digits</figcaption>
+</figure>
+<p>MNIST was created by researchers Burges, Cortes, and Lecun from an earlier dataset released by the National Institute of Standards and Technology (NIST). The dataset was introduced in a research paper in 1998 to showcase the use of gradient-based deep learning methods for document recognition tasks<span class="citation" data-cites="lecun1998gradient">.<span><label for="sn-9" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-9" class="margin-toggle" /><span class="sidenote">LeCun et al., <span>“Gradient-Based Learning Applied to Document Recognition,”</span> <em>Proceedings of the IEEE</em> 86, no. 11 (1998): 2278–2324.</span></span></span> Since then cited over 30,000 times, MNIST became a highly influential benchmark in the computer vision community. Two decades later, researchers continue to use the data actively.</p>
+<p>The original NIST data had the property that training and test data came from two different populations. The former featured the handwriting of two thousand American Census Bureau employees, whereas the latter came from five hundred American high school students.<span class="citation" data-cites="grother1995nist"><span><label for="sn-10" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-10" class="margin-toggle" /><span class="sidenote">Grother, <span>“NIST Special Database 19,”</span> <em>Handprinted Forms and Characters Database, National Institute of Standards and Technology</em>, 1995, 10.</span></span></span> The creators of MNIST reshuffled these two data sources and split them into training and test set. Moreover, they scaled and centered the digits. The exact procedure to derive MNIST from NIST was lost, but recently reconstructed by matching images from both data sources<span class="citation" data-cites="yadav2019cold">.<span><label for="sn-11" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-11" class="margin-toggle" /><span class="sidenote">Yadav and Bottou, <span>“Cold Case: The Lost Mnist Digits,”</span> <em>arXiv Preprint arXiv:1905.10498</em>, 2019.</span></span></span></p>
+<p>The original MNIST test set was of the same size as the training set, but the smaller test set became standard in research use. The 50,000 digits in the original test set that didn’t make it into the smaller test set were later identified and dubbed <em>the lost digits</em>.<span class="citation" data-cites="yadav2019cold"><span><label for="sn-12" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-12" class="margin-toggle" /><span class="sidenote">Yadav and Bottou.</span></span></span></p>
+<p>From the beginning, MNIST was intended to be a benchmark used to compare the strengths of different methods. For several years, LeCun maintained an informal leaderboard on a personal website that listed the best accuracy numbers that different learning algorithms achieved on MNIST.</p>
+<table>
+<caption>A snapshot of the original MNIST leaderboard from February 2, 1999. Source: Internet Archive (Retrieved: December 4, 2020)</caption>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Test error (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>linear classifier (1-layer NN)</td>
+<td>12.0</td>
+</tr>
+<tr class="even">
+<td>linear classifier (1-layer NN) [deskewing]</td>
+<td>8.4</td>
+</tr>
+<tr class="odd">
+<td>pairwise linear classifier</td>
+<td>7.6</td>
+</tr>
+<tr class="even">
+<td>K-nearest-neighbors, Euclidean</td>
+<td>5.0</td>
+</tr>
+<tr class="odd">
+<td>K-nearest-neighbors, Euclidean, deskewed</td>
+<td>2.4</td>
+</tr>
+<tr class="even">
+<td>40 PCA + quadratic classifier</td>
+<td>3.3</td>
+</tr>
+<tr class="odd">
+<td>1000 RBF + linear classifier</td>
+<td>3.6</td>
+</tr>
+<tr class="even">
+<td>K-NN, Tangent Distance, 16x16</td>
+<td>1.1</td>
+</tr>
+<tr class="odd">
+<td>SVM deg 4 polynomial</td>
+<td>1.1</td>
+</tr>
+<tr class="even">
+<td>Reduced Set SVM deg 5 polynomial</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td>Virtual SVM deg 9 poly [distortions]</td>
+<td>0.8</td>
+</tr>
+<tr class="even">
+<td>2-layer NN, 300 hidden units</td>
+<td>4.7</td>
+</tr>
+<tr class="odd">
+<td>2-layer NN, 300 HU, [distortions]</td>
+<td>3.6</td>
+</tr>
+<tr class="even">
+<td>2-layer NN, 300 HU, [deskewing]</td>
+<td>1.6</td>
+</tr>
+<tr class="odd">
+<td>2-layer NN, 1000 hidden units</td>
+<td>4.5</td>
+</tr>
+<tr class="even">
+<td>2-layer NN, 1000 HU, [distortions]</td>
+<td>3.8</td>
+</tr>
+<tr class="odd">
+<td>3-layer NN, 300+100 hidden units</td>
+<td>3.05</td>
+</tr>
+<tr class="even">
+<td>3-layer NN, 300+100 HU [distortions]</td>
+<td>2.5</td>
+</tr>
+<tr class="odd">
+<td>3-layer NN, 500+150 hidden units</td>
+<td>2.95</td>
+</tr>
+<tr class="even">
+<td>3-layer NN, 500+150 HU [distortions]</td>
+<td>2.45</td>
+</tr>
+<tr class="odd">
+<td>LeNet-1 [with 16x16 input]</td>
+<td>1.7</td>
+</tr>
+<tr class="even">
+<td>LeNet-4</td>
+<td>1.1</td>
+</tr>
+<tr class="odd">
+<td>LeNet-4 with K-NN instead of last layer</td>
+<td>1.1</td>
+</tr>
+<tr class="even">
+<td>LeNet-4 with local learning instead of ll</td>
+<td>1.1</td>
+</tr>
+<tr class="odd">
+<td>LeNet-5, [no distortions]</td>
+<td>0.95</td>
+</tr>
+<tr class="even">
+<td>LeNet-5, [huge distortions]</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>LeNet-5, [distortions]</td>
+<td>0.8</td>
+</tr>
+<tr class="even">
+<td>Boosted LeNet-4, [distortions]</td>
+<td>0.7</td>
+</tr>
+</tbody>
+</table>
+<p>In its capacity as a benchmark, it became a showcase for the emerging kernel methods of the early 2000s that temporarily achieved top performance on MNIST.<span class="citation" data-cites="decoste2002training"><span><label for="sn-13" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-13" class="margin-toggle" /><span class="sidenote">DeCoste and Schölkopf, <span>“Training Invariant Support Vector Machines,”</span> <em>Machine Learning</em> 46, no. 1 (2002): 161–90.</span></span></span> Today, it is not difficult to achieve less than 0.5% classification error with a wide range of convolutional neural network architectures. The best models classify all but a few pathological test instances correctly. As a result, MNIST is widely considered too easy for today’s research tasks.</p>
+<p>MNIST wasn’t the first dataset of handwritten digits in use for machine learning research. Earlier, the US Postal Service (USPS) had released a dataset of 9298 images (7291 for training, and 2007 for testing). The USPS data was actually a fair bit harder to classify than MNIST. A non-negligible fraction of the USPS digits look unrecognizable to humans<span class="citation" data-cites="bromley1991neural">,<span><label for="sn-14" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-14" class="margin-toggle" /><span class="sidenote">Bromley and Sackinger, <span>“Neural-Network and k-Nearest-Neighbor Classifiers,”</span> <em>Rapport Technique</em>, 1991, 11359–910819.</span></span></span> whereas humans recognize essentially all digits in MNIST.</p>
+</section>
+<section id="imagenet" class="level2">
+<h2>ImageNet</h2>
+<p>ImageNet is a large repository of labeled images that has been highly influential in computer vision research over the last decade. The image labels correspond to nouns from the WordNet lexical database of the English language.<span class="citation" data-cites="miller1998wordnet"><span><label for="sn-15" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-15" class="margin-toggle" /><span class="sidenote">Miller, <em>WordNet: An Electronic Lexical Database</em> (MIT press, 1998).</span></span></span> WordNet groups nouns into cognitive synonyms, called <em>synsets</em>. The words <em>car</em> and <em>automobile</em>, for example, would fall into the same synset. On top of these categories WordNet provides a hierarchical tree structure according to a super-subordinate relationship between synsets. The synset for <em>chair</em>, for example, is a child of the synset for <em>furniture</em> in the wordnet hierarchy. WordNet existed before ImageNet and in part inspired the creation of Imagenet.</p>
+<p>The initial release of ImageNet included about 5000 image categories, each corresponding to a synset in WordNet. These ImageNet categories averaged about 600 images per category<span class="citation" data-cites="deng2009imagenet">.<span><label for="sn-16" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-16" class="margin-toggle" /><span class="sidenote">Deng et al., <span>“Imagenet: A Large-Scale Hierarchical Image Database,”</span> in <em>2009 IEEE Conference on Computer Vision and Pattern Recognition</em> (Ieee, 2009), 248–55.</span></span></span> ImageNet grew over time and its Fall 2011 release had reached about 32,000 categories.</p>
+<p>The construction of ImageNet required two essential steps: retrieving candidate images for each synset, and labeling the retrieved images. This first step utilized online search engines and photo sharing platforms with a search interface, specifically, Flickr. Candidate images were taken from the image search results associated with the synset nouns for each category.</p>
+<p>For the second labeling step, the creators of ImageNet turned to Amazon’s Mechanical Turk platform (MTurk). MTurk is an online labor market that allows individuals and corporations to hire on-demand workers to perform simple tasks. In this case, MTurk workers were presented with candidate images and had to decide whether or not the candidate image was indeed an image corresponding to the category that it was putatively associated with.</p>
+<p>It is important to distinguish between this ImageNet database and a popular machine learning benchmark and competition, called ImageNet Large Scale Visual Recognition Challenge (ILSVRC), that was derived from it.<span class="citation" data-cites="russakovsky2015imagenet"><span><label for="sn-17" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-17" class="margin-toggle" /><span class="sidenote">Russakovsky et al., <span>“Imagenet Large Scale Visual Recognition Challenge,”</span> <em>International Journal of Computer Vision</em> 115, no. 3 (2015): 211–52.</span></span></span> The competition was organized yearly from 2010 until 2017, reaching significant notoriety in both industry and academia, especially as a benchmark for emerging deep learning models.</p>
+<p>When machine learning practitioners say “ImageNet” they typically refer to the data used for the image classification task in the 2012 ILSVRC benchmark. The competition included other tasks, such as object recognition, but image classification has become the most popular task for the dataset. Expressions such as “a model trained on ImageNet” typically refer to training an image classification model on the benchmark data set from 2012.</p>
+<p>Another common practice involving the ILSVRC data is <em>pre-training</em>. Often a practitioner has a specific classification problem in mind whose label set differs from the 1000 classes present in the data. It’s possible nonetheless to use the data to create useful features that can then be used in the target classification problem. Where ILSVRC enters real-world applications it’s often to support pre-training.</p>
+<p>This colloquial use of the word ImageNet can lead to some confusion, not least because the ILSVRC-2012 dataset differs significantly from the broader database. It only includes a subset of 1000 categories. Moreover, these categories are a rather skewed subset of the broader ImageNet hierarchy. For example, of these 1000 categories only three are in the <em>person</em> branch of the WordNet hierarchy, specifically, <em>groom</em>, <em>baseball player</em>, and <em>scuba diver</em>. Yet, more than 100 of the 1000 categories correspond to different dog breeds.<span><label for="sn-18" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-18" class="margin-toggle" /><span class="sidenote">The number is 118, to be exact, not counting wolves, foxes, and wild dogs that are also present among the 1000 categories.</span></span></p>
+<p>What motivated the exact choice of these 1000 categories is not entirely clear. The apparent canine inclination, however, isn’t just a quirk either. At the time, there was an interest in the computer vision community in making progress on prediction with many classes, some of which are very similar. This reflects a broader pattern in the machine learning community. The creation of datasets is often driven by an intuitive sense of what the technical challenges are for the field. In the case of ImageNet, another important consideration was scale, both in terms of the number of images and the number of classes.</p>
+<p>The large scale annotation and labeling that went into Imagenet falls into a category of labor that anthropologist Gray and computer scientist Suri call <em>ghost work</em> in their book of the same name.<span class="citation" data-cites="gray2019ghost"><span><label for="sn-19" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-19" class="margin-toggle" /><span class="sidenote">Gray and Suri, <em>Ghost Work: How to Stop Silicon Valley from Building a New Global Underclass</em> (Eamon Dolan Books, 2019).</span></span></span> They point out:</p>
+<blockquote>
+<p>MTurk workers are the AI revolution’s unsung heroes.</p>
+</blockquote>
+<p>Indeed, ImageNet was labeled by about 49,000 MTurk workers from 167 countries over the course of multiple years.</p>
+</section>
+<section id="the-netflix-prize" class="level2">
+<h2>The Netflix Prize</h2>
+<p>The Netflix Prize was one of the most famous machine learning competitions. Starting on October 2, 2006, the competition ran for nearly three years ending with a grand prize of $1M, announced on September 18, 2009. Over the years, the competition saw 44,014 submissions from 5169 teams.</p>
+<p>The Netflix training data contained roughly 100 million movie ratings from nearly 500 thousand Netflix subscribers on a set of&nbsp;<span class="math inline">17770</span> movies. Each data point corresponds to a tuple <code>&lt;user, movie, date of rating, rating&gt;</code>. At about 650 megabytes in size, the dataset was just small enough to fit on a CD-ROM, but large enough to be pose a challenge at the time.</p>
+<p>The Netflix data can be thought of as a matrix with&nbsp;<span class="math inline">n=480189</span> rows and&nbsp;<span class="math inline">m=17770</span> columns. Each row corresponds to a Netflix subscriber and each column to a movie. The only entries present in the matrix are those for which a given subscriber rated a given movie with rating in&nbsp;<span class="math inline">\{1,2,3,4,5\}</span>. All other entries—that is, the vast majority—are missing. The objective of the participants was to predict the missing entries of the matrix, a problem known as matrix completion, or collaborative filtering somewhat more broadly. In fact, the Netflix challenge did so much to popularize this problem that it is sometimes called the Netflix problem. The idea is that if we could predict missing entries, we’d be able to recommend unseen movies to users accordingly.</p>
+<p>The hold out data that Netflix kept secret consisted of about three million ratings. Half of them were used to compute a running leaderboard throughout the competition. The other half determined the final winner.</p>
+<p>The Netflix competition was hugely influential. Not only did it attract significant participation, it also fueled much academic interest in collaborative filtering for years to come. Moreover, it popularized the competition format as an appealing way for companies to engage with the machine learning community. A startup called Kaggle, founded in April 2010, organized hundreds of machine learning competitions for various companies and organizations before its acquisition by Google in 2017.</p>
+<p>But the Netflix competition became infamous for another reason. Although Netflix had replaced usernames by pseudonymous numbers, researchers Narayanan and Shmatikov were able to re-identify some of the Netflix subscribers whose movie ratings were in the dataset<span class="citation" data-cites="narayanan2008robust"><span><label for="sn-20" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-20" class="margin-toggle" /><span class="sidenote">Narayanan and Shmatikov, <span>“Robust de-Anonymization of Large Sparse Datasets,”</span> in <em>2008 IEEE Symposium on Security and Privacy (Sp 2008)</em> (IEEE, 2008), 111–25.</span></span></span> by linking those ratings with publicly available movie ratings on IMDB, an online movie database. Some Netflix subscribers had also publicly rated an overlapping set of movies on IMDB under their real identities. In the privacy literature, this is called a <em>linkage attack</em> and it’s one of the ways that seemingly anonymized data can be de-anonymized.<span class="citation" data-cites="dwork2017exposed"><span><label for="sn-21" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-21" class="margin-toggle" /><span class="sidenote">Dwork et al., <span>“Exposed! A Survey of Attacks on Private Data,”</span> <em>Annual Review of Statistics and Its Application</em> 4 (2017): 61–84.</span></span></span></p>
+<p>What followed were multiple class action lawsuits against Netflix, as well as an inquiry by the Federal Trade Commission over privacy concerns. As a consequence, Netflix canceled plans for a second competition, which it had announced on August 6, 2009.</p>
+<p>To this day, privacy concerns are a legitimate obstacle to public data release and dataset creation. Deanonymization techniques are mature and efficient. There provably is no algorithm that could take a dataset and provide a rigorous privacy guarantee to all participants, while being useful for all analyses and machine learning purposes. Dwork and Roth call this the Fundamental Law of Information Recovery: <em>“overly accurate answers to too many questions will destroy privacy in a spectacular way.”</em><span class="citation" data-cites="dwork2014algorithmic"><span><label for="sn-22" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-22" class="margin-toggle" /><span class="sidenote">Dwork, Roth, and others, <span>“The Algorithmic Foundations of Differential Privacy.”</span> <em>Foundations and Trends in Theoretical Computer Science</em> 9, no. 3–4 (2014): 211–407.</span></span></span></p>
+</section>
+</section>
+<section id="roles-datasets-play" class="level1">
+<h1>Roles datasets play</h1>
+<p>In machine learning research and engineering, datasets play a different and more prominent set of roles than they do in most other fields. We have mentioned several of these above but let us now examine them in more detail. Understanding these is critical to figuring out which technical and cultural aspects of benchmarks are essential, how harms arise, and how to mitigate them.</p>
+<section id="a-source-of-real-data" class="level2">
+<h2>A source of real data</h2>
+<p>Edgar Anderson was a botanist and horticulturist who spent much of the 1920s and ‘30s collecting and analyzing data on Irises to study biological and taxonomic questions. The Iris dataset in the UCI machine learning repository mentioned above is the result of Anderson’s labors — or a tiny sliver of them, as most of the observations in the dataset came from a single day of field work. The dataset contains 50 observations each of 3 iris plants; the task is to distinguish the species based on 4 physical attributes (sepal length and width; petal length and width). Most of the tens of thousands of researchers who have used this dataset are not interested in taxonomy, let alone irises. What, then, are they using the dataset for?</p>
+<p>Although the data was collected by Anderson, it was actually published in the paper “The use of multiple measurements in taxonomic problems” by Ronald Fisher, who was a founder of modern statistics as well as a eugenicist.<span><label for="sn-23" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-23" class="margin-toggle" /><span class="sidenote">The eugenics connection is not accidental: other central figures in the development of modern statistics such as Francis Galton and Karl Pearson were algo eugenicists. <span class="citation" data-cites="fisher-hatred loucca2009emancipation"> (Evans, <span>“RA Fisher and the Science of Hatred,”</span> <em><span>The New Statesman</span></em>, 2020; Louçã, <span>“Emancipation Through Interaction–How Eugenics and Statistics Converged and Diverged,”</span> <em>Journal of the History of Biology</em> 42, no. 4 (2009): 649–84)</span></span></span><span class="citation" data-cites="fisher1936use"><span><label for="sn-24" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-24" class="margin-toggle" /><span class="sidenote">Fisher, <span>“The Use of Multiple Measurements in Taxonomic Problems,”</span> <em>Annals of Eugenics</em> 7, no. 2 (1936): 179–88.</span></span></span> Fisher was Anderson’s collaborator. Although Fisher had some interest in taxonomy, he was primarily interested in using the data to develop statistical techniques (with an eye toward applications for eugenics). In the 1936 paper, Fisher introduces Linear Discriminant Analysis (LDA) and shows that it performs well on this task.</p>
+<p>The reason the Iris dataset proved to be a good application of LDA is that there exists a linear projection of the four features which seems to result in a mixture of Gaussians (one for each of the three species), and the means of the three distributions are relatively far apart; one of the species is in fact perfectly separable from the other two. Every learning algorithm implicitly makes assumptions about the data-generating process: without assumptions, there is no basis for making predictions on unseen points.<span class="citation" data-cites="mitchell1980need"><span><label for="sn-25" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-25" class="margin-toggle" /><span class="sidenote">Mitchell, <em>The Need for Biases in Learning Generalizations</em> (Department of Computer Science, Laboratory for Computer Science Research …, 1980).</span></span></span> If we could perfectly mathematically describe the data generating process behind the physical characteristics of irises (or any other population), we wouldn’t need a dataset — we could mathematically work out how well an algorithm would perform. In practice, for complex phenomena, such perfect mathematical descriptions rarely exist.<span><label for="sn-26" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-26" class="margin-toggle" /><span class="sidenote">Different communities place different value on attempting to discover the true data generating process. Machine learning places relatively little emphasis on this goal. <span class="citation" data-cites="breiman2001statistical"> (Breiman and others, <span>“Statistical Modeling: The Two Cultures (with Comments and a Rejoinder by the Author),”</span> <em>Statistical Science</em> 16, no. 3 (2001): 199–231)</span></span></span> Thus, the usefulness of a learning algorithm is established by testing it on real datasets.</p>
+<p>The reliance on benchmark datasets as a source of real data was a gradual development in machine learning research. For example, Rosenblatt’s perceptron experiments in the 1950s used two artificial stimuli (the characters E and X), with numerous variants of each created by rotation and other transformations.<span class="citation" data-cites="rosenblatt1960perceptron"><span><label for="sn-27" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-27" class="margin-toggle" /><span class="sidenote">Rosenblatt, <span>“Perceptron Simulation Experiments,”</span> <em>Proceedings of the IRE</em> 48, no. 3 (1960): 301–9.</span></span></span> The controlled input was considered useful to understand the behavior of the system. Writing in 1988, Pat Langley advocates for a hybrid approach, pointing out that “successful runs on a number of different natural domains provide evidence of generality” but also highlighting the use of artificial data for better understanding.<span class="citation" data-cites="langley1988machine"><span><label for="sn-28" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-28" class="margin-toggle" /><span class="sidenote">Langley, <span>“Machine Learning as an Experimental Science”</span> (Springer, 1988).</span></span></span> Especially after the establishment of the UCI repository around this time, it has become common to evaluate new algorithms on widely-used benchmark datasets as a way of establishing that the researcher is not “cheating” by picking contrived inputs.</p>
+<p>To summarize, when a researcher seeks to present evidence that an algorithmic innovation is useful, the use of real dataset as opposed to artificial data ensures that the researcher didn’t make up data to suit the algorithm. Further, the use of prominent benchmark datasets wards off skepticism that the researcher may have cherry picked a dataset with specific properties that makes the algorithm effective. Finally, the use of multiple benchmark datasets from different domains suggests that the algorithm is highly general.</p>
+<p>Perversely, domain ignorance is treated almost as a virtue rather than a drawback. For example, researchers who achieve state-of-the-art performance on (say) Chinese-to-English translation may point out that none of them speak Chinese. The subtext is that they couldn’t have knowingly or unknowingly picked a model that works well only when the source language is linguistically similar to Chinese.</p>
+</section>
+<section id="a-catalyst-and-measure-of-domain-specific-progress" class="level2">
+<h2>A catalyst and measure of domain-specific progress</h2>
+<p>Algorithmic innovations that are highly portable across domains, while important, are rare. Much of the progress in machine learning is instead tailored to specific domains and problems. The most common way to demonstrate such progress is to show that the innovation in question can be used to achieve “state of the art” performance on a benchmark dataset for that task.</p>
+<p>The idea that datasets spur algorithmic innovation bears some explanation. For example, the Netflix Prize is commonly credited as responsible for the discovery of the effectiveness of matrix factorization in recommender systems (often attributed to Simon Funk, a pseudonymous contestant).<span class="citation" data-cites="funk2006try"><span><label for="sn-29" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-29" class="margin-toggle" /><span class="sidenote">Funk, <span>“Try This at Home,”</span> <em>Http://Sifter.org/~Simon/Journal/2006</em>, 2006.</span></span></span> Yet, the technique had been proposed in the context of movie recommendation as early as 1998<span class="citation" data-cites="billsus1998learning"><span><label for="sn-30" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-30" class="margin-toggle" /><span class="sidenote">Billsus, Pazzani, and others, <span>“Learning Collaborative Information Filters.”</span> in <em>Icml</em>, vol. 98, 1998, 46–54.</span></span></span> and for search as early as 1990.<span class="citation" data-cites="deerwester1990indexing"><span><label for="sn-31" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-31" class="margin-toggle" /><span class="sidenote">Deerwester et al., <span>“Indexing by Latent Semantic Analysis,”</span> <em>Journal of the American Society for Information Science</em> 41, no. 6 (1990): 391–407.</span></span></span> However, it was not previously apparent that it outperformed neighborhood-based methods and that it could discover meaningful latent factors. The clarity of the Netflix leaderboard and the credibility of the dataset helped establish the significance of matrix factorization.<span class="citation" data-cites="koren2009matrix"><span><label for="sn-32" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-32" class="margin-toggle" /><span class="sidenote">Koren, Bell, and Volinsky, <span>“Matrix Factorization Techniques for Recommender Systems,”</span> <em>Computer</em> 42, no. 8 (2009): 30–37.</span></span></span></p>
+<p>Somewhat separately from the role of spurring algorithmic innovation, benchmark datasets also offer a convenient way to measure its results (hence the term benchmark). The progression of state-of-the-art accuracy on a benchmark dataset and task can be a useful indicator. A relatively flat curve of accuracy over time may indicate that progress has stalled, while a discontinuous jump may indicate a breakthrough. Reaching an error rate that is close to zero or at least lower than the “human error” for perception tasks is often considered a sign that the task is “solved” and that it is time for the community to move on to a harder challenge.</p>
+<p>While these are appealing heuristics, there are also pitfalls. In particular, a statement such as “the state of the art accuracy for image classification is 95%” is not a scientifically meaningful claim that can be assigned a truth value, because the number is highly sensitive to the data distribution.</p>
+<p>A notable illustration of this phenomenon comes from a paper by researchers Recht, Roelofs, Schmidt, and Shankar. They carefully recreated new test sets for the CIFAR-10 and ImageNet classification benchmarks according to the very same procedure as the original test sets.<span class="citation" data-cites="recht2019imagenet"><span><label for="sn-33" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-33" class="margin-toggle" /><span class="sidenote">Recht et al., <span>“Do <span>I</span>mage<span>N</span>et Classifiers Generalize to <span>I</span>mage<span>N</span>et?”</span> in <em>Proc. 36th <span>ICML</span></em>, 2019.</span></span></span> They then took a large collection of representative models proposed over the years and evaluated all of them on the new test sets. All models suffered a significant drop in performance on the new test set, corresponding to about 5 years of progress in image classification. They found that this is because the new test set represents a slightly different distribution. This is despite the researchers’ careful efforts to replicate the data collection procedure; we should expect that test sets created by different procedures should result in much greater performance differences.</p>
+<p>The same graphs also provide a striking illustration of why benchmark datasets are a practical necessity for performance comparison in machine learning. Consider a hypothetical alternative approach analogous to the norm in many other branches of science: a researcher evaluating a claim (algorithm) describes in detail their procedure for sampling the data; other researchers working on the same problem sample their own datasets based on the published procedure. Some reuse of datasets occurs, but there is no standardization. The graphs show that even extremely careful efforts to sample a new dataset from the same distribution would shift the distribution sufficiently to make performance comparison hopeless.</p>
+<figure>
+<img src="assets/repl-cifar-imagenet.svg" alt="Model accuracy on the original test sets vs. new test sets for CIFAR-10 and ImageNet. Each data point corresponds to one model in a test bed of representative models (shown with 95% Clopper-Pearson confidence intervals). The plots reveal two main phenomena: (i) There is generally a significant drop in accuracy from the original to the new test sets. (ii) The model accuracies closely follow a linear function, meaning that models that perform well on the old test set also tend to perform well on the new test set. The narrow shaded region is a 95% confidence region for the linear fit." /><figcaption aria-hidden="true">Model accuracy on the original test sets vs. new test sets for CIFAR-10 and ImageNet. Each data point corresponds to one model in a test bed of representative models (shown with 95% Clopper-Pearson confidence intervals). The plots reveal two main phenomena: (i) There is generally a significant drop in accuracy from the original to the new test sets. (ii) The model accuracies closely follow a linear function, meaning that models that perform well on the old test set also tend to perform well on the new test set. The narrow shaded region is a 95% confidence region for the linear fit.</figcaption>
+</figure>
+<p>In other words, reported accuracy figures from benchmark datasets do not constitute generalizable scientific knowledge, because they don’t have external validity beyond the specific dataset. While the Recht et al. paper is limited to image classification, it seems scientifically prudent to assume a lack of external validity for other machine learning tasks as well, unless there is evidence to the contrary. Yet the two graphs above hint at a different type of knowledge that seems to transfer almost perfectly to the new test set: the <em>relative</em> performance of models.</p>
+<p>The relative performance of models for a given task is a very useful type of practitioner-oriented knowledge that can be gained from benchmark leaderboards. A question that practitioners often face is, “which class of models should I use for [given task] and how should I optimize it?” A benchmark dataset (together with the associated task definition) can be seen as a proxy for answering this question in a constrained setting, analogous to laboratory studies in other branches of science. The hope is that algorithms (and model classes or architectures) identified as state of the art based on benchmark evaluation are also the ones that will be effective on the practitioner’s test set. In other words, practitioners can outsource the laborious task of model selection to the benchmark leaderboard.</p>
+<p>To be clear, this is an oversimplification. Practitioners have many concerns in addition to accuracy such as the computational cost (of both training and prediction), interpretability, and, increasingly, fairness and environmental cost. Thus, benchmark performance is useful to practitioners but far from the only consideration for model selection.</p>
+<p>We can imagine a spectrum of how similar the new test set is to the benchmark set. At the one extreme, if the new test set is truly a new sample from the exact same distribution, then the ranking of model classes should be the same for the two sets. At the other extreme, the distributions may be so different that they constitute essentially different tasks, so that performance on one is not a useful guide to performance on the other. In between these extremes is a big grey area that is not well understood, and it is currently more art than science.</p>
+<p>The lack of clarity on how much we can generalize from one or a few benchmarks is associated with well known controversies. For example, support vector machines were competitive with neural networks on earlier-generation benchmarks such as NIST digit recognition,<span class="citation" data-cites="cortes1995support"><span><label for="sn-34" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-34" class="margin-toggle" /><span class="sidenote">Cortes and Vapnik, <span>“Support-Vector Networks,”</span> <em>Machine Learning</em> 20, no. 3 (1995): 273–97.</span></span></span> which was one reason why interest in neural networks dwindled in the 1990s. The clear superiority of neural networks on newer benchmarks such as ImageNet was only belatedly recognized.</p>
+</section>
+<section id="a-source-of-pre-training-data" class="level2">
+<h2>A source of (pre-)training data</h2>
+<p>Above, we have envisioned that practitioners use the benchmark leaderboard as a guide to model selection but then train the selected models from scratch on their own (often proprietary) data sources. But practitioners often can and do go further.</p>
+<p>In some cases, it may be possible to train on a benchmark dataset and directly use the resulting model in one’s application. This depends on the domain and the task, and is more suitable when the distribution shift is minimal and the set of class labels is stable. For example, it is reasonable to deploy a digit recognizer pretrained on MNIST, but not so much an image classifier pretrained on ILSVRC (without some type of adaptation to the target domain). Indeed, ILSVRC consists of a rather arbitrary subset of 1,000 classes of ImageNet, and a pretrained model is correspondingly limited in the set of labels it is able to output.<span><label for="sn-35" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-35" class="margin-toggle" /><span class="sidenote">The ImageNet Roulette project was a telling demonstration of what happens when a model trained on the (full) ImageNet dataset is applied to a different test distribution, one consisting primarily of images of people. The results were grotesque. The demonstration has been discontinued, but many archived results may be found in articles about the project. See also: <span class="citation" data-cites="crawford2019excavating"> (Crawford and Paglen, <span>“Excavating AI: The Politics of Training Sets for Machine Learning,”</span> <em><span>Excavating AI (Www.excavating.ai)</span></em>, 2019)</span></span></span> Finally, consider a recommendation system benchmark dataset. There is no way to even attempt to use it directly as training data because the users about whom one wants to make predictions are highly unlikely to be present in the training set.</p>
+<p>In most cases, the creators of benchmark datasets do not intend them to be used as a source of training data, although benchmark datasets are often misused for this purpose. A rare exception is The Pile: a large (800 GB) English text corpus that is explicitly targeted at training language models. To improve the generalization capabilities of models trained on this corpus, the authors included diverse text from 22 different sources.<span class="citation" data-cites="gao2020pile"><span><label for="sn-36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-36" class="margin-toggle" /><span class="sidenote">Gao et al., <span>“The Pile: An 800gb Dataset of Diverse Text for Language Modeling,”</span> <em>arXiv Preprint arXiv:2101.00027</em>, 2020.</span></span></span></p>
+<p>Even when benchmark datasets are not useful as training data for the above-mentioned reasons, they can be useful as pre-training data for transfer learning. Transfer learning refers to using an existing model as a starting point for building a new model. A new model may be needed because the data distribution has shifted compared to what the existing model was optimized for, or because it aims to solve a different task altogether. For example, a model pre-trained on ImageNet (or ILSVRC) may be adapted via further training for recognizing different species (distribution shift) or as part of an image captioning model (a different task).</p>
+<p>There are different intuitions to explain why transfer learning is often effective. One is that the final layers of a neural network correspond to semantically high-level representations of the input. Pre-training is a way of learning these representations that tend to be useful for many tasks. Another intuition is that pre-training is a way of initializing weights that offers an improvement over random initialization in that it requires fewer samples from the target domain for convergence.</p>
+<p>Pretraining offers the practical benefit of being able to share the knowledge contained in a dataset without releasing the raw data. Many datasets, especially those created by companies using customer data, cannot be published due to privacy or confidentiality concerns. The release of pretrained models is thus an important avenue of knowledge sharing from industry to academia.<span><label for="sn-37" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-37" class="margin-toggle" /><span class="sidenote">However, the privacy concern has resurfaced due to the possibility of model inversion attacks. The term refers to algorithms that aim to reconstruct some of the training data by interacting with a model trained on it. <span class="citation" data-cites="fredrikson2015model carlini2019secret"> (Fredrikson, Jha, and Ristenpart, <span>“Model Inversion Attacks That Exploit Confidence Information and Basic Countermeasures,”</span> in <em>Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security</em>, 2015, 1322–33; Carlini et al., <span>“The Secret Sharer: Evaluating and Testing Unintended Memorization in Neural Networks,”</span> in <em>28th <span class="math inline">\{</span>USENIX<span class="math inline">\}</span> Security Symposium (<span class="math inline">\{</span>USENIX<span class="math inline">\}</span> Security 19)</em>, 2019, 267–84)</span></span></span> Sharing pretrained models is also helpful to users for whom training from scratch is cost prohibitive.</p>
+<p>Let’s wrap up our analysis of the roles of benchmark datasets. We identified six distinct roles: (1) providing data sampled from real-world occurring distributions that enables largely domain-agnostic investigations of learning algorithms; (2) enabling domain-specific progress by providing datasets that are representative of real-world tasks in that domain yet abstract away unnecessary detail; (3) providing a convenient albeit crude numerical way to track scientific progress on a problem; (4) enabling model comparison and allowing practitioners to outsource model selection to public leaderboards; (5) providing a source of pre-training data for representation learning, weight initialization, etc; (6) providing a source of training data. The progression of these six roles is generally toward increasing domain- and task-specificity, and from science-oriented to practice-oriented.</p>
+</section>
+<section id="the-scientific-basis-of-machine-learning-benchmarks" class="level2">
+<h2>The scientific basis of machine learning benchmarks</h2>
+<p>Now we examine a seeming mystery: whether and why the benchmark approach works despite the practice of repeated testing on the same data.</p>
+<p>Methodologically, much of modern machine learning practice rests on a variant of trial and error, which we call the train-test paradigm. Practitioners repeatedly build models using any number of heuristics and test their performance to see what works. Anything goes as far as training is concerned, subject only to computational constraints, so long as the performance looks good in testing. Trial and error is sound so long as the testing protocol is robust enough to absorb the pressure placed on it. We will examine to what extent this is the case in machine learning.</p>
+<p>From a theoretical perspective, the best way to test the performance of a classifier is to collect a sufficiently large fresh dataset and to compute the average error on that test set. Data collection, however, is a difficult and costly task. In most applications, practitioners cannot sample fresh data for each model they would like to try out. A different practice has therefore become the de-facto standard. Practitioners split their dataset into typically two parts, a <em>training set</em> used for training a model, and a <em>test set</em> used for evaluating its performance.<span><label for="sn-38" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-38" class="margin-toggle" /><span class="sidenote">Sometimes practitioners divide their data into multiple splits, e.g., training, validation, and test sets. However, for our discussion here that won’t be necessary.</span></span> Often the split is determined when the dataset is created. Datasets used for benchmarks in particular have one fixed split persistent throughout time. A number of variations on this theme go under the name <em>holdout method</em>.</p>
+<p>Machine learning competitions have adopted the same format. The company Kaggle, for example, has organized hundreds of competitions since it was founded. In a competition, a holdout set is kept secret and is used to rank participants on a public leaderboard as the competition unfolds. In the end, the final winner is whoever scores highest on a separate secret test set not used to that point.</p>
+<p>In all applications of the holdout method the hope is that the test set will serve as a fresh sample that provides good performance estimates for all the models. The central problem is that practitioners don’t just use the test data once only to retire it immediately thereafter. The test data are used incrementally for building one model at a time while incorporating feedback received previously from the test data. This leads to the fear that eventually models begin to <em>overfit</em> to the test data. This type of overfitting is sometimes called <em>adaptive overfitting</em> or <em>human-in-the-loop overfitting.</em></p>
+<p>Duda, Hart, and Stork summarize the problem aptly in their 1973 textbook<span class="citation" data-cites="duda1973pattern">:<span><label for="sn-39" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-39" class="margin-toggle" /><span class="sidenote">Duda, Hart, and Stork, <em>Pattern Classification and Scene Analysis</em>, vol. 3 (Wiley New York, 1973).</span></span></span></p>
+<blockquote>
+<p>In the early work on pattern recognition, when experiments were often done with very small numbers of samples, the same data were often used for designing and testing the classifier. This mistake is frequently referred to as “testing on the training data.” A related but less obvious problem arises when a classifier undergoes a long series of refinements guided by the results of repeated testing on the same data. This form of “training on the testing data” often escapes attention until new test samples are obtained.</p>
+</blockquote>
+<p>Nearly half a century later, Hastie, Tibshirani, and Friedman still caution in the 2017 edition of their influential textbook<span class="citation" data-cites="hastie2017elements">:<span><label for="sn-40" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-40" class="margin-toggle" /><span class="sidenote">Hastie, Tibshirani, and Friedman, <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (Springer, 2017).</span></span></span></p>
+<blockquote>
+<p>Ideally, the test set should be kept in a “vault,” and be brought out only at the end of the data analysis. Suppose instead that we use the test-set repeatedly, choosing the model with smallest test-set error. Then the test set error of the final chosen model will underestimate the true test error, sometimes substantially.</p>
+</blockquote>
+<p>While the suggestion to keep the test data in a “vault” is safe, it couldn’t be further from the reality of modern practice. Popular test datasets often see tens of thousands of evaluations.</p>
+<p>Yet adaptive overfitting doesn’t seem to be happening. Recall the scatter plots by Recht et al. above: the plots admit a clean linear fit with positive slope. In other words, the better a model is on the old test set, the better it is on the new test set. But notice that newer models, i.e., those with higher performance on the original test set, had <em>more</em> time to adapt to the test set and to incorporate more information about it. Nonetheless, the better a model performed on the old test set the better it performs on the new set. Moreover, on CIFAR-10 we even see clearly that the absolute performance drops diminishes with increasing accuracy on the old test set. In particular, if our goal was to do well on the new test set, seemingly our best strategy is to continue to inch forward on the old test set.</p>
+<p>The theoretical understanding of why machine learning practice has not resulted in overfitting is still catching up. Here, we highlight one of many potential explanations, called the leaderboard principle. It is a subtle effect in which publication biases force researchers to chase state-of-the-art results, and they only publish models if they see significant improvements over prior models. This cultural practice can be formalized by the <em>Ladder algorithm</em>. For each given classifier, it compares the classifier’s holdout error to the previously smallest holdout error achieved by any classifier encountered so far. If the error is below the previous best by some margin, it announces the holdout error of the current classifier and notes it as the best seen so far. Importantly, if the error is not smaller by a margin, the algorithm releases the previous best (rather than the new error). It can be proven that the Ladder algorithm avoids overfitting in the sense that it accurately measures the error of the best performing classifier among those encountered.<span class="citation" data-cites="blum2015ladder"><span><label for="sn-41" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-41" class="margin-toggle" /><span class="sidenote">Blum and Hardt, <span>“The Ladder: A Reliable Leaderboard for Machine Learning Competitions,”</span> in <em>International Conference on Machine Learning</em> (PMLR, 2015), 1006–14.</span></span></span></p>
+</section>
+<section id="benchmark-praxis-and-culture" class="level2">
+<h2>Benchmark praxis and culture</h2>
+<p>The above discussion hints at the importance of cultural practices for a full understanding of benchmark datasets. Let us now discuss these in more detail, highlighting both dataset creators and users. These practices have helped make the benchmark-oriented approach successful but also impact the harms associated with data. Let’s start with creators.</p>
+<p>Benchmark creators define the task. This involves, among other things, selecting the high-level problem, defining the target variable, the procedure for sampling the data, and the scoring function. If manual annotation of the data is necessary, the dataset creator must develop a codebook or rubric for doing so and orchestrate crowd-work if needed. Data cleaning to ensure high-quality labels is usually required.</p>
+<p>In defining the task, benchmark developers navigate a tricky balance: a task that is seen as too easy using existing techniques will not spur innovation while a task that is seen as too hard may be demotivating. Finding the sweet spot requires expertise, judgment, and some luck. If the right balance is achieved, the benchmark drives progress on the problem. In this way, benchmark creators play an outsized role in defining the vision and agenda for machine learning communities.</p>
+<p>For example, as discussed above, MNIST was derived from a previous dataset released by NIST in which the training and test set were drawn from different sources. The MNIST creators argued that this was necessary because</p>
+<blockquote>
+<p>Drawing sensible conclusions from learning experiments requires that the result be independent of the choice of training set and test among the complete set of samples.</p>
+</blockquote>
+<p>In other words, if an algorithm performs well on NIST it is unclear how much of this due to its ability to learn the training distribution and how much of it is due to its ability to ignore the differences between the train and test distributions. MNIST allows researchers to focus selectively on the former question. This was a fruitful approach in 1995. Decades later, when problems like MNIST classification are effectively solved, the attention of benchmark dataset creators has turned towards methods for handling distribution shift that LeCun et al. justifiably chose to ignore.<span class="citation" data-cites="koh2020wilds"><span><label for="sn-42" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-42" class="margin-toggle" /><span class="sidenote">Koh et al., <span>“Wilds: A Benchmark of in-the-Wild Distribution Shifts,”</span> <em>arXiv Preprint arXiv:2012.07421</em>, 2020.</span></span></span></p>
+<p>Another tricky balance is between abstracting away domain details so that the task is approachable for a broad swath of machine learning experts, and preserving enough details so that the methods that work in the benchmark setting will translate to production settings. One reason the Netflix Prize was so popular is because the data is just a matrix, and it is possible to achieve good performance (in the sense of beating Netflix’s baseline) without really thinking about what the data means. No understanding of film or user psychology was necessary — or helpful, as it turned out. It is possible that domain expertise would have proved essential if the problem had been formulated differently — say, to require explainability or emphasize good performance even for users with very few previous ratings.</p>
+<p>Another challenge for dataset creators is to avoid leakage. In an apocryphal story from the early days of computer vision, a classifier was trained to discriminate between images of Russian and American tanks with seemingly high accuracy, but it turned out that this was only because the Russian tanks had been photographed on a cloudy day and the American ones on a sunny day.<span class="citation" data-cites="branwen2011neural"><span><label for="sn-43" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-43" class="margin-toggle" /><span class="sidenote">Branwen, <span>“The Neural Net Tank Urban Legend,”</span> 2011.</span></span></span> Data leakage refers to a spurious relationship between the feature vector and the target variable that is an artifact of the data collection or sampling strategy. Since the spurious relationship won’t be present when the model is deployed, leakage usually leads to inflated estimates of model performance. Kaufman et al. present an overview of leakage in machine learning.<span class="citation" data-cites="kaufman2012leakage"><span><label for="sn-44" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-44" class="margin-toggle" /><span class="sidenote">Kaufman et al., <span>“Leakage in Data Mining: Formulation, Detection, and Avoidance,”</span> <em>ACM Transactions on Knowledge Discovery from Data (TKDD)</em> 6, no. 4 (2012): 1–21.</span></span></span></p>
+<p>Yet another critical responsibility of benchmark dataset creators is to implement a train-test framework. Most contests have various restrictions in place in an attempt to prevent both accidental overfitting to the leaderboard test set and intentional reverse engineering. Although, as we described above, benchmark praxis differs from the textbook version of the holdout method, practitioners have arrived at a set of techniques that have worked in practice, even if our theoretical understanding of why they work is still catching up.</p>
+<p>Taking a step back, in any scientific endeavor there are the difficult tasks of framing the problem, ensuring that the methods have internal and external validity, and interpreting the results. Benchmark dataset creators handle as many of these hard tasks as possible, simplifying the goal of dataset users to the point where if a researcher beats the state-of-the-art performance, there is a good chance that there is a scientific insight somewhere in the methods, although extracting what this insight is may still require work. Further simplifying things for dataset users is the fact that there are no restrictions other than computational constraints on how the researcher uses the training data, as long as performance on the test set looks good.</p>
+<p>To be clear, this approach has many pitfalls. Researchers rarely perform the statistical hypothesis tests needed to have confidence in the claim that one model performs better than another. Our understanding of how to account for the numerous sources of variance in these performance measurements is still evolving; a 2021 paper that aims to do so argues that many of the claims of State-of-the-Art performance in natural language performance and computer vision don’t hold up when subjected to such tests.<span class="citation" data-cites="bouthillier2021accounting"><span><label for="sn-45" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-45" class="margin-toggle" /><span class="sidenote">Bouthillier et al., <span>“Accounting for Variance in Machine Learning Benchmarks,”</span> <em>Proceedings of Machine Learning and Systems</em> 3 (2021).</span></span></span></p>
+<p>There have long been articles noting the limitations of what researchers and practitioners can learn from benchmark performance evaluation.<span class="citation" data-cites="saitta1998learning salzberg1999comparing"><span><label for="sn-46" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-46" class="margin-toggle" /><span class="sidenote">Saitta and Neri, <span>“Learning in the <span>‘Real World’</span>,”</span> <em>Machine Learning</em> 30, no. 2 (1998): 133–63; Salzberg, <span>“On Comparing Classifiers: A Critique of Current Research and Methods,”</span> <em>Data Mining and Knowledge Discovery</em> 1, no. 1 (1999): 1–12.</span></span></span> David Aha, co-creator of the UCI repository, recalls that these limitations were well understood as early as 1995, just a few years after the repository was established.<span class="citation" data-cites="radin2017digital"><span><label for="sn-47" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-47" class="margin-toggle" /><span class="sidenote">Radin, <span>“<span>‘Digital Natives’</span>: How Medical and Indigenous Histories Matter for Big Data,”</span> <em>Osiris</em> 32, no. 1 (2017): 43–64.</span></span></span></p>
+<p>While it is important to acknowledge the limitations, it is also worth highlighting that this approach works at all. One reason for this success is that the scientific questions are primarily about algorithms and not the populations that the datasets are sampled from.</p>
+<p>Indeed, there is a case to be made that other scientific communities should adopt the machine learning community’s approach, sometimes called the Common Task Method.<span class="citation" data-cites="liberman2010fred"><span><label for="sn-48" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-48" class="margin-toggle" /><span class="sidenote">Liberman, <span>“Fred Jelinek.”</span></span></span></span> Diverse scientific fields including economics, political science, psychology, genetics, and many others have seen an infusion of machine learning methods alongside a new focus on maximizing predictive accuracy as a research objective. These shifts have been accompanied by a rash of reproducibility failures, with large fractions of published papers falling prey to pitfalls such as data leakage and incorrect train-test split.<span class="citation" data-cites="ivanescu_importance_2016 whelan_when_2014 demasi_meaningless_2017 blagus_joint_2015 vandewiele_overly_2021 christodoulou_systematic_2019 arp_dos_2020"><span><label for="sn-49" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-49" class="margin-toggle" /><span class="sidenote">Ivanescu et al., <span>“The Importance of Prediction Model Validation and Assessment in Obesity and Nutrition Research,”</span> <em>International Journal of Obesity</em> 40, no. 6 (June 2016): 887–94, <a href="https://doi.org/10.1038/ijo.2015.214" role="doc-biblioref">https://doi.org/10.1038/ijo.2015.214</a>; Whelan and Garavan, <span>“When <span>Optimism</span> <span>Hurts</span>: <span>Inflated</span> <span>Predictions</span> in <span>Psychiatric</span> <span>Neuroimaging</span>,”</span> <em>Biological Psychiatry</em>, Mechanisms of <span>Aging</span> and <span>Cognition</span>, 75, no. 9 (May 2014): 746–48, <a href="https://doi.org/10.1016/j.biopsych.2013.05.014" role="doc-biblioref">https://doi.org/10.1016/j.biopsych.2013.05.014</a>; DeMasi, Kording, and Recht, <span>“Meaningless Comparisons Lead to False Optimism in Medical Machine Learning,”</span> <em>PLoS ONE</em> 12, no. 9 (September 2017), <a href="https://doi.org/10.1371/journal.pone.0184604" role="doc-biblioref">https://doi.org/10.1371/journal.pone.0184604</a>; Blagus and Lusa, <span>“Joint Use of over- and Under-Sampling Techniques and Cross-Validation for the Development and Assessment of Prediction Models,”</span> <em>BMC Bioinformatics</em> 16, no. 1 (November 2015): 363, <a href="https://doi.org/10.1186/s12859-015-0784-9" role="doc-biblioref">https://doi.org/10.1186/s12859-015-0784-9</a>; Vandewiele et al., <span>“Overly Optimistic Prediction Results on Imbalanced Data: A Case Study of Flaws and Benefits When Applying over-Sampling,”</span> <em>Artificial Intelligence in Medicine</em> 111 (January 2021): 101987, <a href="https://doi.org/10.1016/j.artmed.2020.101987" role="doc-biblioref">https://doi.org/10.1016/j.artmed.2020.101987</a>; Christodoulou et al., <span>“A Systematic Review Shows No Performance Benefit of Machine Learning over Logistic Regression for Clinical Prediction Models,”</span> <em>Journal of Clinical Epidemiology</em> 110 (June 2019): 12–22, <a href="https://doi.org/10.1016/j.jclinepi.2019.02.004" role="doc-biblioref">https://doi.org/10.1016/j.jclinepi.2019.02.004</a>; Arp et al., <span>“Dos and <span>Don</span>’ts of <span>Machine</span> <span>Learning</span> in <span>Computer</span> <span>Security</span>,”</span> October 2020, <a href="https://arxiv.org/abs/2010.09470v1" role="doc-biblioref">https://arxiv.org/abs/2010.09470v1</a>.</span></span></span> Use of the benchmark dataset approach could have avoided most of these pitfalls.<span><label for="sn-50" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-50" class="margin-toggle" /><span class="sidenote">We are grateful to Sayash Kapoor for this observation.</span></span></p>
+<p>Now let us transition to dataset users. Benchmark users have embraced the freedom afforded by the approach. As a result, the community of users is large — for example, the data science platform Kaggle has over 5 million registered users of whom over 130,000 have participated in a competition. There is less gatekeeping in machine learning research than in other disciplines. Many prominent findings bypass peer review. If a technique performs well on the leaderboard, that is considered to speak for itself. Many people who contribute these findings are not formally affiliated with research institutions.</p>
+<p>Overall, the culture of progress in machine learning combines the culture of academic scholarship, engineering, and even gaming, with a community of hobbyists and practitioners sharing tips and tricks on forums and engaging in friendly competition. This freewheeling culture may seem jarring to some observers, especially given the sensitivity of some of the datasets involved. The lack of gatekeeping means fewer opportunities for ethical training.</p>
+<p>There is another aspect of benchmark culture that amplifies the harms associated with data: collecting data without informed consent and distributing it widely without adequate context. Many modern datasets, especially in computer vision and natural language processing, are scraped from the web. In such cases, it is infeasible to obtain informed consent from the individual authors of the content. What about a dataset such as the Netflix Prize where a company releases data from its own platform? Even if companies disclose in their terms of service that data might be used for research, it is doubtful that informed consent has been obtained since few users read and understand Terms of Service documents and because of the complexity of the issues involved.</p>
+<p>When an individual’s data becomes part of a benchmark dataset, it gets distributed widely. Popular benchmark datasets are downloaded by thousands of researchers, students, developers, and hobbyists. Scientific norms also call for the data to be preserved indefinitely in the interest of transparency and reproducibility. Thus, not only might individual pieces of data in these datasets be distributed and viewed widely, they are viewed in a form that strips them of their original context. A joke in bad taste written on social media and later deleted may be captured alongside documents from the library of congress.</p>
+</section>
+</section>
+<section id="harms-associated-with-data" class="level1">
+<h1>Harms associated with data</h1>
+<p>Now we will discuss a few important types of harms associated with benchmark datasets and how to mitigate them. We don’t mean to imply that all of these harms are the “fault” of dataset creators, but understanding how data plays into these harms will bring clarity on how to intervene.</p>
+<section id="downstream-and-representational-harms" class="level2">
+<h2>Downstream and representational harms</h2>
+<p>A dataset’s downstream harms are those that arise from the models trained on it. This is a type of harm that readily comes to mind: bad data may lead to bad models which can cause harm to the people they purportedly serve. Errors in face recognition have led to arrests of the wrong person<span class="citation" data-cites="hill2020another"><span><label for="sn-51" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-51" class="margin-toggle" /><span class="sidenote">Hill, <span>“Another Arrest, and Jail Time, Due to a Bad Facial Recognition Match,”</span> <em>New York Times</em>, 2020.</span></span></span> and biased criminal risk prediction systems disproportionately harm Black, minority, and overpoliced populations among others.</p>
+<p>Properties of datasets that sometimes (but not always, and not in easily predictable ways) propagate downstream include imbalance, biases, stereotypes, and categorization. By imbalance we mean unequal representation of different groups. For example, Buolamwini and Gebru pointed out that two facial analysis benchmarks, IJB-A and Adience, overwhelmingly featured lighter-skinned subjects.<span class="citation" data-cites="buolamwini2018gender"><span><label for="sn-52" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-52" class="margin-toggle" /><span class="sidenote">Buolamwini and Gebru, <span>“Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification,”</span> in <em>Conference on Fairness, Accountability and Transparency</em>, 2018, 77–91.</span></span></span> By dataset biases we mean incorrect associations, especially those corresponding to social and historical prejudices. For example, a dataset that measures arrests as a proxy for crime may reflect the biases of policing and discriminatory laws. By stereotypes we mean associations that accurately reflect a property of the world (or a specific culture at a specific point in time) that is thought to be the result of social and historical prejudice. For example, gender-occupation associations can be called stereotypes. By categorization we mean assigning discrete (often binary) labels to complex aspects of identity such as gender and race.<span><label for="sn-53" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-53" class="margin-toggle" /><span class="sidenote">For a classic text on why categorization is a morally laden activity, see <span class="citation" data-cites="bowker2000sorting"> (Bowker and Leigh Star, <em>Sorting Things Out: Classification and Its Consequences</em> (MIT Press, 2000))</span>. For a discussion of the harms of category systems embedded in machine learning datasets, see <span class="citation" data-cites="crawford2021atlas"> (Crawford, <em>The Atlas of AI</em> (Yale University Press, 2021))</span>.</span></span></p>
+<p>Representational harms occur when systems reinforce the subordination of some groups along the lines of identity. Representational harms could be downstream harms — such as when models apply offensive labels to people from some groups — but they could be inherent in the dataset. For example, ImageNet contains numerous slurs and offensive labels inherited from WordNet and pornographic images of people who did not consent to their inclusion in the dataset.<span class="citation" data-cites="prabhu2020large yang2020towards"><span><label for="sn-54" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-54" class="margin-toggle" /><span class="sidenote">Prabhu and Birhane, <span>“Large Image Datasets: A Pyrrhic Win for Computer Vision?”</span> <em>arXiv Preprint arXiv:2006.16923</em>, 2020; Yang et al., <span>“Towards Fairer Datasets: Filtering and Balancing the Distribution of the People Subtree in the Imagenet Hierarchy,”</span> in <em>Proceedings of the 2020 Conference on Fairness, Accountability, and Transparency</em>, 2020, 547–58.</span></span></span></p>
+<p>While downstream and representational harms are two categories that have drawn a lot of attention and criticism, there are many other harms that often arise including the environmental cost of training models on unnecessarily large datasets<span class="citation" data-cites="bender2021dangers"><span><label for="sn-55" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-55" class="margin-toggle" /><span class="sidenote">Bender et al., <span>“On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?”</span> in <em>Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency</em>, 2021, 610–23.</span></span></span> and the erasure of the labor of subjects who contributed the data<span class="citation" data-cites="radin2017digital"><span><label for="sn-56" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-56" class="margin-toggle" /><span class="sidenote">Radin, <span>“<span>‘Digital Natives’</span>.”</span></span></span></span> or the annotators who labeled it.<span class="citation" data-cites="gray2019ghost"><span><label for="sn-57" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-57" class="margin-toggle" /><span class="sidenote">Gray and Suri, <em>Ghost Work</em>.</span></span></span> For an overview of ethical concerns associated with datasets, see the survey by Paullada et al.<span class="citation" data-cites="paullada2020data"><span><label for="sn-58" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-58" class="margin-toggle" /><span class="sidenote">Paullada et al., <span>“Data and Its (Dis) Contents: A Survey of Dataset Development and Use in Machine Learning Research,”</span> <em>arXiv Preprint arXiv:2012.05345</em>, 2020.</span></span></span></p>
+</section>
+<section id="mitigating-harms-an-overview" class="level2">
+<h2>Mitigating harms: an overview</h2>
+<p>Approaches for mitigating the harms associated with data are quickly developing. Here we review a few selected ideas.</p>
+<p>One approach targets the fact that many machine learning datasets are poorly documented, and details about their creation are often missing. This leads to a range of issues from lack of reproducibility and concerns of scientific validity to misuse and ethical concerns. In response, <em>datasheets for datasets</em> is a template and initiative to promote more detailed and systematic annotation for datasets.<span class="citation" data-cites="gebru2018datasheets"><span><label for="sn-59" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-59" class="margin-toggle" /><span class="sidenote">Gebru et al., <span>“Datasheets for Datasets,”</span> <em>arXiv Preprint arXiv:1803.09010</em>, 2018.</span></span></span> A datasheet requires the creator of a dataset to answer questions relating to several areas of interest: Motivation, composition, collection process, preprocessing/cleaning/labeling, uses, distribution, maintenance. One goal is that process of creating a datasheet will help anticipate ethical issues with the dataset. But datasheets also aim to make data practices more reproducible, and help practitioners select more adequate data sources.</p>
+<p>Going a step beyond datasheets, researchers Jo and Gebru<span class="citation" data-cites="jo2020lessons"><span><label for="sn-60" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-60" class="margin-toggle" /><span class="sidenote">Jo and Gebru, <span>“Lessons from Archives: Strategies for Collecting Sociocultural Data in Machine Learning,”</span> in <em>Proc. <span class="math inline">3</span>Rd Conference on Fairness, Accountability, and Transparency (FAccT)</em>, 2020, 306–16.</span></span></span> draw lessons from archival and library sciences for the construction and documentation of machine learning datasets. These lessons draw attention to issues of consent, inclusivity, power, transparency, ethics and privacy.</p>
+<p>Other approaches stay within the paradigm of minimally curated data collection but aim to modify or sanitize content deemed problematic in datasets. The ImageNet creators have made efforts to remove slurs and harmful terms as well as categories considered non-imageable, or unable to be characterized using images. “Vegetarian” and “philanthropist” are two such categories that were removed.<span class="citation" data-cites="yang2020towards"><span><label for="sn-61" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-61" class="margin-toggle" /><span class="sidenote">Yang et al., <span>“Towards Fairer Datasets.”</span></span></span></span> The REVISE tool aims to partially automate the process of identifying various kinds of biases in visual datasets.<span class="citation" data-cites="wang2020revise"><span><label for="sn-62" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-62" class="margin-toggle" /><span class="sidenote">Wang, Narayanan, and Russakovsky, <span>“REVISE: A Tool for Measuring and Mitigating Bias in Visual Datasets,”</span> in <em>European Conference on Computer Vision</em> (Springer, 2020), 733–51.</span></span></span></p>
+</section>
+<section id="mitigating-harms-by-separating-the-roles-of-datasets" class="level2">
+<h2>Mitigating harms by separating the roles of datasets</h2>
+<p>Our analysis of the different roles datasets play allows greater clarity in mitigating harms while preserving benefits. This analysis is not intended as an alternative to the many approaches that have already been proposed for mitigating harms. Rather, it can sharpen our thinking and strengthen other harm-mitigation strategies.</p>
+<p>Our main observation is that the reuse of scientific benchmark datasets in engineering pipelines complicates efforts to address biases and harms. Attempts to address harms in such dual-use datasets leaves creators with a conundrum. On the one hand, benchmark datasets need to be long-lived: many benchmark datasets created decades ago continue to be useful and widely used today. Thus, modifying a dataset down the line when new harms become known will compromise its scientific utility, as performance on the modified dataset may not be meaningfully comparable to performance on the older dataset.</p>
+<p>On the other hand, attempting to anticipate all possible harms during dataset creation is infeasible if the dataset is going to be used as training or pre-training data. Experience shows that datasets turn out to be useful for an ever-expanding set of downstream tasks, some of which were not even conceived of at the time of dataset creation.</p>
+<p>Better tradeoffs are possible if there is a clear separation between scientific benchmarks and production-oriented datasets. In cases where the same dataset can be potentially useful for both purposes, creators should consider making two versions or forks of the data, because many of the harm mitigation strategies that apply to one don’t apply to the other, and vice versa.</p>
+<p>To enforce this separation, benchmark dataset creators should consider avoiding the use of the dataset in production pipelines by explicitly prohibiting it in the terms of use. Currently the licenses of many benchmark datasets prohibit commercial uses. This restriction has a similar effect, but it is not the best way to make this distinction. After all, production models may be noncommercial: they may be built by researchers or governments, with the latter category having an especially high potential for harm. At the same time, prohibiting commercial uses is arguably too strict, as it prohibits the use of the dataset as a guide to model selection, a use that does not raise the same risks of downstream harm.</p>
+<p>One reason why there are fairness interventions applicable to scientific benchmark datasets but not production datasets is that, as we’ve argued, most of the scientific utility of benchmarks is captured by the <em>relative</em> performance of models. The fact that interventions that hurt absolute performance may be acceptable gives greater leeway for harm mitigation efforts. Consider image classification benchmarks. We hypothesize that the relative ranking of models will be only minimally affected if the dataset is modified to remove all images containing people (keeping high-level properties including the number of classes and images the same). Such an intervention would avoid a wide swath of the harms associated with datasets while preserving much of its scientific utility.</p>
+<p>Conversely, one reason why there are fairness interventions applicable to production datasets but not scientific benchmarks is that interventions for production datasets can be strongly guided by an understanding of their downstream impacts in specific applications. Language and images, in particular, capture such a variety of cultural stereotypes that sanitizing all of them has proved infeasible.<span class="citation" data-cites="gonen2019lipstick"><span><label for="sn-63" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-63" class="margin-toggle" /><span class="sidenote">Gonen and Goldberg, <span>“Lipstick on a Pig: Debiasing Methods Cover up Systematic Gender Biases in Word Embeddings but Do Not Remove Them,”</span> <em>arXiv Preprint arXiv:1903.03862</em>, 2019.</span></span></span> It is much easier to design interventions once we fix an application and the cultural context(s) in which it will be deployed. Different interventions may be applicable to the same dataset used in different applications. Unlike scientific benchmarks, dataset standardization is not necessary in engineering settings.</p>
+<p>In fact, the best locus of intervention even for dataset biases may be downstream of the data. For example, it has been observed for many years that online translation systems perpetuate gender stereotypes when translating gender-neutral pronouns. The text “O bir doctor. O bir hemşire.” may be translated from Turkish to English as “He is a doctor. She is a nurse.” Google Translate mitigated this by showing multiple translations in such cases.<span class="citation" data-cites="kuczmarski2018reducing johnson2020scalable"><span><label for="sn-64" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-64" class="margin-toggle" /><span class="sidenote">Kuczmarski, <span>“Reducing Gender Bias in Google Translate,”</span> <em>Google Blog</em> 6 (2018); Johnson, <span>“A Scalable Approach to Reducing Gender Bias in Google Translate,”</span> <em>Google Blog</em>, 2020.</span></span></span> Compared to data interventions, this has the benefit of making the potential bias (or, in some cases, erroneous translation) more visible to the user.</p>
+<p>Our analysis points to many areas where further research could help clarify ethical implications. In particular, the pre-training role of benchmark datasets occupies a grey area where it is not clear when and to what extent data biases propagate to the target task/domain. Research on this area is nascent;<span class="citation" data-cites="steed2021image"><span><label for="sn-65" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-65" class="margin-toggle" /><span class="sidenote">Steed and Caliskan, <span>“Image Representations Learned with Unsupervised Pre-Training Contain Human-Like Biases,”</span> in <em>Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency</em>, 2021, 701–13.</span></span></span> this research is vital because the (mis)use of scientific benchmarks for pre-training in production pipelines is common today and unlikely to cease in the near future.</p>
+<p>Datasets should not be seen as static, neutral technical artifacts. The harms that could arise from a dataset depend not just on its contents but also the rules, norms, and culture surrounding its usage. Thus, modifying these cultural practices is one potential way to mitigate harms. As we discussed above, lack of domain knowledge by dataset users has come to be seen almost as a virtue in machine learning. This attitude should be reconsidered as it has a tendency to accentuate ethical blind spots.</p>
+<p>Datasets require stewardship, whether by the dataset creator or by another designated entity or set of entities. Consider the problem of derivatives: popular benchmark datasets are often extended by other researchers with additional features, and these derived datasets can introduce the possibility of harms not present in the original (to the same extent). For example, the Labeled Faces in the Wild (LFW) dataset of faces was annotated by other researchers with characteristics as race, gender, and attractiveness.<span class="citation" data-cites="LFWTech kumar2011describable"><span><label for="sn-66" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-66" class="margin-toggle" /><span class="sidenote">Huang et al., <span>“Labeled Faces in the Wild: A Database for Studying Face Recognition in Unconstrained Environments”</span> (University of Massachusetts, Amherst, 2007); Kumar et al., <span>“Describable Visual Attributes for Face Verification and Image Search,”</span> <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> 33, no. 10 (2011): 1962–77.</span></span></span> Regardless of the ethics of LFW itself, the derived dataset enables new applications that classify people by appearance in harmful ways.<span><label for="sn-67" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-67" class="margin-toggle" /><span class="sidenote">The intended purpose of the derived dataset is to enable searching corpora of face images by describable attributes.</span></span> Of course, not all derivatives are ethically problematic. Adjudicating and enforcing such ethical distinctions is only possible if there is a governance mechanism in place.</p>
+</section>
+</section>
+<section id="beyond-datasets" class="level1">
+<h1>Beyond datasets</h1>
+<p>In this final section, we discuss important scientific and ethical questions that are relevant to datasets but also go beyond datasets, pervading machine learning: validity, problem framing, and limits to prediction.</p>
+<section id="lessons-from-measurement" class="level2">
+<h2>Lessons from measurement</h2>
+<p>Measurement theory is an established science with ancient roots. In short, measurement is about assigning numbers to objects in the real world in a way that reflects relationships between these objects. Measurement draws an important distinction between a <em>construct</em> that we wish to measure and the measurement procedure that we used to create a numerical representation of the construct.</p>
+<p>For example, we can think of a well-designed math exam as measuring the mathematical abilities of a student. A student with greater mathematical ability than another is expected to score higher on the exam. Viewed this way, an exam is a <em>measurement procedure</em> that assigns numbers to students. The <em>mathematical ability</em> of a student is the construct we hope to measure. We desire that the ordering of these numbers reflects the sorting of students by their mathematical abilities. A measurement procedure operationalizes a construct.</p>
+<p>Every prediction problem has a target variable, the thing we’re trying to predict.<span><label for="sn-68" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-68" class="margin-toggle" /><span class="sidenote">Recall that in a prediction problem we have covariates&nbsp;<span class="math inline">X</span> from which we’re trying to predict a variable&nbsp;<span class="math inline">Y</span>. This variable&nbsp;<span class="math inline">Y</span> is what we call the <em>target variable</em> in our prediction problem.</span></span> By viewing the target variable as a construct, we can apply measurement theory to understand what makes a good target variable.</p>
+<p>The choice of a poor target variable cannot be ironed out with additional data. In fact, the more data we feed into our model, the better it gets at capturing the flawed target variable. Improved data quality or diversity are no cure either.</p>
+<p>All formal fairness criteria that involve the target variable, separation and sufficiency being two prominent examples<span><label for="sn-69" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-69" class="margin-toggle" /><span class="sidenote">Recall from Chapter 2 that separation requires the protected attribute to be independent of the prediction conditional on the target variable. Sufficiency requires the target variable to be independent of the protected attribute given the prediction.</span></span>, are either meaningless or downright misleading when the target variable itself is the locus of discrimination.</p>
+<p>But what makes a target variable good or bad? Let’s get a better grasp on this question by considering a few examples.</p>
+<ol type="1">
+<li>Predicting the value of the Standard and Poor 500 Index (S&amp;P 500) at the close of the New York Stock Exchange tomorrow.</li>
+<li>Predicting whether an individual is going to default on a loan.</li>
+<li>Predicting whether an individual is going to commit a crime.</li>
+</ol>
+<p>The first example is rather innocuous. It references a fairly robust target variable, even though it relies on a number of social facts.</p>
+<p>The second example is a common application of statistical modeling that underlies much of modern credit scoring in the United States. At first sight a default event seems like a clean cut target variable. But the reality is different. In a public dataset by the Federal Reserve<span class="citation" data-cites="federalreserve"><span><label for="sn-70" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-70" class="margin-toggle" /><span class="sidenote">The Federal Reserve Board, <span>“Report to the Congress on Credit Scoring and Its Effects on the Availability and Affordability of Credit”</span> (<a href="https://www.federalreserve.gov/boarddocs/rptcongress/creditscore/" role="doc-biblioref">https://www.federalreserve.gov/boarddocs/rptcongress/creditscore/</a>, 2007).</span></span></span> default events are coded by a so-called <em>performance</em> variable that measures a <em>serious delinquency in at least one credit line of a certain time period</em>. More specifically, the report states that the</p>
+<blockquote>
+<p>measure is based on the performance of new or existing accounts and measures whether individuals have been late 90 days or more on one or more of their accounts or had a public record item or a new collection agency account during the performance period.<span><label for="sn-71" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-71" class="margin-toggle" /><span class="sidenote">Quote from the <a href="https://www.federalreserve.gov/boarddocs/rptcongress/creditscore/performance.htm#toc9.5">Federal Reserve report</a>.</span></span></p>
+</blockquote>
+<p>Our third example runs into the most concerning measurement problem. How do we determine if an individual committed a crime? What we can determine with certainty is whether or not an individual was arrested and found guilty of a crime. But this depends crucially on who is likely to be policed in the first place and who is able to maneuver the criminal justice system successfully following an arrest.</p>
+<p>Sorting out what a good target variable is, in full generality, can involve the whole apparatus of measurement theory. The scope of measurement theory, however, goes beyond defining reliable and valid target variables for prediction. Measurement comes in whenever we create features for a machine learning problem and should therefore be an essential part of the data creation process.<span class="citation" data-cites="jacobs2021measurement"><span><label for="sn-72" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-72" class="margin-toggle" /><span class="sidenote">Jacobs and Wallach, <span>“Measurement and Fairness,”</span> in <em>Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency</em>, 2021, 375–85.</span></span></span></p>
+<p>Judging the quality of a measurement procedure is a difficult task. Measurement theory has two important conceptual frameworks for arguing about what makes measurement <em>good</em>. One is <em>reliability</em>. The other is <em>validity</em>.</p>
+<p>Reliability describes the differences observed in multiple measurements of the same object under identical conditions. Thinking of the measurement variable as a random variable, reliability is about the variance between independent identically distributed measurements. As such, reliability can be analogized with the statistical notion of variance.</p>
+<p><em>Validity</em> is concerned with how well the measurement procedure in principle captures the concept that we try to measure. If reliability is analogous to variance, it is tempting to see validity as analogous to bias. But the situation is a bit more complicated. There is no simple formal criterion that we could use to establish validity. In practice, validity is based to a large extent on human expertise and subjective judgments.</p>
+<p>One approach to formalize validity is to ask how well a score predicts some external criterion. This is called <em>external validity</em>. For example, we could judge a measure of creditworthiness by how well it predicts default in a lending scenario. While external validity leads to concrete technical criteria, it essentially identifies good measurement with predictive accuracy. However, that’s certainly not all there is to validity.</p>
+<p>Construct validity is a framework for discussing validity that includes numerous different types of evidence. Messick highlights six aspects of construct validity:</p>
+<ul>
+<li>Content: How well does the content of the measurement instrument, such as the items on a questionnaire, measure the construct of interest?</li>
+<li>Substantive: Is the construct supported by a sound theoretical foundation?</li>
+<li>Structural: Does the score express relationships in the construct domain?</li>
+<li>Generalizability: Does the score generalize across different populations, settings, and tasks?</li>
+<li>External: Does the score successfully predict external criteria?</li>
+<li>Consequential: What are the potential risks of using the score with regards to bias, fairness, and distributive justice?</li>
+</ul>
+<p>Of these different criteria, external validity is the one most familiar to the machine learning practitioner. But machine learning practice would do well to embrace the other, more qualitative, criteria as well. Ultimately, measurement forces us to grapple with the often surprisingly uncomfortable question: What are we even trying to do when we predict something?</p>
+</section>
+<section id="problem-framing-comparisons-with-humans" class="level2">
+<h2>Problem framing: comparisons with humans</h2>
+<p>A long-standing ambition of artificial intelligence research is to match or exceed human cognitive abilities by an algorithm. This desire often leads to comparisons between humans and machines on various tasks. Judgments about human accuracy often also enter the debate around when to use statistical models in high stakes decision making settings.</p>
+<p>The comparison between human decision makers and statistical models is by no means new. For decades, researchers have compared the accuracy of human judgments with that of statistical models.<span class="citation" data-cites="dawes1989clinical"><span><label for="sn-73" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-73" class="margin-toggle" /><span class="sidenote">Dawes, Faust, and Meehl, <span>“Clinical Versus Actuarial Judgment,”</span> <em>Science</em> 243, no. 4899 (1989): 1668–74.</span></span></span></p>
+<p>Even within machine learning, the debate dates way back. A 1991 paper by Bromley and Säckinger explicitly compared the performance of artificial neural networks to a measure of human accuracy on the USPS digits dataset that predates the famous MNIST data.<span class="citation" data-cites="bromley1991neural"><span><label for="sn-74" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-74" class="margin-toggle" /><span class="sidenote">Bromley and Sackinger, <span>“Neural-Network and k-Nearest-Neighbor Classifiers.”</span></span></span></span> A first experiment put the human accuracy at 2.5%, a second experiment found the number 1.51%, while a third reported the number 2.37%.<span class="citation" data-cites="chaaban2007human"><span><label for="sn-75" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-75" class="margin-toggle" /><span class="sidenote">Chaaban and Scheessele, <span>“Human Performance on the USPS Database,”</span> <em>Report, Indiana University South Bend</em>, 2007.</span></span></span></p>
+<p>Comparison with so-called human baselines has since become widely accepted in the machine learning community. The Electronic Frontier Foundation (EFF), for example, hosts a major repository of AI progress measures that compares the performance of machine learning models to reported human accuracies on numerous benchmarks.<span><label for="sn-76" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-76" class="margin-toggle" /><span class="sidenote">See <a href="https://www.eff.org/ai/metrics">https://www.eff.org/ai/metrics</a>.</span></span></p>
+<p>For the ILSVRC 2012 data, the reported human accuracy is 5.1%.<span><label for="sn-77" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-77" class="margin-toggle" /><span class="sidenote">To be precise, this number is referring to the fraction of times that the correct image label was not contained in the top 5 predicted labels of the model or human.</span></span> This often quoted number corresponds to the performance of a single human annotator who was “trained on 500 images and annotated 1500 test images”<span class="citation" data-cites="russakovsky2015imagenet">.<span><label for="sn-78" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-78" class="margin-toggle" /><span class="sidenote">Russakovsky et al., <span>“Imagenet Large Scale Visual Recognition Challenge.”</span></span></span></span> A second annotator who was “trained on 100 images and then annotated 258 test images” achieved an accuracy of 12%. Based on this number of 5.1%, researchers announced in 2015 that their model was “the first to surpass human-level performance”<span class="citation" data-cites="he2015delving">.<span><label for="sn-79" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-79" class="margin-toggle" /><span class="sidenote">He et al., <span>“Delving Deep into Rectifiers: Surpassing Human-Level Performance on Imagenet Classification,”</span> in <em>Proceedings of the IEEE International Conference on Computer Vision</em>, 2015, 1026–34.</span></span></span> Not surprisingly, this claim received significant attention throughout the media.</p>
+<p>However, a later more careful investigation into “human accuracy” on ImageNet revealed a very different picture.<span class="citation" data-cites="shankar2020evaluating"><span><label for="sn-80" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-80" class="margin-toggle" /><span class="sidenote">Shankar et al., <span>“Evaluating Machine Accuracy on Imagenet,”</span> in <em>International Conference on Machine Learning</em> (PMLR, 2020), 8634–44.</span></span></span> The researchers found that only models from 2020 are actually on par with the strongest human labeler. Moreover, when restricting the data to 590 object classes out of 1000 classes in total, the best human labeler performed much better at less than 1% error than even the best predictive models. Recall, that the ILSVRC 2012 data featured 118 different dog breeds alone, some of which are extremely hard to distinguish for anyone who is not a trained dog expert. In fact, the researchers had to consult with experts from the American Kennel Club (AKC) to disambiguate challenging cases of different dog breeds. Simply removing dog classes alone increases the performance of the best human labeler to less than 1.3% error.</p>
+<p>There is another troubling fact. Small variations in the data collection protocol turn out to have a significant effect on the performance of machine classifiers: “the accuracy scores of even the best image classifiers are still highly sensitive to minutiae of the data cleaning process.”<span class="citation" data-cites="recht2019imagenet"><span><label for="sn-81" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-81" class="margin-toggle" /><span class="sidenote">Recht et al., <span>“Do <span>I</span>mage<span>N</span>et Classifiers Generalize to <span>I</span>mage<span>N</span>et?”</span></span></span></span></p>
+<p>These results cast doubt not only on how me measure human accuracy, but also on the validity of the presumed theoretical construct of “human accuracy” itself. However, the machine learning community has adopted a rather casual approach to measuring human accuracy. Many researchers assume that the construct of <em>human accuracy</em> exists unambiguously and it is whatever number comes out of some ad-hoc testing protocol for some set of human beings. These ad-hoc protocols often result in anecdotal comparisons of questionable scientific value.</p>
+<p>Invalid judgments about human performance relative to machines are not just a scientific error, they also have the potential to create narratives that support poor policy choices in high stakes policy questions around the use of predictive models in consequential decisions. For example, criminal justice policy is being driven by claims that statistical methods are superior to judges at predicting risk of recidivism or failure to appear in court. However, these comparisons are dubious because judges are not solving pure prediction problems but rather incorporate other factors such as leniency towards younger defendants.<span class="citation" data-cites="stevenson2019algorithmic"><span><label for="sn-82" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-82" class="margin-toggle" /><span class="sidenote">Stevenson and Doleac, <span>“Algorithmic Risk Assessment in the Hands of Humans,”</span> <em>Available at SSRN 3489440</em>, 2019.</span></span></span></p>
+</section>
+<section id="problem-framing-focusing-on-a-single-optimization-objective" class="level2">
+<h2>Problem framing: focusing on a single optimization objective</h2>
+<p>Real-life problems rarely involve optimizing a single objective and more commonly involve some kind of tradeoff between multiple objectives. How best to formulate this as a statistical optimization problem is both an art and a science. However, benchmark tasks, especially those with leaderboards, tend to pick a single objective. For high-profile benchmarks, the resulting “overfitting to the problem formulation” may result in scientific blind spots and limit the applicability of published findings to practical settings.</p>
+<p>For example, it was well known at the time Netflix launched its Prize that recommendation is not just a matter of maximizing predictive accuracy and, even to the extent that it is, there isn’t one single measure that’s always appropriate.<span class="citation" data-cites="herlocker2004evaluating"><span><label for="sn-83" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-83" class="margin-toggle" /><span class="sidenote">Herlocker et al., <span>“Evaluating Collaborative Filtering Recommender Systems,”</span> <em>ACM Transactions on Information Systems (TOIS)</em> 22, no. 1 (2004): 5–53.</span></span></span> Yet the contest focused purely on prediction accuracy evaluated by a single metric. A few years after the contest ended, Netflix revealed that most of the work that went into the leaderboard had not translated to production models. Part of the reason was that the contest did not capture the range of Netflix’s objectives and constraints: the tight dependence of recommendations on the user interface; the fact that “users” are typically households made of members with differing tastes; explainability; freshness, and many more.<span class="citation" data-cites="amatriain2012netflix"><span><label for="sn-84" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-84" class="margin-toggle" /><span class="sidenote">Amatriain and Basilico, <span>“Netflix Recommendations: Beyond the 5 Stars (Part 1),”</span> <em>Netflix Tech Blog</em> 6 (2012).</span></span></span></p>
+<p>If many of the insights from the leaderboard did not even generalize to Netflix’s own production setting, the gap between Netflix and other recommendation-oriented platforms is far greater. Notably, as a movie platform, Netflix is unusual in that it has a relatively static inventory compared to those with user-generated content such as YouTube or Facebook. When the content pool is dynamic, a different class of algorithms is needed. The pull that the Netflix Prize exerted on recommender systems research may have diverted attention away from the latter type of algorithm for many years, although it is hard to know for sure because the counterfactual is unobservable.</p>
+<p>Formal machine learning competitions, even if they cause blind spots due to the need to pick a single optimization objective, are at least carefully structured to promote scientific progress in some narrow sense. Arguably more damaging are the informal competitions that seems to inevitably emerge in the presence of a prominent benchmark dataset, resulting in unfortunate outcomes such as insightful papers being rejected because they failed to beat the state of the art, or unoriginal papers being published because they did beat the state of the art by (scientifically insignificant) application of greater computing power.</p>
+<p>Another downside to a field oriented around one-dimensional, competitive pursuit is that it becomes structurally difficult to address biases in models and classifiers. If a contestant takes steps to prevent dataset bias from propagating to their models, there will be an accuracy drop (because accuracy is judged on a biased dataset) and fewer people will pay attention to the work.</p>
+<p>As fairness issues in machine learning have gained prominence, fairness-focused benchmarks datasets have proliferated, such as the Pilot Parliamentarians Benchmark for facial analysis<span class="citation" data-cites="buolamwini2018gender"><span><label for="sn-85" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-85" class="margin-toggle" /><span class="sidenote">Buolamwini and Gebru, <span>“Gender Shades.”</span></span></span></span> and the Equity Evaluation Corpus for sentiment analysis.<span class="citation" data-cites="kiritchenko-mohammad-2018-examining"><span><label for="sn-86" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-86" class="margin-toggle" /><span class="sidenote">Kiritchenko and Mohammad, <span>“Examining Gender and Race Bias in Two Hundred Sentiment Analysis Systems,”</span> in <em>Proceedings of the Seventh Joint Conference on Lexical and Computational Semantics</em> (New Orleans, Louisiana: Association for Computational Linguistics, 2018), 43–53, <a href="https://doi.org/10.18653/v1/S18-2005" role="doc-biblioref">https://doi.org/10.18653/v1/S18-2005</a>.</span></span></span> An advantage of this approach is that the scientific and cultural machinery of benchmark-oriented innovation can be repurposed for fairness research. A potential danger is Goodhart’s law, which states, in its broad form, “When a measure becomes a target, it ceases to be a good measure.” As we’ve emphasized in this book, fairness is multifaceted, and benchmarks can capture only narrow notions of fairness. While these can be useful diagnostics, if they are misconstrued as targets in their own right, then research that is focused on optimizing for these benchmarks may not result in fairness in a more substantive sense.</p>
+<p>In addition to creating fairness-focused benchmarks, the algorithmic fairness community has also repurposed earlier benchmarks toward the study of fairness questions. Consider the Census dataset from the UCI repository discussed earlier. It originally gained popularity as a source of real-world data. Its use is acceptable for studying algorithmic questions such as, say, the relative strengths of decision trees and logistic regression. We expect the answers to be insensitive to issues like the cultural context of the data. But now it is being used for studying fairness questions such as how classification accuracy tends to vary by race or gender. For such questions, the answers are sensitive to the details of the subpopulations. Further, the classification task associated with the benchmark (prediction of income treated as a binary variable) is artificial and does not correspond to any real-life application. Thus, accuracy disparities (and other fairness-related measurements) may look different for a different task, or if the data had been sampled differently, or if it came from a different time or place. Using benchmark datasets to make generalizable claims about fairness requires careful attention to issues of context, sampling, and validity.</p>
+</section>
+<section id="limits-of-data-and-prediction" class="level2">
+<h2>Limits of data and prediction</h2>
+<p>Machine learning fails in many scenarios and it’s important to understand the failure cases as much as the success stories.</p>
+<p>The Fragile Families Challenge was a machine learning competition based on the Fragile Families and Child Wellbeing study (FFCWS).<span class="citation" data-cites="reichman2001fragile"><span><label for="sn-87" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-87" class="margin-toggle" /><span class="sidenote">Reichman et al., <span>“Fragile Families: Sample and Design,”</span> <em>Children and Youth Services Review</em> 23, no. 4–5 (2001): 303–26.</span></span></span> Starting from a random sample of hospital births between 1998 and 2000, the FFCWS followed thousand of American families over the course of 15 years, collecting detailed information, about the families’ children, their parents, educational outcomes, and the larger social environment. Once a family agreed to participate in the study, data were collected when the child was born, and then at ages 1, 3, 5, 9, and 15.</p>
+<p>The Fragile Families Challenge concluded in 2017. The underlying dataset for the competition contains 4242 rows, one for each family, and 12943 columns, one for each variable plus an ID number of each family. Of the 12942 variables, 2358 are constant (i.e., had the same value for all rows), mostly due to redactions for privacy and ethics concerns. Of the approximately 55 million (4242 x 12942) entries in the dataset, about 73% do not have a value. Missing values have many possible reasons, including non-response of surveyed families, drop out of study participants, as well as logical relationships between features that imply certain fields are missing depending on how others are set. There are six outcome variables, measured at age 15: <em>1) child grade point average (GPA), 2) child grit, 3) household eviction, 4) household material hardship, 5) caregiver layoff, and 6) caregiver participation in job training.</em></p>
+<p>The goal of the competition was to predict the value of the outcome variables at age 15 given the data from age 1 through 9. As is common for competitions, the challenge featured a three-way data split: training, leaderboard, and test sets. The training set is publicly available to all participants, the leaderboard data support a leaderboard throughout the competition, and the test set is used to determine a final winner.</p>
+<p>The outcome of the prediction challenge was disappointing. Even the winning models performed hardly better than a simple baseline their predictions didn’t differ much compared to predicting the mean of each outcome.</p>
+<p>What caused the poor performance of machine learning on the fragile families data? One obvious possibility is that none of the contestants hit upon the right machine learning techniques for this task. But the fact that 160 teams of motivated experts submitted thousands of models over the course of five months makes this highly unlikely. Besides, models from disparate model classes all made very similar (and equally erroneous) predictions, suggesting that learning algorithms weren’t the limitation.<span class="citation" data-cites="salganik2020measuring"><span><label for="sn-88" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-88" class="margin-toggle" /><span class="sidenote">Salganik et al., <span>“Measuring the Predictability of Life Outcomes with a Scientific Mass Collaboration,”</span> <em>Proceedings of the National Academy of Sciences</em> 117, no. 15 (2020): 8398–8403.</span></span></span><span><label for="sn-89" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-89" class="margin-toggle" /><span class="sidenote">This highlights an advantage of the benchmark dataset approach over one with less standardization: even when there is a failure to make substantial progress on prediction, we can learn something valuable from that failure.</span></span> There are a few other technical possibilities that could explain the disappointing performance, including the sample size, the study design, and the missing values.</p>
+<p>But there is also a more fundamental reason that remains plausible. Perhaps the dynamics of life trajectories are inherently unpredictable over the six year time delay between measurement of the covariates and measurement of the outcome. This six year gap, for example, included the Great Recession, a period of economic shocks and decline between 2007 and 2009, that might have changed trajectories in unforeseeable ways.</p>
+<p>In fact, there’s an important reason why even the performance of models in the challenge, dismal as they were, may overestimate what we can expect in a real-world setting. That’s because the models were allowed to peek into the future, so to speak. The training and test sets were drawn from the same distribution and, in particular, the same time period, as is the standard practice in machine learning research. Thus, the data already incorporates information about the effect of the Great Recession and other global shocks during this period. In a real application, models must be trained on data from the past whereas predictions are about the future. Thus, there is always some drift — a change in the relationship between the covariates and the outcome. This puts a further limit on model performance.</p>
+<p>Machine learning works best in a static and stable world where the past looks like the future. Prediction alone can be a poor choice when we’re anticipating dynamic changes, or when we are trying to reason about the effect that hypothetical actions would have in the real world.</p>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>Benchmark datasets are central to machine learning. They play many roles including enabling algorithmic innovation, measuring progress, and providing training data. Since its systematization in the late 1980s, performance evaluation on benchmarks has gradually become a ubiquitous practice because it makes it harder for researchers to cheat intentionally or unintentionally.</p>
+<p>But an excessive focus on benchmarks brings many drawbacks. Researchers spend prodigious amounts of effort optimizing models to achieve state of the art performance. The results are often both scientifically uninteresting and of little relevance to practitioners because benchmarks omit many real-world details. The approach also amplifies the harms associated with data including downstream harms, representational harms, and privacy violations.</p>
+<p>As we write this book, the benchmark approach is coming under scrutiny because of these ethical concerns. While the benefits and drawbacks of benchmarks are both well known, our overarching goal in this chapter has been to provide a single framework that can help analyze both. Our position is that the core of the benchmark approach is worth preserving, but we envision a future where benchmarks play a more modest role as one of many ways to advance knowledge. To mitigate the harms associated with data, we believe that substantial changes to the practices of dataset creation, use, and governance are necessary. We have outlined a few ways to do this, adding to the emerging literature on this topic.</p>
+</section>
+<section id="chapter-notes" class="level1">
+<h1>Chapter notes</h1>
+<p>This chapter was developed and first published by Hardt and Recht in the textbook <em>Patterns, Predictions, and Actions: A Story about Machine Learning</em>.<span class="citation" data-cites="hardtrecht"><span><label for="sn-90" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-90" class="margin-toggle" /><span class="sidenote">Hardt and Recht, <em>Patterns, Predictions, and Actions: A Story about Machine Learning</em> (<a href="https://mlstory.org" role="doc-biblioref">https://mlstory.org</a>, 2021), <a href="https://arxiv.org/abs/2102.05242" role="doc-biblioref">https://arxiv.org/abs/2102.05242</a>.</span></span></span> With permission from the authors, we include a large part of the original text here with only slight modifications. We removed a significant amount of material on adaptive data analysis and the problem of overfitting in machine learning benchmarks. We added new material on the roles that datasets play, as well as discussion about fairness and ethical concerns relating to datasets.</p>
+<p>The benefits of the benchmark dataset approach are discussed in a talk by Mark Liberman, who calls it the common task method.<span class="citation" data-cites="liberman2015reproducible"><span><label for="sn-91" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-91" class="margin-toggle" /><span class="sidenote">Liberman, <span>“Reproducible Research and the Common Task Method,”</span> <em>Simmons Foundation Lecture Https://Www. Simonsfoundation. Org/Lecture/Reproducible-Research-and-Thecommon-Task-Method</em> 2 (2015).</span></span></span></p>
+<p>Adaptivity in holdout reuse was the subject of<span class="citation" data-cites="dwork2015reusable"><span><label for="sn-92" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-92" class="margin-toggle" /><span class="sidenote">Dwork et al., <span>“The Reusable Holdout: Preserving Validity in Adaptive Data Analysis,”</span> <em>Science</em> 349, no. 6248 (2015): 636–38.</span></span></span> and much subsequent work in the area of adaptive data analysis. Similar concerns go under the name of <em>inference after selection</em> in the statistics community.</p>
+<p>The collection and use of large ad-hoc data sets (once referred to as “big data”) has been scrutinized in several important works, see, for example, boyd and Crawford<span class="citation" data-cites="boyd2012critical">,<span><label for="sn-93" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-93" class="margin-toggle" /><span class="sidenote">boyd and Crawford, <span>“Critical Questions for Big Data: Provocations for a Cultural, Technological, and Scholarly Phenomenon,”</span> <em>Information, Communication &amp; Society</em> 15, no. 5 (2012): 662–79.</span></span></span> as well as Tufekci<span class="citation" data-cites="tufekci2014big tufekci2014engineering">.<span><label for="sn-94" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-94" class="margin-toggle" /><span class="sidenote">Tufekci, <span>“Big Questions for Social Media Big Data: Representativeness, Validity and Other Methodological Pitfalls,”</span> in <em>Proc.  <span class="math inline">8</span>Th International AAAI Conference on Weblogs and Social Media</em>, 2014; Tufekci, <span>“Engineering the Public: Big Data, Surveillance and Computational Politics,”</span> <em>First Monday</em>, 2014.</span></span></span> More recently, Couldry and Mejias<span class="citation" data-cites="couldry2019data"><span><label for="sn-95" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-95" class="margin-toggle" /><span class="sidenote">Couldry and Mejias, <span>“Data Colonialism: Rethinking Big Data’s Relation to the Contemporary Subject,”</span> <em>Television &amp; New Media</em> 20, no. 4 (2019): 336–49.</span></span></span> use the term <em>data colonialism</em> to emphasize the processes by which data are appropriated and marginalized communities are exploited through data collection.</p>
+<p>Olteanu et al.<span class="citation" data-cites="olteanu2019social"><span><label for="sn-96" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-96" class="margin-toggle" /><span class="sidenote">Olteanu et al., <span>“Social Data: Biases, Methodological Pitfalls, and Ethical Boundaries,”</span> <em>Frontiers in Big Data</em> 2 (2019): 13.</span></span></span> discuss biases, methodological pitfalls, and ethical questions in the context of social data analysis. In particular, the article provides comprehensive taxonomies biases and issues that can arise in the sourcing, collection, processing, and analysis of social data.</p>
+<p>For an introduction to measurement theory, not specific to the social sciences, see the books by Hand.<span class="citation" data-cites="hand2010measurement hand2016measurement"><span><label for="sn-97" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-97" class="margin-toggle" /><span class="sidenote">Hand, <em>Measurement Theory and Practice: The World Through Quantification</em> (Wiley, 2010); Hand, <em>Measurement: A Very Short Introduction</em> (Oxford University Press, 2016).</span></span></span> The comprehensive textbook by Bandalos<span class="citation" data-cites="bandalos2018measurement"><span><label for="sn-98" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-98" class="margin-toggle" /><span class="sidenote">Bandalos, <em>Measurement Theory and Applications for the Social Sciences</em> (Guilford Publications, 2018).</span></span></span> focuses on applications to the social science, including a chapter on fairness.</p>
+</section>
+<section id="bibliography" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-amatriain2012netflix" class="csl-entry" role="doc-biblioentry">
+Amatriain, Xavier, and Justin Basilico. <span>“Netflix Recommendations: Beyond the 5 Stars (Part 1).”</span> <em>Netflix Tech Blog</em> 6 (2012).
+</div>
+<div id="ref-arp_dos_2020" class="csl-entry" role="doc-biblioentry">
+Arp, Daniel, Erwin Quiring, Feargus Pendlebury, Alexander Warnecke, Fabio Pierazzi, Christian Wressnegger, Lorenzo Cavallaro, and Konrad Rieck. <span>“Dos and <span>Don</span>’ts of <span>Machine</span> <span>Learning</span> in <span>Computer</span> <span>Security</span>,”</span> October 2020. <a href="https://arxiv.org/abs/2010.09470v1">https://arxiv.org/abs/2010.09470v1</a>.
+</div>
+<div id="ref-bandalos2018measurement" class="csl-entry" role="doc-biblioentry">
+Bandalos, Deborah L. <em>Measurement Theory and Applications for the Social Sciences</em>. Guilford Publications, 2018.
+</div>
+<div id="ref-bender2021dangers" class="csl-entry" role="doc-biblioentry">
+Bender, Emily M, Timnit Gebru, Angelina McMillan-Major, and Shmargaret Shmitchell. <span>“On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?”</span> In <em>Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency</em>, 610–23, 2021.
+</div>
+<div id="ref-billsus1998learning" class="csl-entry" role="doc-biblioentry">
+Billsus, Daniel, Michael J Pazzani, and others. <span>“Learning Collaborative Information Filters.”</span> In <em>Icml</em>, 98:46–54, 1998.
+</div>
+<div id="ref-blagus_joint_2015" class="csl-entry" role="doc-biblioentry">
+Blagus, Rok, and Lara Lusa. <span>“Joint Use of over- and Under-Sampling Techniques and Cross-Validation for the Development and Assessment of Prediction Models.”</span> <em>BMC Bioinformatics</em> 16, no. 1 (November 2015): 363. <a href="https://doi.org/10.1186/s12859-015-0784-9">https://doi.org/10.1186/s12859-015-0784-9</a>.
+</div>
+<div id="ref-blum2015ladder" class="csl-entry" role="doc-biblioentry">
+Blum, Avrim, and Moritz Hardt. <span>“The Ladder: A Reliable Leaderboard for Machine Learning Competitions.”</span> In <em>International Conference on Machine Learning</em>, 1006–14. PMLR, 2015.
+</div>
+<div id="ref-bouthillier2021accounting" class="csl-entry" role="doc-biblioentry">
+Bouthillier, Xavier, Pierre Delaunay, Mirko Bronzi, Assya Trofimov, Brennan Nichyporuk, Justin Szeto, Nazanin Mohammadi Sepahvand, et al. <span>“Accounting for Variance in Machine Learning Benchmarks.”</span> <em>Proceedings of Machine Learning and Systems</em> 3 (2021).
+</div>
+<div id="ref-bowker2000sorting" class="csl-entry" role="doc-biblioentry">
+Bowker, Geoffrey C., and Susan Leigh Star. <em>Sorting Things Out: Classification and Its Consequences</em>. MIT Press, 2000.
+</div>
+<div id="ref-boyd2012critical" class="csl-entry" role="doc-biblioentry">
+boyd, danah, and Kate Crawford. <span>“Critical Questions for Big Data: Provocations for a Cultural, Technological, and Scholarly Phenomenon.”</span> <em>Information, Communication &amp; Society</em> 15, no. 5 (2012): 662–79.
+</div>
+<div id="ref-branwen2011neural" class="csl-entry" role="doc-biblioentry">
+Branwen, Gwern. <span>“The Neural Net Tank Urban Legend,”</span> 2011.
+</div>
+<div id="ref-breiman2001statistical" class="csl-entry" role="doc-biblioentry">
+Breiman, Leo, and others. <span>“Statistical Modeling: The Two Cultures (with Comments and a Rejoinder by the Author).”</span> <em>Statistical Science</em> 16, no. 3 (2001): 199–231.
+</div>
+<div id="ref-bromley1991neural" class="csl-entry" role="doc-biblioentry">
+Bromley, J, and E Sackinger. <span>“Neural-Network and k-Nearest-Neighbor Classifiers.”</span> <em>Rapport Technique</em>, 1991, 11359–910819.
+</div>
+<div id="ref-buolamwini2018gender" class="csl-entry" role="doc-biblioentry">
+Buolamwini, Joy, and Timnit Gebru. <span>“Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification.”</span> In <em>Conference on Fairness, Accountability and Transparency</em>, 77–91, 2018.
+</div>
+<div id="ref-carlini2019secret" class="csl-entry" role="doc-biblioentry">
+Carlini, Nicholas, Chang Liu, Úlfar Erlingsson, Jernej Kos, and Dawn Song. <span>“The Secret Sharer: Evaluating and Testing Unintended Memorization in Neural Networks.”</span> In <em>28th <span class="math inline">\{</span>USENIX<span class="math inline">\}</span> Security Symposium (<span class="math inline">\{</span>USENIX<span class="math inline">\}</span> Security 19)</em>, 267–84, 2019.
+</div>
+<div id="ref-chaaban2007human" class="csl-entry" role="doc-biblioentry">
+Chaaban, Ibrahim, and Michael R Scheessele. <span>“Human Performance on the USPS Database.”</span> <em>Report, Indiana University South Bend</em>, 2007.
+</div>
+<div id="ref-christodoulou_systematic_2019" class="csl-entry" role="doc-biblioentry">
+Christodoulou, Evangelia, Jie Ma, Gary S. Collins, Ewout W. Steyerberg, Jan Y. Verbakel, and Ben Van Calster. <span>“A Systematic Review Shows No Performance Benefit of Machine Learning over Logistic Regression for Clinical Prediction Models.”</span> <em>Journal of Clinical Epidemiology</em> 110 (June 2019): 12–22. <a href="https://doi.org/10.1016/j.jclinepi.2019.02.004">https://doi.org/10.1016/j.jclinepi.2019.02.004</a>.
+</div>
+<div id="ref-church2018emerging" class="csl-entry" role="doc-biblioentry">
+Church, Kenneth Ward. <span>“Emerging Trends: A Tribute to Charles Wayne.”</span> <em>Natural Language Engineering</em> 24, no. 1 (2018): 155–60.
+</div>
+<div id="ref-cortes1995support" class="csl-entry" role="doc-biblioentry">
+Cortes, Corinna, and Vladimir Vapnik. <span>“Support-Vector Networks.”</span> <em>Machine Learning</em> 20, no. 3 (1995): 273–97.
+</div>
+<div id="ref-couldry2019data" class="csl-entry" role="doc-biblioentry">
+Couldry, Nick, and Ulises A. Mejias. <span>“Data Colonialism: Rethinking Big Data’s Relation to the Contemporary Subject.”</span> <em>Television &amp; New Media</em> 20, no. 4 (2019): 336–49.
+</div>
+<div id="ref-crawford2021atlas" class="csl-entry" role="doc-biblioentry">
+Crawford, Kate. <em>The Atlas of AI</em>. Yale University Press, 2021.
+</div>
+<div id="ref-crawford2019excavating" class="csl-entry" role="doc-biblioentry">
+Crawford, Kate, and Trevor Paglen. <span>“Excavating AI: The Politics of Training Sets for Machine Learning.”</span> <em><span>Excavating AI (Www.excavating.ai)</span></em>, 2019.
+</div>
+<div id="ref-dawes1989clinical" class="csl-entry" role="doc-biblioentry">
+Dawes, Robyn M, David Faust, and Paul E Meehl. <span>“Clinical Versus Actuarial Judgment.”</span> <em>Science</em> 243, no. 4899 (1989): 1668–74.
+</div>
+<div id="ref-decoste2002training" class="csl-entry" role="doc-biblioentry">
+DeCoste, Dennis, and Bernhard Schölkopf. <span>“Training Invariant Support Vector Machines.”</span> <em>Machine Learning</em> 46, no. 1 (2002): 161–90.
+</div>
+<div id="ref-deerwester1990indexing" class="csl-entry" role="doc-biblioentry">
+Deerwester, Scott, Susan T Dumais, George W Furnas, Thomas K Landauer, and Richard Harshman. <span>“Indexing by Latent Semantic Analysis.”</span> <em>Journal of the American Society for Information Science</em> 41, no. 6 (1990): 391–407.
+</div>
+<div id="ref-demasi_meaningless_2017" class="csl-entry" role="doc-biblioentry">
+DeMasi, Orianna, Konrad Kording, and Benjamin Recht. <span>“Meaningless Comparisons Lead to False Optimism in Medical Machine Learning.”</span> <em>PLoS ONE</em> 12, no. 9 (September 2017). <a href="https://doi.org/10.1371/journal.pone.0184604">https://doi.org/10.1371/journal.pone.0184604</a>.
+</div>
+<div id="ref-deng2009imagenet" class="csl-entry" role="doc-biblioentry">
+Deng, Jia, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. <span>“Imagenet: A Large-Scale Hierarchical Image Database.”</span> In <em>2009 IEEE Conference on Computer Vision and Pattern Recognition</em>, 248–55. Ieee, 2009.
+</div>
+<div id="ref-duda1973pattern" class="csl-entry" role="doc-biblioentry">
+Duda, Richard O, Peter E Hart, and David G Stork. <em>Pattern Classification and Scene Analysis</em>. Vol. 3. Wiley New York, 1973.
+</div>
+<div id="ref-dwork2015reusable" class="csl-entry" role="doc-biblioentry">
+Dwork, Cynthia, Vitaly Feldman, Moritz Hardt, Toniann Pitassi, Omer Reingold, and Aaron Roth. <span>“The Reusable Holdout: Preserving Validity in Adaptive Data Analysis.”</span> <em>Science</em> 349, no. 6248 (2015): 636–38.
+</div>
+<div id="ref-dwork2014algorithmic" class="csl-entry" role="doc-biblioentry">
+Dwork, Cynthia, Aaron Roth, and others. <span>“The Algorithmic Foundations of Differential Privacy.”</span> <em>Foundations and Trends in Theoretical Computer Science</em> 9, no. 3–4 (2014): 211–407.
+</div>
+<div id="ref-dwork2017exposed" class="csl-entry" role="doc-biblioentry">
+Dwork, Cynthia, Adam Smith, Thomas Steinke, and Jonathan Ullman. <span>“Exposed! A Survey of Attacks on Private Data.”</span> <em>Annual Review of Statistics and Its Application</em> 4 (2017): 61–84.
+</div>
+<div id="ref-fisher-hatred" class="csl-entry" role="doc-biblioentry">
+Evans, Richard. <span>“RA Fisher and the Science of Hatred.”</span> <em><span>The New Statesman</span></em>, 2020.
+</div>
+<div id="ref-fisher1936use" class="csl-entry" role="doc-biblioentry">
+Fisher, Ronald A. <span>“The Use of Multiple Measurements in Taxonomic Problems.”</span> <em>Annals of Eugenics</em> 7, no. 2 (1936): 179–88.
+</div>
+<div id="ref-fredrikson2015model" class="csl-entry" role="doc-biblioentry">
+Fredrikson, Matt, Somesh Jha, and Thomas Ristenpart. <span>“Model Inversion Attacks That Exploit Confidence Information and Basic Countermeasures.”</span> In <em>Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security</em>, 1322–33, 2015.
+</div>
+<div id="ref-funk2006try" class="csl-entry" role="doc-biblioentry">
+Funk, Simon. <span>“Try This at Home.”</span> <em>Http://Sifter.org/~Simon/Journal/2006</em>, 2006.
+</div>
+<div id="ref-gao2020pile" class="csl-entry" role="doc-biblioentry">
+Gao, Leo, Stella Biderman, Sid Black, Laurence Golding, Travis Hoppe, Charles Foster, Jason Phang, et al. <span>“The Pile: An 800gb Dataset of Diverse Text for Language Modeling.”</span> <em>arXiv Preprint arXiv:2101.00027</em>, 2020.
+</div>
+<div id="ref-garofolo1993darpa" class="csl-entry" role="doc-biblioentry">
+Garofolo, John S, Lori F Lamel, William M Fisher, Jonathan G Fiscus, and David S Pallett. <span>“DARPA TIMIT Acoustic-Phonetic Continous Speech Corpus CD-ROM. NIST Speech Disc 1-1.1.”</span> <em>NASA STI/Recon Technical Report n</em> 93 (1993): 27403.
+</div>
+<div id="ref-gebru2018datasheets" class="csl-entry" role="doc-biblioentry">
+Gebru, Timnit, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman Vaughan, Hanna Wallach, Hal Daumé III, and Kate Crawford. <span>“Datasheets for Datasets.”</span> <em>arXiv Preprint arXiv:1803.09010</em>, 2018.
+</div>
+<div id="ref-gonen2019lipstick" class="csl-entry" role="doc-biblioentry">
+Gonen, Hila, and Yoav Goldberg. <span>“Lipstick on a Pig: Debiasing Methods Cover up Systematic Gender Biases in Word Embeddings but Do Not Remove Them.”</span> <em>arXiv Preprint arXiv:1903.03862</em>, 2019.
+</div>
+<div id="ref-gray2019ghost" class="csl-entry" role="doc-biblioentry">
+Gray, Mary L, and Siddharth Suri. <em>Ghost Work: How to Stop Silicon Valley from Building a New Global Underclass</em>. Eamon Dolan Books, 2019.
+</div>
+<div id="ref-grother1995nist" class="csl-entry" role="doc-biblioentry">
+Grother, Patrick J. <span>“NIST Special Database 19.”</span> <em>Handprinted Forms and Characters Database, National Institute of Standards and Technology</em>, 1995, 10.
+</div>
+<div id="ref-hand2016measurement" class="csl-entry" role="doc-biblioentry">
+Hand, David J. <em>Measurement: A Very Short Introduction</em>. Oxford University Press, 2016.
+</div>
+<div id="ref-hand2010measurement" class="csl-entry" role="doc-biblioentry">
+Hand, David J. <em>Measurement Theory and Practice: The World Through Quantification</em>. Wiley, 2010.
+</div>
+<div id="ref-hardtrecht" class="csl-entry" role="doc-biblioentry">
+Hardt, Moritz, and Benjamin Recht. <em>Patterns, Predictions, and Actions: A Story about Machine Learning</em>. <a href="https://mlstory.org">https://mlstory.org</a>, 2021. <a href="https://arxiv.org/abs/2102.05242">https://arxiv.org/abs/2102.05242</a>.
+</div>
+<div id="ref-hastie2017elements" class="csl-entry" role="doc-biblioentry">
+Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>. Springer, 2017.
+</div>
+<div id="ref-he2015delving" class="csl-entry" role="doc-biblioentry">
+He, Kaiming, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. <span>“Delving Deep into Rectifiers: Surpassing Human-Level Performance on Imagenet Classification.”</span> In <em>Proceedings of the IEEE International Conference on Computer Vision</em>, 1026–34, 2015.
+</div>
+<div id="ref-herlocker2004evaluating" class="csl-entry" role="doc-biblioentry">
+Herlocker, Jonathan L, Joseph A Konstan, Loren G Terveen, and John T Riedl. <span>“Evaluating Collaborative Filtering Recommender Systems.”</span> <em>ACM Transactions on Information Systems (TOIS)</em> 22, no. 1 (2004): 5–53.
+</div>
+<div id="ref-hill2020another" class="csl-entry" role="doc-biblioentry">
+Hill, Kashmir. <span>“Another Arrest, and Jail Time, Due to a Bad Facial Recognition Match.”</span> <em>New York Times</em>, 2020.
+</div>
+<div id="ref-LFWTech" class="csl-entry" role="doc-biblioentry">
+Huang, Gary B., Manu Ramesh, Tamara Berg, and Erik Learned-Miller. <span>“Labeled Faces in the Wild: A Database for Studying Face Recognition in Unconstrained Environments.”</span> University of Massachusetts, Amherst, 2007.
+</div>
+<div id="ref-ivanescu_importance_2016" class="csl-entry" role="doc-biblioentry">
+Ivanescu, A. E., P. Li, B. George, A. W. Brown, S. W. Keith, D. Raju, and D. B. Allison. <span>“The Importance of Prediction Model Validation and Assessment in Obesity and Nutrition Research.”</span> <em>International Journal of Obesity</em> 40, no. 6 (June 2016): 887–94. <a href="https://doi.org/10.1038/ijo.2015.214">https://doi.org/10.1038/ijo.2015.214</a>.
+</div>
+<div id="ref-jacobs2021measurement" class="csl-entry" role="doc-biblioentry">
+Jacobs, Abigail Z, and Hanna Wallach. <span>“Measurement and Fairness.”</span> In <em>Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency</em>, 375–85, 2021.
+</div>
+<div id="ref-jo2020lessons" class="csl-entry" role="doc-biblioentry">
+Jo, Eun Seo, and Timnit Gebru. <span>“Lessons from Archives: Strategies for Collecting Sociocultural Data in Machine Learning.”</span> In <em>Proc. <span class="math inline">3</span>Rd Conference on Fairness, Accountability, and Transparency (FAccT)</em>, 306–16, 2020.
+</div>
+<div id="ref-johnson2020scalable" class="csl-entry" role="doc-biblioentry">
+Johnson, Melvin. <span>“A Scalable Approach to Reducing Gender Bias in Google Translate.”</span> <em>Google Blog</em>, 2020.
+</div>
+<div id="ref-kaufman2012leakage" class="csl-entry" role="doc-biblioentry">
+Kaufman, Shachar, Saharon Rosset, Claudia Perlich, and Ori Stitelman. <span>“Leakage in Data Mining: Formulation, Detection, and Avoidance.”</span> <em>ACM Transactions on Knowledge Discovery from Data (TKDD)</em> 6, no. 4 (2012): 1–21.
+</div>
+<div id="ref-kiritchenko-mohammad-2018-examining" class="csl-entry" role="doc-biblioentry">
+Kiritchenko, Svetlana, and Saif Mohammad. <span>“Examining Gender and Race Bias in Two Hundred Sentiment Analysis Systems.”</span> In <em>Proceedings of the Seventh Joint Conference on Lexical and Computational Semantics</em>, 43–53. New Orleans, Louisiana: Association for Computational Linguistics, 2018. <a href="https://doi.org/10.18653/v1/S18-2005">https://doi.org/10.18653/v1/S18-2005</a>.
+</div>
+<div id="ref-koenecke2020racial" class="csl-entry" role="doc-biblioentry">
+Koenecke, Allison, Andrew Nam, Emily Lake, Joe Nudell, Minnie Quartey, Zion Mengesha, Connor Toups, John R Rickford, Dan Jurafsky, and Sharad Goel. <span>“Racial Disparities in Automated Speech Recognition.”</span> <em>Proceedings of the National Academy of Sciences</em> 117, no. 14 (2020): 7684–89.
+</div>
+<div id="ref-koh2020wilds" class="csl-entry" role="doc-biblioentry">
+Koh, Pang Wei, Shiori Sagawa, Henrik Marklund, Sang Michael Xie, Marvin Zhang, Akshay Balsubramani, Weihua Hu, et al. <span>“Wilds: A Benchmark of in-the-Wild Distribution Shifts.”</span> <em>arXiv Preprint arXiv:2012.07421</em>, 2020.
+</div>
+<div id="ref-koren2009matrix" class="csl-entry" role="doc-biblioentry">
+Koren, Yehuda, Robert Bell, and Chris Volinsky. <span>“Matrix Factorization Techniques for Recommender Systems.”</span> <em>Computer</em> 42, no. 8 (2009): 30–37.
+</div>
+<div id="ref-kuczmarski2018reducing" class="csl-entry" role="doc-biblioentry">
+Kuczmarski, James. <span>“Reducing Gender Bias in Google Translate.”</span> <em>Google Blog</em> 6 (2018).
+</div>
+<div id="ref-kumar2011describable" class="csl-entry" role="doc-biblioentry">
+Kumar, Neeraj, Alexander Berg, Peter N Belhumeur, and Shree Nayar. <span>“Describable Visual Attributes for Face Verification and Image Search.”</span> <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> 33, no. 10 (2011): 1962–77.
+</div>
+<div id="ref-langley1988machine" class="csl-entry" role="doc-biblioentry">
+Langley, Pat. <span>“Machine Learning as an Experimental Science.”</span> Springer, 1988.
+</div>
+<div id="ref-langley2011changing" class="csl-entry" role="doc-biblioentry">
+———. <span>“The Changing Science of Machine Learning.”</span> Springer, 2011.
+</div>
+<div id="ref-lecun1998gradient" class="csl-entry" role="doc-biblioentry">
+LeCun, Yann, Léon Bottou, Yoshua Bengio, and Patrick Haffner. <span>“Gradient-Based Learning Applied to Document Recognition.”</span> <em>Proceedings of the IEEE</em> 86, no. 11 (1998): 2278–2324.
+</div>
+<div id="ref-li2019vocal" class="csl-entry" role="doc-biblioentry">
+Li, Xiaochang, and Mara Mills. <span>“Vocal Features: From Voice Identification to Speech Recognition by Machine.”</span> <em>Technology and Culture</em> 60, no. 2 (2019): S129–60.
+</div>
+<div id="ref-liberman2015reproducible" class="csl-entry" role="doc-biblioentry">
+Liberman, Marc. <span>“Reproducible Research and the Common Task Method.”</span> <em>Simmons Foundation Lecture Https://Www. Simonsfoundation. Org/Lecture/Reproducible-Research-and-Thecommon-Task-Method</em> 2 (2015).
+</div>
+<div id="ref-liberman2010fred" class="csl-entry" role="doc-biblioentry">
+Liberman, Mark. <span>“Fred Jelinek.”</span> <em>Computational Linguistics</em> 36, no. 4 (2010): 595–99.
+</div>
+<div id="ref-liberman2020human" class="csl-entry" role="doc-biblioentry">
+Liberman, Mark, and Charles Wayne. <span>“Human Language Technology.”</span> <em>AI Magazine</em> 41, no. 2 (2020).
+</div>
+<div id="ref-loucca2009emancipation" class="csl-entry" role="doc-biblioentry">
+Louçã, Francisco. <span>“Emancipation Through Interaction–How Eugenics and Statistics Converged and Diverged.”</span> <em>Journal of the History of Biology</em> 42, no. 4 (2009): 649–84.
+</div>
+<div id="ref-miller1998wordnet" class="csl-entry" role="doc-biblioentry">
+Miller, George A. <em>WordNet: An Electronic Lexical Database</em>. MIT press, 1998.
+</div>
+<div id="ref-mitchell1980need" class="csl-entry" role="doc-biblioentry">
+Mitchell, Tom M. <em>The Need for Biases in Learning Generalizations</em>. Department of Computer Science, Laboratory for Computer Science Research …, 1980.
+</div>
+<div id="ref-narayanan2008robust" class="csl-entry" role="doc-biblioentry">
+Narayanan, Arvind, and Vitaly Shmatikov. <span>“Robust de-Anonymization of Large Sparse Datasets.”</span> In <em>2008 IEEE Symposium on Security and Privacy (Sp 2008)</em>, 111–25. IEEE, 2008.
+</div>
+<div id="ref-olteanu2019social" class="csl-entry" role="doc-biblioentry">
+Olteanu, Alexandra, Carlos Castillo, Fernando Diaz, and Emre Kıcıman. <span>“Social Data: Biases, Methodological Pitfalls, and Ethical Boundaries.”</span> <em>Frontiers in Big Data</em> 2 (2019): 13.
+</div>
+<div id="ref-paullada2020data" class="csl-entry" role="doc-biblioentry">
+Paullada, Amandalynne, Inioluwa Deborah Raji, Emily M Bender, Emily Denton, and Alex Hanna. <span>“Data and Its (Dis) Contents: A Survey of Dataset Development and Use in Machine Learning Research.”</span> <em>arXiv Preprint arXiv:2012.05345</em>, 2020.
+</div>
+<div id="ref-prabhu2020large" class="csl-entry" role="doc-biblioentry">
+Prabhu, Vinay Uday, and Abeba Birhane. <span>“Large Image Datasets: A Pyrrhic Win for Computer Vision?”</span> <em>arXiv Preprint arXiv:2006.16923</em>, 2020.
+</div>
+<div id="ref-radin2017digital" class="csl-entry" role="doc-biblioentry">
+Radin, Joanna. <span>“<span>‘Digital Natives’</span>: How Medical and Indigenous Histories Matter for Big Data.”</span> <em>Osiris</em> 32, no. 1 (2017): 43–64.
+</div>
+<div id="ref-recht2019imagenet" class="csl-entry" role="doc-biblioentry">
+Recht, Benjamin, Rebecca Roelofs, Ludwig Schmidt, and Vaishaal Shankar. <span>“Do <span>I</span>mage<span>N</span>et Classifiers Generalize to <span>I</span>mage<span>N</span>et?”</span> In <em>Proc. 36th <span>ICML</span></em>, 2019.
+</div>
+<div id="ref-reichman2001fragile" class="csl-entry" role="doc-biblioentry">
+Reichman, Nancy E, Julien O Teitler, Irwin Garfinkel, and Sara S McLanahan. <span>“Fragile Families: Sample and Design.”</span> <em>Children and Youth Services Review</em> 23, no. 4–5 (2001): 303–26.
+</div>
+<div id="ref-rosenblatt1960perceptron" class="csl-entry" role="doc-biblioentry">
+Rosenblatt, Frank. <span>“Perceptron Simulation Experiments.”</span> <em>Proceedings of the IRE</em> 48, no. 3 (1960): 301–9.
+</div>
+<div id="ref-russakovsky2015imagenet" class="csl-entry" role="doc-biblioentry">
+Russakovsky, Olga, Jia Deng, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, et al. <span>“Imagenet Large Scale Visual Recognition Challenge.”</span> <em>International Journal of Computer Vision</em> 115, no. 3 (2015): 211–52.
+</div>
+<div id="ref-saitta1998learning" class="csl-entry" role="doc-biblioentry">
+Saitta, Lorenza, and Filippo Neri. <span>“Learning in the <span>‘Real World’</span>.”</span> <em>Machine Learning</em> 30, no. 2 (1998): 133–63.
+</div>
+<div id="ref-salganik2020measuring" class="csl-entry" role="doc-biblioentry">
+Salganik, Matthew J, Ian Lundberg, Alexander T Kindel, Caitlin E Ahearn, Khaled Al-Ghoneim, Abdullah Almaatouq, Drew M Altschul, et al. <span>“Measuring the Predictability of Life Outcomes with a Scientific Mass Collaboration.”</span> <em>Proceedings of the National Academy of Sciences</em> 117, no. 15 (2020): 8398–8403.
+</div>
+<div id="ref-salzberg1999comparing" class="csl-entry" role="doc-biblioentry">
+Salzberg, Steven L. <span>“On Comparing Classifiers: A Critique of Current Research and Methods.”</span> <em>Data Mining and Knowledge Discovery</em> 1, no. 1 (1999): 1–12.
+</div>
+<div id="ref-shankar2020evaluating" class="csl-entry" role="doc-biblioentry">
+Shankar, Vaishaal, Rebecca Roelofs, Horia Mania, Alex Fang, Benjamin Recht, and Ludwig Schmidt. <span>“Evaluating Machine Accuracy on Imagenet.”</span> In <em>International Conference on Machine Learning</em>, 8634–44. PMLR, 2020.
+</div>
+<div id="ref-steed2021image" class="csl-entry" role="doc-biblioentry">
+Steed, Ryan, and Aylin Caliskan. <span>“Image Representations Learned with Unsupervised Pre-Training Contain Human-Like Biases.”</span> In <em>Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency</em>, 701–13, 2021.
+</div>
+<div id="ref-stevenson2019algorithmic" class="csl-entry" role="doc-biblioentry">
+Stevenson, Megan T, and Jennifer L Doleac. <span>“Algorithmic Risk Assessment in the Hands of Humans.”</span> <em>Available at SSRN 3489440</em>, 2019.
+</div>
+<div id="ref-federalreserve" class="csl-entry" role="doc-biblioentry">
+The Federal Reserve Board. <span>“Report to the Congress on Credit Scoring and Its Effects on the Availability and Affordability of Credit.”</span> <a href="https://www.federalreserve.gov/boarddocs/rptcongress/creditscore/">https://www.federalreserve.gov/boarddocs/rptcongress/creditscore/</a>, 2007.
+</div>
+<div id="ref-tufekci2014big" class="csl-entry" role="doc-biblioentry">
+Tufekci, Zeynep. <span>“Big Questions for Social Media Big Data: Representativeness, Validity and Other Methodological Pitfalls.”</span> In <em>Proc.  <span class="math inline">8</span>Th International AAAI Conference on Weblogs and Social Media</em>, 2014.
+</div>
+<div id="ref-tufekci2014engineering" class="csl-entry" role="doc-biblioentry">
+———. <span>“Engineering the Public: Big Data, Surveillance and Computational Politics.”</span> <em>First Monday</em>, 2014.
+</div>
+<div id="ref-vandewiele_overly_2021" class="csl-entry" role="doc-biblioentry">
+Vandewiele, Gilles, Isabelle Dehaene, György Kovács, Lucas Sterckx, Olivier Janssens, Femke Ongenae, Femke De Backere, et al. <span>“Overly Optimistic Prediction Results on Imbalanced Data: A Case Study of Flaws and Benefits When Applying over-Sampling.”</span> <em>Artificial Intelligence in Medicine</em> 111 (January 2021): 101987. <a href="https://doi.org/10.1016/j.artmed.2020.101987">https://doi.org/10.1016/j.artmed.2020.101987</a>.
+</div>
+<div id="ref-wang2020revise" class="csl-entry" role="doc-biblioentry">
+Wang, Angelina, Arvind Narayanan, and Olga Russakovsky. <span>“REVISE: A Tool for Measuring and Mitigating Bias in Visual Datasets.”</span> In <em>European Conference on Computer Vision</em>, 733–51. Springer, 2020.
+</div>
+<div id="ref-whelan_when_2014" class="csl-entry" role="doc-biblioentry">
+Whelan, Robert, and Hugh Garavan. <span>“When <span>Optimism</span> <span>Hurts</span>: <span>Inflated</span> <span>Predictions</span> in <span>Psychiatric</span> <span>Neuroimaging</span>.”</span> <em>Biological Psychiatry</em>, Mechanisms of <span>Aging</span> and <span>Cognition</span>, 75, no. 9 (May 2014): 746–48. <a href="https://doi.org/10.1016/j.biopsych.2013.05.014">https://doi.org/10.1016/j.biopsych.2013.05.014</a>.
+</div>
+<div id="ref-yadav2019cold" class="csl-entry" role="doc-biblioentry">
+Yadav, Chhavi, and Léon Bottou. <span>“Cold Case: The Lost Mnist Digits.”</span> <em>arXiv Preprint arXiv:1905.10498</em>, 2019.
+</div>
+<div id="ref-yang2020towards" class="csl-entry" role="doc-biblioentry">
+Yang, Kaiyu, Klint Qinami, Li Fei-Fei, Jia Deng, and Olga Russakovsky. <span>“Towards Fairer Datasets: Filtering and Balancing the Distribution of the People Subtree in the Imagenet Hierarchy.”</span> In <em>Proceedings of the 2020 Conference on Fairness, Accountability, and Transparency</em>, 547–58, 2020.
+</div>
+</div>
+</section>
+
+<div id="lastupdate">
+Last updated: Wed 16 Jun 2021 08:59:13 AM PDT
+</div>
+</article>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
