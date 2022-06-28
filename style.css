@@ -413,6 +413,74 @@ label.margin-toggle:not(.sidenote-number) { display: none; }
 #collapsiblemenu ul > li > ul {
   display:none;
 }
+#index {
+  position:fixed;
+  top: 18px;
+  left: 57px;
+  border:none;
+  z-index:2;
+}
+
+a img {
+  width:33px;
+  height:33px;
+}
+
+
+#indexcontents table {
+    width:58%;
+    border: 0;
+    border-collapse: collapse;
+}
+
+#indexcontents th, td {
+  padding: 10px 0;
+}
+
+#indexcontents .chapternumber {
+   color: #999;
+   vertical-align: top;
+   font-size: 2.2rem;
+   padding:5px 10px;
+}
+
+#indexcontents .chaptername {
+  font-size: 1.8rem;
+  font-variant: small-caps;
+  letter-spacing: 2pt;
+}
+
+#indexcontents table p {
+   width:100%;
+   line-height: 1.8rem;
+}
+
+#indexcontents tbody tr {
+  border-top:0px solid #ccc; /* change this to 1px for horizontal separators between chapters*/
+  padding-top: 10px;
+}
+
+#indexcontents thead td {
+   text-align:center;
+   font-size:2rem;
+   font-variant:small-caps;
+   letter-spacing:3pt;
+   padding-top:20px;
+}
+
+#indexcontents tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+@media (max-width: 860px) {
+  #index {
+     display: none;
+  }
+  #indexcontents table {
+     width:100%;
+  }
+}
+
 /*
  * Stylesheet controlling the look of the front page at index.html
  */
@@ -496,7 +564,7 @@ a:hover {
 #indexcontents .chaptername {
   font-size: 1.8rem;
   font-variant: small-caps;
-  letter-spacing: 2pt;
+  letter-spacing: 1pt;
 }
 
 #indexcontents table p {
@@ -513,7 +581,7 @@ a:hover {
    text-align:center;
    font-size:2rem;
    font-variant:small-caps;
-   letter-spacing:3pt;
+   letter-spacing:2pt;
    padding-top:20px;
 }
 
