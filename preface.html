@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>html-macros</title>
+  <link rel="stylesheet" href="style.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article>
+
+
+
+
+
+<p>A peculiar way of making decisions is characteristic of modern
+society. Institutions of all kinds, from firms to governments, represent
+populations as data tables. Rows reference individuals. Columns contain
+measurements about them. Statistical machinery applied to these tables
+empowers their owners to mine patterns that fit the aggregate.</p>
+<p>Then comes a leap of faith. We have to imagine that unknown outcomes,
+future or unobserved, in the life trajectory of an individual follow the
+patterns they have found. We must accept decisions made as if all
+individuals were going to follow the rule of the aggregate. We must
+pretend to ourselves that to look into the future is to look into the
+past. It’s a leap of faith that has been the basis of consequential
+decisions for centuries. Fueled by early successes in insurance pricing
+and financial risk assessment, statistical decision making of this kind
+has found its way into nearly all aspects of our lives. What accelerated
+its adoption in recent years has been the explosive growth of machine
+learning, often under the name of artificial intelligence.</p>
+<p>Machine learning shares long established decision-theoretic
+foundations with large parts of statistics, economics, and computer
+science. What machine learning adds is a rapidly growing repertoire of
+heuristics that find decision rules from sufficiently large datasets.
+These techniques for fitting huge statistical models on large datasets
+have led to several impressive technological achievements. Image
+classification, speech recognition, and natural language processing have
+all made leaps forward. Although these advances often don’t directly
+relate to specific decision making settings, they shape narratives about
+the new capabilities of machine learning.</p>
+<p>As useful as machine learning is for some positive applications, it
+is also used to great effect for tracking, surveillance, and warfare.
+Commercially its most successful use cases to date are targeted
+advertising and digital content recommendation, both of questionable
+value to society. From its roots in World War II era cybernetics and
+control theory, machine learning has always been political. Advances in
+artificial intelligence feed into a global industrial military complex,
+and are funded by it. The success stories told about machine learning
+also support those who would like to adopt algorithms in domains outside
+those studied by computer scientists. An opaque marketplace of software
+vendors renders algorithmic decision making tools for use in law
+enforcement, criminal justice, education, and social services. In many
+cases what is marketed and sold as artificial intelligence are
+statistical methods that virtually haven’t changed in decades.</p>
+<p>Many take the leap of faith behind statistical decision making for
+granted to an extent that it’s become difficult to question. Entire
+disciplines have embraced mathematical models of optimal decision making
+in their theoretical foundations. Much of economic theory takes optimal
+decisions as an assumption and an ideal of human behavior. In turn,
+other disciplines label deviations from mathematical optimality as
+“bias” that invites elimination. Volumes of academic papers speak to the
+evident biases of human decision makers.</p>
+<p>In this book, we take machine learning as a reason to revisit this
+leap of faith and to interrogate how institutions make decisions about
+individuals. Institutional decision making has long been formalized via
+bureaucratic procedures and machine learning shares much in common with
+it. In many cases, machine learning is adopted to improve and sometimes
+automate the high-stakes decisions routinely made by institutions. Thus,
+we do not compare machine learning models to the subjective judgments of
+individual humans, but instead to institutional decision-making.
+Interrogating machine learning is a way of interrogating institutional
+decision making in society today and for the foreseeable future.</p>
+<p>If machine learning is our way into studying institutional decision
+making, fairness is the moral lens through which we examine those
+decisions. Much of our discussion applies to concrete screening,
+selection, and allocation scenarios. A typical example is that of an
+employer accepting or rejecting job applicants. One way to construe
+fairness in such decision making scenarios is as the absence of
+discrimination. This perspective is micro insofar as individuals are the
+unit of analysis. We study how measured characteristics of an individual
+lead to different outcomes. Individuals are the sociological building
+block. A population is a collection of individuals. Groups are subsets
+of the population. A decision maker has the power to accept or reject
+individuals for an opportunity they seek. Discrimination in this view is
+about wrongful consideration on the basis of group membership. The
+problem is as much about what wrongful means as what is on the basis of.
+Discrimination is also not a general concept. It’s domain specific as it
+relates to opportunities that affect people’s lives. It’s concerned with
+socially salient categories that have served as the basis for
+unjustified and systematically adverse treatment.</p>
+<p>The first chapter after the introduction explores the properties that
+make automated decision making a matter of significant and unique
+normative concern. In particular, we situate our exploration of machine
+learning in a longer history of critical reflection on the perils of
+bureaucratic decision making and its mechanical application of
+formalized rules. Before we even turn to questions of discrimination, we
+first ask what makes automated decision-making legitimate in the first
+place. In so doing, we isolate the specific properties of machine
+learning that distinguish it from other forms of automation along a
+range of normative dimensions.</p>
+<p>Since the 1950s, scholars have developed formal models of
+discrimination that describe the unequal treatment of multiple different
+groups in the population by a decision maker. In Chapter 3, we dive into
+statistical decision theory, allowing us to formalize a number of
+fairness criteria. Statistical fairness criteria express different
+notions of equality between groups. We boil down the vast space of
+formal definitions to essentially three different mutually exclusive
+definitions. Each definition resonates with a different moral intuition.
+None is sufficient to support conclusive claims of fairness. Nor are
+these definitions suitable targets to optimize for. Satisfying one of
+these criteria permits blatantly unfair solutions. Despite their
+significant limitations, these definitions have been influential in the
+debate around fairness.</p>
+<p>Chapter 4 explores the normative underpinnings of objections to
+systematic differences in the treatment of different groups and
+inequalities in the outcomes experienced by these groups. We review the
+many accounts of the wrongfulness of discrimination and show how these
+relate to various views of what it would mean to provide equality of
+opportunity. In doing so, we highlight some tensions between competing
+visions of equality of opportunity—some quite narrow and others quite
+sweeping—and the various arguments that have been advanced to help
+settle these conflicts. With this in place, we then explore how common
+moral intuitions and established moral theories can help us make sense
+of the formalisms introduced in Chapter 3, with the goal of giving these
+definitions greater normative substance.</p>
+<p>Present in both technical and legal scholarship on discrimination is
+the idea of assigning normative weight to causal relationships. Was
+group membership the cause of rejection? Would the applicant have been
+rejected had he been of a different race? Would she have been accepted
+but for her gender? To understand these kinds of statements and the role
+that causality plays in discrimination, Chapter 5 of this book is a
+self-contained introduction to the formal concepts of causality.</p>
+<p>Following our formal encounter with fairness definitions, both
+statistical and causal, we turn to the legal dimensions of
+discrimination in the United States in Chapter 6. The legal situation
+neither maps cleanly to the moral foundations nor the formal work,
+complicating the situation considerably. The two dominant legal
+doctrines, disparate treatment and disparate impact, appear to create a
+tension between explicit consideration of group membership and
+intervening to avoid discrimination.</p>
+<p>Extending on both the causal and legal chapters, Chapter 7 goes into
+detail about the complexities of testing for discrimination in practice
+through experiments and audits.</p>
+<p>Studying discrimination in decision making has been criticized as a
+narrow perspective on a broader system of injustice for at least two
+reasons. First, as a notion of discrimination it neglects powerful
+structural determinants of discrimination, such as laws and policies,
+infrastructure, and education. Second, it orients the space of
+intervention towards solutions that reform existing decision making
+systems, in the case of machine learning typically via updates to an
+algorithm. As such the perspective can seem to prioritize “tech fixes”
+over more powerful structural interventions and alternatives to
+deploying a machine learning system altogether. Rather than predicting
+failure to appear in court and punishing defendants for it, for example,
+perhaps the better intervention is to facilitate access to court
+appointments by providing transportation and child care. Chapter 8
+introduces the reader to this broader perspective and its associated
+space of interventions from an empirical angle.</p>
+<p>Recognizing the importance of a broader social and structural
+perspective, why should we continue to study the notion of
+discrimination in decision making? One benefit is that it provides a
+political and legal strategy to put pressure on individual decision
+makers. We can bring forward claims of discrimination against a specific
+person, firm, or institution. We can discuss what interventions exist
+within reasonable proximity to the decision maker that we therefore
+expect the decision maker to implement. Some such micro interventions
+may also be more directly feasible than structural interventions.</p>
+<p>Taking on a micro perspective decidedly does not mean to ignore
+context. In fact, allocation rules that avoid explicit consideration of
+group membership while creating opportunity for a group likely do so by
+connecting the allocation rule with external social facts. One prominent
+example is the “Texas ten percent rule” that guarantees Texas students
+who graduated in the top ten percent of their high school class
+automatic admission to all state-funded universities. The rule wouldn’t
+be effective in promoting racial diversity on public university campuses
+if high school classes weren’t segregated to begin with. This example
+illustrates that there is no mutual exclusivity between examining
+specific decision rules in detail and paying attention to broader social
+context. Rather these go hand in hand.</p>
+<p>A consequential point of contact between the broader social world and
+the machine learning ecosystem are datasets. A full chapter explores the
+history, significance, and scientific basis of machine learning
+datasets. Detailed consideration of datasets, the collection and
+construction of data, as well as the harms associated with data tend to
+be lacking from machine learning curricula.</p>
+<p>Fairness remains an active research area that is far from settled. We
+wrote this book during a time of explosive research activity. Thousands
+of related papers have appeared in the last five years of writing. Many
+of them propose fairness-promoting algorithmic interventions. This text
+is not a survey of this rapidly evolving area, nor is it a definitive
+reference. The final chapter, available online, provides an entry point
+to the emerging research on algorithmic interventions.</p>
+<p>The book has some serious, perhaps obvious, limitations.</p>
+<p>Large parts of our book are specific to the United States. Written by
+three authors educated and employed at US institutions, the book is
+based on Western moral tradition, assumes the laws and legal theory of
+the United States, and references the industrial and political context
+of the United States throughout. We made no attempt to address this
+serious limitation within this book. Indeed, it would require an
+entirely different book to address this limitation.</p>
+<p>A second limitation stems from the fact that our primary goal was to
+develop the moral, normative, and technical foundations necessary to
+engage with the topic. Due to its focus on foundations, the book will
+strike some as a step removed from the important experiences of those
+individuals and communities most seriously wronged and harmed by the use
+of algorithms. This shortcoming is exacerbated by the fact that the
+authors of this book lack first-hand experience of the systems of
+oppression that algorithms are a part of. Consequently, this book is no
+substitute for the vital work of those activists, journalists, and
+scholars that have taught us about the dangers of algorithmic decision
+making in context. We build on these essential contributions in writing
+this book. We aimed to highlight them throughout, anticipating that we
+likely fell short in some significant ways.</p>
+<p>The book is neither a wholesale endorsement of algorithmic decision
+making, nor a broad indictment. In writing this book, we attempt what is
+likely the least popular position on any topic: a balance. We try to
+work out where algorithmic decision making has merit, while committing
+significant attention to its harms and limitations. Some will see our
+balancing act as a lack of political commitments, a sort of
+bothsideism.</p>
+<p>Despite the urgency of the political situation, our book provides no
+direct practical guide to fair decisions. As a matter of fact, we wrote
+this book for the long haul. We’re convinced that the debates around
+algorithmic decision making will persist. Our goal is to strengthen the
+intellectual foundations of debates to come, which will play out in
+thousands of specific instances. Anyone hoping to shape this future of
+algorithmic decision making in society will likely find some worthwhile
+material in this book.</p>
+<p>A few chapters, specifically Chapter 3 on classification and Chapter
+5 on causality, require significant mathematical prerequisites,
+primarily in undergraduate probability and statistics. However, the
+other chapters we dedicate to much broader audiences. We hope that
+students in multiple fields will find this book helpful in preparing for
+research in related areas. The book does not fit neatly into the
+disciplinary boundaries of any single department. As a result it gives
+readers an opportunity to go beyond established curricula in their
+primary discipline.</p>
+<p>Since we’ve started publishing material from this book years ago,
+instructors have incorporated the material into a variety of courses,
+both at the undergraduate and graduate level, in different departments.
+Hundreds of readers have sent us tremendously helpful feedback for which
+we are deeply grateful.</p>
+<p>And to those lamenting our slow progress in writing this book, we
+respond empathetically:</p>
+<p>That’s fair.</p>
+
+<div id="lastupdate">
+Last updated: Thu Jun 23 08:36:58 CEST 2022
+</div>
+</article>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+
+</body>
+</html>

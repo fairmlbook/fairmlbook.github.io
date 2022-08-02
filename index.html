@@ -15,13 +15,11 @@
 <header>
 <h1 class="booktitle">Fairness and machine learning</h1>
 <h2 class="booksubtitle">Limitations and Opportunities</h2>
-<h1 class="bookauthor">Solon Barocas, Moritz Hardt, Arvind Narayanan</h2>
+<h1 class="bookauthor">Solon Barocas, Moritz Hardt, Arvind
+Narayanan</h2>
 </header>
 
-<a class="booklink" href="pdf/fairmlbook.pdf">Full book as PDF</a>
-
 <div id="frontpage">
-<p><em>This online textbook is an incomplete work in progress. Essential chapters are still missing. In the spirit of open review, we solicit broad feedback that will influence existing chapters, as well as the development of later material. Please contact us at contact@fairmlbook.org.</em></p>
 <div id="indexcontents">
 <table>
 <thead>
@@ -36,7 +34,16 @@ CONTENTS
 <td>
 </td>
 <td>
-<a class="chaptername" href="about.html">About this book</a>
+<a class="chaptername" href="preface.html">Preface</a>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+<a class="chaptername" href="acknowledgments.html">Acknowledgments</a>
 </td>
 <td>
 </td>
@@ -45,8 +52,8 @@ CONTENTS
 <td class="chapternumber">
 1
 </td>
-<td>
-<a class="chaptername" href="introduction.html">Introduction</a>
+<td class="chaptername">
+<a href="introduction.html">Introduction</a>
 </td>
 <td>
 <a href="pdf/introduction.pdf">PDF</a>
@@ -56,17 +63,19 @@ CONTENTS
 <td class="chapternumber">
 2
 </td>
+<td class="chaptername">
+When is automated decision making legitimate?
+</td>
 <td>
-<a class="chaptername" href="classification.html">Classification</a>
-<td>
-<a href="pdf/classification.pdf">PDF</a>
 </td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-We introduce formal non-discrimination criteria, establish their relationships, and illustrate their limitations.
+We explore what makes automated decision making a matter of normative
+concern, situated in bureaucratic decision making and its mechanical
+application of formalized rules.
 </td>
 <td>
 </td>
@@ -75,17 +84,20 @@ We introduce formal non-discrimination criteria, establish their relationships, 
 <td class="chapternumber">
 3
 </td>
-<td class="chaptername">
-Legal background and normative questions
+<td>
+<a class="chaptername" href="classification.html">Classification</a>
 </td>
 <td>
+<a href="pdf/classification.pdf">PDF</a>
 </td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-We survey the literature on discrimination in law, sociology, and philosophy. We then discuss the challenges that arise in translating these ideas of fairness to the statistical decision-making setting.
+We introduce formal non-discrimination criteria in a decision-theoretic
+setting, establish their relationships, and illustrate their
+limitations.
 </td>
 <td>
 </td>
@@ -93,6 +105,27 @@ We survey the literature on discrimination in law, sociology, and philosophy. We
 <tr>
 <td class="chapternumber">
 4
+</td>
+<td class="chaptername">
+Relative notions of fairness
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+We discuss normative underpinnings of objections to systematic
+differences in the treatment of different groups and inequalities in the
+outcomes experienced by these groups.
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+5
 </td>
 <td>
 <a class="chaptername" href="causal.html">Causality</a>
@@ -105,26 +138,9 @@ We survey the literature on discrimination in law, sociology, and philosophy. We
 <td>
 </td>
 <td>
-We dive into the rich technical repertoire of causal inference and how it helps articulate and address shortcomings of the classification paradigm, while raising new conceptual and normative questions.
-</td>
-<td>
-</td>
-</tr>
-<tr>
-<td class="chapternumber">
-5
-</td>
-<td>
-<a class="chaptername" href="testing.html">Testing discrimination in practice</a>
-<td>
-<a href="pdf/testing.pdf">PDF</a>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td>
-We systematize tests of discrimination and discuss the practical complexities of applying them, both to traditional decision-making systems and to algorithmic systems.
+We dive into the rich technical repertoire of causal inference and how
+it helps articulate and address shortcomings of the classification
+paradigm, while raising new conceptual and normative questions.
 </td>
 <td>
 </td>
@@ -134,10 +150,8 @@ We systematize tests of discrimination and discuss the practical complexities of
 6
 </td>
 <td>
-<a class="chaptername" href="broader-view.html">A broader view of discrimination</a>
-</td>
-<td>
-<a href="pdf/broader-view.pdf">PDF</a>
+<a class="chaptername">Understanding United States anti-discrimination
+law</a>
 </td>
 <td>
 </td>
@@ -146,7 +160,9 @@ We systematize tests of discrimination and discuss the practical complexities of
 <td>
 </td>
 <td>
-We review structural, organizational, and interpersonal discrimination in society, how machine learning interacts with them, and discuss a broad set of potential interventions.
+We discuss what United States anti-discrimination law is and isn’t, how
+it navigates tradeoffs, its limits, and how it applies to machine
+learning.
 </td>
 <td>
 </td>
@@ -156,18 +172,20 @@ We review structural, organizational, and interpersonal discrimination in societ
 7
 </td>
 <td>
-<a class="chaptername" href="datasets.html">Datasets</a>
-<td>
-<a href="pdf/datasets.pdf">PDF</a>
+<a class="chaptername" href="testing.html">Testing discrimination in
+practice</a>
 </td>
 <td>
+<a href="pdf/testing.pdf">PDF</a>
 </td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-Datasets are the backbone of machine learning research and development. We critically examine their role, the harms associated with data, and survey improvements in data practices.
+We systematize tests of discrimination and discuss the practical
+complexities of applying them, both to traditional decision-making
+systems and to algorithmic systems.
 </td>
 <td>
 </td>
@@ -176,43 +194,118 @@ Datasets are the backbone of machine learning research and development. We criti
 <td class="chapternumber">
 8
 </td>
-<td class="chaptername">
-Algorithmic interventions
+<td>
+<a class="chaptername" href="broader-view.html">A broader view of
+discrimination</a>
 </td>
 <td>
-<td>
+<a href="pdf/broader-view.pdf">PDF</a>
+</td>
 </tr>
 <tr>
 <td>
 </td>
 <td>
-We survey and systematize a burgeoning set of algorithmic interventions aimed at promoting fairness, while highlighting the limitations of this paradigm.
-</td>
+We review structural, organizational, and interpersonal discrimination
+in society, how machine learning interacts with them, and discuss a
+broad set of potential interventions.
 </td>
 <td>
 </td>
 </tr>
-<tbody>
+<tr>
+<td class="chapternumber">
+9
+</td>
+<td>
+<a class="chaptername" href="datasets.html">Datasets</a>
+</td>
+<td>
+<a href="pdf/datasets.pdf">PDF</a>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+Datasets are the backbone of machine learning research and development.
+We critically examine their role, the harms associated with data, and
+survey improvements in data practices.
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+10
+</td>
+<td class="chaptername">
+Algorithmic interventions
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+In this online-only chapter, we survey and systematize a burgeoning set
+of algorithmic interventions aimed at promoting fairness, while
+highlighting the limitations of this paradigm.
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td class="chapternumber">
+11
+</td>
+<td class="chaptername">
+Exercises
+</td>
+<td>
+</td>
+</tr>
+</tbody>
 </table>
 </div>
+<section id="contact-us" class="level1">
+<h1>Contact us</h1>
+<p>We welcome your feedback, questions, and suggestions. Please contact
+us at <em>contact@fairmlbook.org.</em> If you taught from the book, we’d
+love to hear about it.</p>
+<p><em>Note: This textbook is an incomplete work in progress nearing
+completion. The remaining chapters will become available in
+2022.</em></p>
+</section>
 <section id="video-tutorials" class="level1">
 <h1>Video tutorials</h1>
 <ul>
-<li>Fairness and Machine Learning (<a href="https://www.youtube.com/watch?v=Igq_S_7IfOU">Part 1</a>, <a href="https://www.youtube.com/watch?v=9oNVFQ9llPc">Part 2</a>) (MLSS 2020)</li>
-<li><a href="tutorial1.html">Fairness in machine learning</a> (NeurIPS 2017)</li>
-<li><a href="tutorial2.html">21 fairness definitions and their politics</a> (FAccT 2018)</li>
+<li>Fairness and Machine Learning (<a
+href="https://www.youtube.com/watch?v=Igq_S_7IfOU">Part 1</a>, <a
+href="https://www.youtube.com/watch?v=9oNVFQ9llPc">Part 2</a>) (MLSS
+2020)</li>
+<li><a href="tutorial1.html">Fairness in machine learning</a> (NeurIPS
+2017)</li>
+<li><a href="tutorial2.html">21 fairness definitions and their
+politics</a> (FAccT 2018)</li>
 </ul>
 </section>
 <section id="course-materials" class="level1">
 <h1>Course materials</h1>
 <ul>
-<li><a href="https://fairmlclass.github.io/">Berkeley CS 294: Fairness in machine learning</a></li>
-<li><a href="https://docs.google.com/document/d/1GV97qqvjQNvyM2I01vuRaAwHe9pQAZ9pbP7KkKveg1o/edit">Cornell INFO 4270: Ethics and policy in data science</a></li>
-<li><a href="https://docs.google.com/document/d/1XnbJXELA0L3CX41MxySdPsZ-HNECxPtAw4-kZRc7OPI/edit?usp=sharing">Princeton COS 597E: Fairness in machine learning</a></li>
+<li><a href="https://fairmlclass.github.io/">Berkeley CS 294: Fairness
+in machine learning</a></li>
+<li><a
+href="https://docs.google.com/document/d/1GV97qqvjQNvyM2I01vuRaAwHe9pQAZ9pbP7KkKveg1o/edit">Cornell
+INFO 4270: Ethics and policy in data science</a></li>
+<li><a
+href="https://docs.google.com/document/d/1XnbJXELA0L3CX41MxySdPsZ-HNECxPtAw4-kZRc7OPI/edit?usp=sharing">Princeton
+COS 597E: Fairness in machine learning</a></li>
 </ul>
 </section>
-<section id="citations" class="level1">
-<h1>Citations</h1>
+<section id="citations-license-typesetting" class="level1">
+<h1>Citations, license, typesetting</h1>
 <p>To cite this book, please use this bibtex entry:</p>
 <pre><code>@book{barocas-hardt-narayanan,
   title = {Fairness and Machine Learning},
@@ -220,13 +313,21 @@ We survey and systematize a burgeoning set of algorithmic interventions aimed at
   publisher = {fairmlbook.org},
   note = {\url{http://www.fairmlbook.org}},
   year = {2019}
-}
-</code></pre>
+}</code></pre>
+<ul>
+<li><p>The title is under contract with MIT Press.</p></li>
+<li><p>The text available on this website is licensed under the <a
+href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative
+Commons BY-NC-ND 4.0</a> license.</p></li>
+<li><p>This book is typeset using <a
+href="https://www.pandoc.org">pandoc</a> with the <a
+href="https://github.com/mrtzh/unbuch">unbuch</a> setup.</p></li>
+</ul>
 </section>
 </div>
 
 <div id="lastupdate">
-Last updated: Wed 16 Jun 2021 01:38:26 PM PDT
+Last updated: Tue Jun 28 15:57:12 CEST 2022
 </div>
 </article>
 </body>

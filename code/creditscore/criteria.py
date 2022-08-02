@@ -54,9 +54,9 @@ class CriteriaData(object):
 
         cdfs and performance are both dataframes, with index = score and columns being the groups.
 
-        cdfs[group][score] = fraction of people of that group with score below that score.
-        performance[group][score] = fraction of people with that group & score that succeed.
-        totals[group] = total number of people of that group.
+        cdfs[group][score] = fraction of `group` with score below `score`.
+        performance[group][score] = fraction of `group` and `score` that succeed.
+        totals[group] = size of `group`
 
         totals can be either a dictionary or an array (if an array, in the same order as cdfs.columns)
         """
