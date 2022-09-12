@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-
-    <!-- The loading of KaTeX is deferred to speed up page rendering -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-
-    <!-- To automatically render math in text elements, include the auto-render extension: -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
-        onload="renderMathInElement(document.body);"></script>
-
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <meta name="dcterms.date" content="2018-05-10">
   <title>About the book</title>
-  <link rel="stylesheet" href="style.css">
+  <style>q { quotes: "“" "”" "‘" "’"; }</style>
+  <link rel="stylesheet" href="style.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -40,58 +32,127 @@
     </ul>
     <ul>
     <li><a href="#why-now">Why now?</a></li>
-    <li><a href="#how-did-the-book-come-about">How did the book come about?</a></li>
+    <li><a href="#how-did-the-book-come-about">How did the book come
+    about?</a></li>
     <li><a href="#who-is-this-book-for">Who is this book for?</a></li>
     <li><a href="#whats-in-this-book">What’s in this book?</a></li>
     <li><a href="#about-the-authors">About the authors</a></li>
-    <li><a href="#thanks-and-acknowledgements">Thanks and acknowledgements</a></li>
     </ul>
   </div>
 </div>
 
 
-<p>This book gives a perspective on machine learning that treats fairness as a central concern rather than an afterthought. We’ll review the practice of machine learning in a way that highlights ethical challenges. We’ll then discuss approaches to mitigate these problems.</p>
-<p>We’ve aimed to make the book as broadly accessible as we could, while preserving technical rigor and confronting difficult moral questions that arise in algorithmic decision making.</p>
-<p>This book won’t have an all-encompassing formal definition of fairness or a quick technical fix to society’s concerns with automated decisions. Addressing issues of fairness requires carefully understanding the scope and limitations of machine learning tools. This book offers a critical take on current practice of machine learning as well as proposed technical fixes for achieving fairness. It doesn’t offer any easy answers. Nonetheless, we hope you’ll find the book enjoyable and useful in developing a deeper understanding of how to practice machine learning responsibly.</p>
+<p>This book gives a perspective on machine learning that treats
+fairness as a central concern rather than an afterthought. We’ll review
+the practice of machine learning in a way that highlights ethical
+challenges. We’ll then discuss approaches to mitigate these
+problems.</p>
+<p>We’ve aimed to make the book as broadly accessible as we could, while
+preserving technical rigor and confronting difficult moral questions
+that arise in algorithmic decision making.</p>
+<p>This book won’t have an all-encompassing formal definition of
+fairness or a quick technical fix to society’s concerns with automated
+decisions. Addressing issues of fairness requires carefully
+understanding the scope and limitations of machine learning tools. This
+book offers a critical take on current practice of machine learning as
+well as proposed technical fixes for achieving fairness. It doesn’t
+offer any easy answers. Nonetheless, we hope you’ll find the book
+enjoyable and useful in developing a deeper understanding of how to
+practice machine learning responsibly.</p>
 <section id="why-now" class="level1">
 <h1>Why now?</h1>
-<p>Machine learning has made rapid headway into socio-technical systems ranging from video surveillance to automated resume screening. Simultaneously, there has been heightened public concern about the impact of digital technology on society.</p>
-<p>These two trends have led to the rapid emergence of fairness, accountability, transparency in socio-technical systems as a research field. While exciting, this has led to a proliferation of terminology, rediscovery and simultaneous discovery, conflicts between disciplinary perspectives, and other types of confusion.</p>
-<p>This book aims to move the conversation forward by synthesizing long-standing bodies of knowledge, such as causal inference, with recent work in the community, sprinkled with a few observations of our own.</p>
+<p>Machine learning has made rapid headway into socio-technical systems
+ranging from video surveillance to automated resume screening.
+Simultaneously, there has been heightened public concern about the
+impact of digital technology on society.</p>
+<p>These two trends have led to the rapid emergence of fairness,
+accountability, transparency in socio-technical systems as a research
+field. While exciting, this has led to a proliferation of terminology,
+rediscovery and simultaneous discovery, conflicts between disciplinary
+perspectives, and other types of confusion.</p>
+<p>This book aims to move the conversation forward by synthesizing
+long-standing bodies of knowledge, such as causal inference, with recent
+work in the community, sprinkled with a few observations of our own.</p>
 </section>
 <section id="how-did-the-book-come-about" class="level1">
 <h1>How did the book come about?</h1>
-<p>In the fall semester of 2017, the three authors each taught courses on fairness and ethics in machine learning: Barocas at Cornell, Hardt at Berkeley, and Narayanan at Princeton. We each approached the topic from a different perspective. We also presented two tutorials: Barocas and Hardt at NIPS 2017, and Narayanan at FAT* 2018. This book emerged from the notes we created for these three courses, and is the result of an ongoing dialog between us.</p>
+<p>In the fall semester of 2017, the three authors each taught courses
+on fairness and ethics in machine learning: Barocas at Cornell, Hardt at
+Berkeley, and Narayanan at Princeton. We each approached the topic from
+a different perspective. We also presented two tutorials: Barocas and
+Hardt at NIPS 2017, and Narayanan at FAT* 2018. This book emerged from
+the notes we created for these three courses, and is the result of an
+ongoing dialog between us.</p>
 </section>
 <section id="who-is-this-book-for" class="level1">
 <h1>Who is this book for?</h1>
-<p>We’ve written this book to be useful for multiple audiences. You might be a student or practitioner of machine learning facing ethical concerns in your daily work. You might also be an ethics scholar looking to apply your expertise to the study of emerging technologies. Or you might be a citizen concerned about how automated systems will shape society, and wanting a deeper understanding than you can get from press coverage.</p>
-<p>We’ll assume you’re familiar with introductory computer science and algorithms. Knowing how to code isn’t strictly necessary to read the book, but will let you get the most out of it. We’ll also assume you’re familiar with basic statistics and probability. Throughout the book, we’ll include pointers to introductory material on these topics.</p>
-<p>On the other hand, you don’t need any knowledge of machine learning to read this book: we’ve included an <a href="appendix.html">appendix</a> that introduces basic machine learning concepts. We’ve also provided a <a href="legal-normative.html">basic discussion</a> of the philosophical and legal concepts underlying fairness.<span><label for="sn-0" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-0" class="margin-toggle" /><span class="sidenote">These haven’t yet been released.</span></span></p>
+<p>We’ve written this book to be useful for multiple audiences. You
+might be a student or practitioner of machine learning facing ethical
+concerns in your daily work. You might also be an ethics scholar looking
+to apply your expertise to the study of emerging technologies. Or you
+might be a citizen concerned about how automated systems will shape
+society, and wanting a deeper understanding than you can get from press
+coverage.</p>
+<p>We’ll assume you’re familiar with introductory computer science and
+algorithms. Knowing how to code isn’t strictly necessary to read the
+book, but will let you get the most out of it. We’ll also assume you’re
+familiar with basic statistics and probability. Throughout the book,
+we’ll include pointers to introductory material on these topics.</p>
 </section>
 <section id="whats-in-this-book" class="level1">
 <h1>What’s in this book?</h1>
-<p>This book is intentionally narrow in scope: you can see an outline <a href="index.html">here</a>. Most of the book is about fairness, but we include a <a href="related.html">chapter</a><span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle" /><span class="sidenote">This chapter hasn’t yet been released.</span></span> that touches upon a few related concepts: privacy, interpretability, explainability, transparency, and accountability. We omit vast swaths of ethical concerns about machine learning and artificial intelligence, including labor displacement due to automation, adversarial machine learning, and AI safety.</p>
-<p>Similarly, we discuss fairness interventions in the narrow sense of fair decision-making. We acknowledge that interventions may take many other forms: setting better policies, reforming institutions, or upending the basic structures of society.</p>
-<p>A narrow framing of machine learning ethics might be tempting to technologists and businesses as a way to focus on technical interventions while sidestepping deeper questions about power and accountability. We caution against this temptation. For example, mitigating racial disparities in the accuracy of face recognition systems, while valuable, is no substitute for a debate about whether such systems should be deployed in public spaces and what sort of oversight we should put into place.</p>
+<p>This book is intentionally narrow in scope: you can see an outline <a
+href="index.html">here</a>. We omit vast swaths of ethical concerns
+about machine learning and artificial intelligence, including labor
+displacement due to automation, adversarial machine learning, and AI
+safety.</p>
+<p>Similarly, we discuss fairness interventions in the narrow sense of
+fair decision-making. We acknowledge that interventions may take many
+other forms: setting better policies, reforming institutions, or
+upending the basic structures of society.</p>
+<p>A narrow framing of machine learning ethics might be tempting to
+technologists and businesses as a way to focus on technical
+interventions while sidestepping deeper questions about power and
+accountability. We caution against this temptation. For example,
+mitigating racial disparities in the accuracy of face recognition
+systems, while valuable, is no substitute for a debate about whether
+such systems should be deployed in public spaces and what sort of
+oversight we should put into place.</p>
 </section>
 <section id="about-the-authors" class="level1">
 <h1>About the authors</h1>
-<p><strong>Solon Barocas</strong> is an Assistant Professor in the Department of Information Science at Cornell University. His research explores ethical and policy issues in artificial intelligence, particularly fairness in machine learning, methods for bringing accountability to automated decision-making, and the privacy implications of inference. He was previously a Postdoctoral Researcher at Microsoft Research, where he worked with the Fairness, Accountability, Transparency, and Ethics in AI group, as well as a Postdoctoral Research Associate at the Center for Information Technology Policy at Princeton University. Barocas completed his doctorate at New York University, where he remains a visiting scholar at the Center for Urban Science + Progress.</p>
-<p><strong>Moritz Hardt</strong> is an Assistant Professor in the Department of Electrical Engineering and Computer Sciences at the University of California, Berkeley. Hardt investigates algorithms and machine learning with a focus on reliability, validity, and societal impact. After obtaining a PhD in Computer Science from Princeton University, he held positions at IBM Research Almaden, Google Research and Google Brain.</p>
-<p><strong>Arvind Narayanan</strong> is an Associate Professor of Computer Science at Princeton. He studies the risks associated with large datasets about people: anonymity, privacy, and bias. He leads the Princeton Web Transparency and Accountability Project to uncover how companies collect and use our personal information. His doctoral research showed the fundamental limits of de-identification. He co-created a Massive Open Online Course as well as a textbook on Bitcoin and cryptocurrency technologies. Narayanan is a recipient of the Presidential Early Career Award for Scientists and Engineers.</p>
-</section>
-<section id="thanks-and-acknowledgements" class="level1">
-<h1>Thanks and acknowledgements</h1>
-<p>This book wouldn’t have been possible without the profound contributions of our collaborators and the community at large.</p>
-<p>We are grateful to our students for their active participation in pilot courses at Berkeley, Cornell, and Princeton. Thanks in particular to Claudia Roberts for lecture notes of the Princeton course.</p>
-<p>Special thanks to Katherine Yen for editorial and technical help with the book.</p>
-<p>Moritz Hardt is indebted to Cynthia Dwork for introducing him to the topic of this book during a formative internship in 2010.</p>
-<p>We benefitted from substantial discussions, feedback and comments from Rediet Abebe, Andrew Brunskill, Aylin Caliskan, Frances Ding, Michaela Hardt, Lily Hu, Ben Hutchinson, Lauren Kaplan, Niki Kilbertus, Kathy Kleiman, Issa Kohler-Hausmann, Eric Lawrence, Zachary Lipton, Lydia T. Liu, John Miller, Smitha Milli, Shira Mitchell, Robert Netzorg, Juan Carlos Perdomo, Claudia Roberts, Olga Russakovsky, Matthew J. Salganik, Carsten Schwemmer, Ludwig Schmidt, Matthew Sun, Angelina Wang, Annette Zimmermann, Tijana Zrnic.</p>
+<p><strong>Solon Barocas</strong> is an Assistant Professor in the
+Department of Information Science at Cornell University. His research
+explores ethical and policy issues in artificial intelligence,
+particularly fairness in machine learning, methods for bringing
+accountability to automated decision-making, and the privacy
+implications of inference. He was previously a Postdoctoral Researcher
+at Microsoft Research, where he worked with the Fairness,
+Accountability, Transparency, and Ethics in AI group, as well as a
+Postdoctoral Research Associate at the Center for Information Technology
+Policy at Princeton University. Barocas completed his doctorate at New
+York University, where he remains a visiting scholar at the Center for
+Urban Science + Progress.</p>
+<p><strong>Moritz Hardt</strong> is an Assistant Professor in the
+Department of Electrical Engineering and Computer Sciences at the
+University of California, Berkeley. Hardt investigates algorithms and
+machine learning with a focus on reliability, validity, and societal
+impact. After obtaining a PhD in Computer Science from Princeton
+University, he held positions at IBM Research Almaden, Google Research
+and Google Brain.</p>
+<p><strong>Arvind Narayanan</strong> is an Associate Professor of
+Computer Science at Princeton. He studies the risks associated with
+large datasets about people: anonymity, privacy, and bias. He leads the
+Princeton Web Transparency and Accountability Project to uncover how
+companies collect and use our personal information. His doctoral
+research showed the fundamental limits of de-identification. He
+co-created a Massive Open Online Course as well as a textbook on Bitcoin
+and cryptocurrency technologies. Narayanan is a recipient of the
+Presidential Early Career Award for Scientists and Engineers.</p>
 </section>
 
 <div id="lastupdate">
-Last updated: Wed 16 Jun 2021 08:59:13 AM PDT
+Last updated: Thu Jun 16 17:00:29 CEST 2022
 </div>
 </article>
 
