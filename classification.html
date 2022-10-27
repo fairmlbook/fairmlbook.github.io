@@ -62,7 +62,7 @@
     and ROC curves</a></li>
     </ul></li>
     <li><a href="#supervised-learning">Supervised learning</a></li>
-    <li><a href="#protected-categories">Protected categories</a>
+    <li><a href="#groups-in-the-population">Groups in the population</a>
     <ul>
     <li><a href="#no-fairness-through-unawareness">No fairness through
     unawareness</a></li>
@@ -91,8 +91,8 @@
     href="#calibration-by-group-as-a-consequence-of-unconstrained-learning">Calibration
     by group as a consequence of unconstrained learning</a></li>
     </ul></li>
-    <li><a href="#how-to-achieve-a-non-discrimination-criterion">How to
-    achieve a non-discrimination criterion</a></li>
+    <li><a href="#how-to-satisfy-a-non-discrimination-criterion">How to
+    satisfy a non-discrimination criterion</a></li>
     <li><a href="#relationships-between-criteria">Relationships between
     criteria</a>
     <ul>
@@ -135,23 +135,24 @@ various characteristics such as credit history and income.
 Classification also applies to situations where the outcome has already
 occurred, but we are unsure about it. For example, we might try to
 classify whether financial fraud has occurred by looking at financial
-transaction.</p>
+transactions.</p>
 <p>What makes classification possible is the existence of patterns that
 connect the outcome of interest in a population to pieces of information
 that we can observe. Classification is specific to a population and the
 patterns prevalent in the population. Risky loan applicants might have a
 track record of high credit utilization. Financial fraud often coincides
 with irregularities in the distribution of digits in financial
-statements. These patterns might exist in some contexts but not
-others.</p>
+statements. These patterns might exist in some contexts but not others.
+As a result, the degree to which classification works varies.</p>
 <p>We formalize classification in two steps. The first is to represent a
 population as a probability distribution. While often taken for granted
 in quantitative work today, the act of representing a dynamic population
-of individuals as a probability distribution is significant. The second
-step is to apply statistics, specifically statistical decision theory,
-to the probability distribution that represents the population.
-Statistical decision theory formalizes the classification objective,
-allowing us to talk about the quality of different classifiers.</p>
+of individuals as a probability distribution is a significant shift in
+perspective. The second step is to apply statistics, specifically
+statistical decision theory, to the probability distribution that
+represents the population. Statistical decision theory formalizes the
+classification objective, allowing us to talk about the quality of
+different classifiers.</p>
 <p>The statistical decision-theoretic treatment of classification forms
 the foundation of supervised machine learning. Supervised learning makes
 classification algorithmic in how it provides heuristics to turn samples
@@ -164,7 +165,7 @@ populations is Halley’s <em>life table</em> from 1693. Halley tabulated
 births and deaths in a small town in order to estimate life expectancy
 in the population. Estimates of life expectancy, then as novel as
 probability theory itself, found use in accurately pricing investments
-that paid an amount of money annualy for the remainder of a person’s
+that paid an amount of money annually for the remainder of a person’s
 life.</p>
 <figure>
 <img src="assets/halley_life_table_1693.png" style="width:75.0%"
@@ -185,32 +186,34 @@ social sciences was the 19th astronomer and sociologist Adolphe
 Quetelet. In a scientific program he called “social physics”, Quetelet
 sought to demonstrate the existence of statistical <em>laws</em> in
 human populations. He introduced the concept of the “average man”
-characterized by the mean values of measured variables that followed a
-normal distribution. As much a descriptive as a normative proposal,
-Quetelet regarded averages as an ideal to be pursued. Among others, his
-work influenced Francis Galton in the development of eugenics.</p>
+characterized by the mean values of measured variables, such as height,
+that followed a normal distribution. As much a descriptive as a
+normative proposal, Quetelet regarded averages as an ideal to be
+pursued. Among others, his work influenced Francis Galton in the
+development of eugenics.</p>
 <p>The success of statistics throughout the 20th century cemented in the
 use of probability to model human populations. Few raise an eyebrow
 today if we talk about a survey as sampling responses from a
 distribution. It seems obvious now that we’d like to estimate parameters
-such as mean and standard deviation from this distribution. Statistics
-is so deeply embedded in the social sciences that we rarely revisit the
-premise that we can represent a human population as a probability
-distribution.</p>
+such as mean and standard deviation from distributions of incomes,
+household sizes, or other such attributes. Statistics is so deeply
+embedded in the social sciences that we rarely revisit the premise that
+we can represent a human population as a probability distribution.</p>
 <p>The differences between a human population and a distribution are
 stark. Human populations change over time, sometimes rapidly, due to
-different mechanisms and interactions among individuals. A distribution,
-in contrast, can be thought of as a static array where rows correspond
-to individuals and columns correspond to measured covariates of an
-individual. The mathematical abstraction for such an array is a set of
-nonnegative numbers, called <em>probabilities</em>, that sum
-up&nbsp;<span class="math inline">1</span> and give us for each row the
-relative weight of this setting of covariates in the population. To
-sample from a such a distribution corresponds to picking one of the rows
-in the table at random in proportion to its weight. We can repeat this
-process without change or deteriation.</p>
+different actions, mechanisms, and interactions among individuals. A
+distribution, in contrast, can be thought of as a static array where
+rows correspond to individuals and columns correspond to measured
+covariates of an individual. The mathematical abstraction for such an
+array is a set of nonnegative numbers, called <em>probabilities</em>,
+that sum up to&nbsp;<span class="math inline">1</span> and give us for
+each row the relative weight of this setting of covariates in the
+population. To sample from such a distribution corresponds to picking
+one of the rows in the table at random in proportion to its weight. We
+can repeat this process without change or deteriation. In this view, the
+distribution is immutable. Nothing we do can change the population.</p>
 <p>Much of statistics deals with samples and the question how we can
-relate quantities computed on a sample, such as the sample avearge, to
+relate quantities computed on a sample, such as the sample average, to
 corresponding parameters of a distribution, such as the population mean.
 The focus in our chapter is different. We’ll use statistics to talk
 about properties of populations as distributions and by extension
@@ -223,33 +226,47 @@ most clearly at the population level.</p>
 <p>The goal of classification is to determine a plausible value for an
 unknown <em>target</em> <span class="math inline">Y</span> given
 observed <em>covariates</em> <span class="math inline">X</span>.
-Formally, the covariates <span class="math inline">X</span> and
-target&nbsp;<span class="math inline">Y</span> are jointly distributed
-random variables. This means that there is one probability distribution
-over pairs of values&nbsp;<span class="math inline">(x,y)</span> that
-the random variables&nbsp;<span class="math inline">(X,Y)</span> might
-take on. This probability distribution models a population of instances
-of the classification problem. In most of our examples, we think of each
+Typically, the covariates are represented as an an array of continuous
+or discrete variables, while the target is either a single scalar or a
+discrete, often binary, value. Formally, the covariates <span
+class="math inline">X</span> and target&nbsp;<span
+class="math inline">Y</span> are jointly distributed random variables.
+This means that there is one probability distribution over pairs of
+values&nbsp;<span class="math inline">(x,y)</span> that the random
+variables&nbsp;<span class="math inline">(X,Y)</span> might take on.
+This probability distribution models a population of instances of the
+classification problem. In most of our examples, we think of each
 instance as the covariates and target of one individual.</p>
 <p>At the time of classification, the value of the target variable is
 not known to us, but we observe the covariates&nbsp;<span
 class="math inline">X</span> and make a guess&nbsp;<span
 class="math inline">\hat Y = f(X)</span> based on what we observed. The
-funtion&nbsp;<span class="math inline">f</span> that maps our covariates
-into our guess&nbsp;<span class="math inline">\hat Y</span> is called a
-<em>classifier</em>. The output of the classifier is sometimes called a
-<em>prediction</em> or <em>label</em>. Throughout this chapter we are
-primarily interested with the random variable&nbsp;<span
-class="math inline">\hat Y</span> and how it relates to other random
-variables. The function that defines this random variables is secondary.
-For this reason, we stretch the terminology slightly and refer
-to&nbsp;<span class="math inline">\hat Y</span> itself as the
-classifier.</p>
-<p>What makes a classifier <em>good</em> for an application and how do
-we choose one out of many possible classifiers? This question often does
-not have a fully satisfying answer, but statistical decision theory
-provides criteria can help highlight different qualities of a classifier
-that can inform our choice.</p>
+function&nbsp;<span class="math inline">f</span> that maps our
+covariates into our guess&nbsp;<span class="math inline">\hat Y</span>
+is called a <em>classifier</em>, or <em>predictor</em>. The output of
+the classifier is called <em>label</em> or <em>prediction</em>.
+Throughout this chapter we are primarily interested with the random
+variable&nbsp;<span class="math inline">\hat Y</span> and how it relates
+to other random variables. The function that defines this random
+variables is secondary. For this reason, we stretch the terminology
+slightly and refer to <span class="math inline">\hat Y</span> itself as
+the classifier.</p>
+<p>Implicit in this formal setup of classification is a major
+assumption. Whatever we do on the basis of the covariates&nbsp;<span
+class="math inline">X</span> cannot influence the outcome&nbsp;<span
+class="math inline">Y</span>. After all, our distribution assigns a
+fixed weight to each pair&nbsp;<span class="math inline">(x,y)</span>.
+In particular, our prediction&nbsp;<span class="math inline">\hat
+Y</span> cannot influence the outcome&nbsp;<span
+class="math inline">Y</span>. This assumption is often violated when
+predictions motivate actions that influence the outcome. For example,
+the prediction that a student is at risk of dropout, might be followed
+with educational interventions that make dropout less likely.</p>
+<p>To be able to choose a classifier out of many possibilities, we need
+to formalize what makes a classifier <em>good</em>. This question often
+does not have a fully satisfying answer, but statistical decision theory
+provides criteria that can help highlight different qualities of a
+classifier that can inform our choice.</p>
 <p>Perhaps the most well known property of a classifier&nbsp;<span
 class="math inline">\hat Y</span> is its <em>classification
 accuracy</em>, or <em>accuracy</em> for short, defined as <span
@@ -350,23 +367,24 @@ Y=0</span></td>
 </table>
 <section id="optimal-classification" class="level2">
 <h2>Optimal classification</h2>
-<p>Suppose we assign a cost (or reward) to each of the four possible
-classification outcomes, true positive, false positive, true negative,
-false negative. The problem of optimal classification is to find a
-classifier that minimizes cost in expectation over a population. We can
-write the cost as a real number&nbsp;<span class="math inline">\ell(\hat
-y, y)</span> that we experience when we classify a target
-value&nbsp;<span class="math inline">y</span> with a label&nbsp;<span
+<p>Suppose we assign a quantified cost (or reward) to each of the four
+possible classification outcomes, true positive, false positive, true
+negative, false negative. The problem of optimal classification is to
+find a classifier that minimizes cost in expectation over a population.
+We can write the cost as a real number&nbsp;<span
+class="math inline">\ell(\hat y, y)</span>, called <em>loss</em>, that
+we experience when we classify a target value&nbsp;<span
+class="math inline">y</span> with a label&nbsp;<span
 class="math inline">\hat y</span>. An <em>optimal classifier</em> is any
-classifier that minimizes the objective: <span class="math display">
+classifier that minimizes the expected loss: <span class="math display">
 \mathop\mathbb{E}[\ell(\hat Y, Y)]
 </span> This objective is called classification <em>risk</em> and
 <em>risk minimization</em> refers to the optimization problem of finding
 a classifier that minimizes risk.</p>
-<p>As an example, choose&nbsp;<span
+<p>As an example, choose the losses&nbsp;<span
 class="math inline">\ell(0,1)=\ell(1,0)=1</span> and&nbsp;<span
-class="math inline">\ell(1,1)=\ell(0,0)=0.</span> For this loss
-function, the optimal classifier is the one that minimizes
+class="math inline">\ell(1,1)=\ell(0,0)=0.</span> For this choice of
+loss function, the optimal classifier is the one that minimizes
 classification error. The resulting optimal classifier has an intuitive
 solution.</p>
 <div class="numenv Fact">
@@ -385,11 +403,23 @@ given the observed covariates&nbsp;<span class="math inline">X</span> is
 greater than&nbsp;<span class="math inline">1/2</span>. If so, it makes
 the guess that the outcome is&nbsp;<span class="math inline">1</span>.
 Otherwise, it guesses that the outcome is&nbsp;<span
-class="math inline">0</span>. Although the optimal predictor is specific
-to classicication error, it extends to the general case by varying the
-threshold. This makes intuitive sense. If our cost for false positives
-was much higher than our cost for false negatives, we’d better err on
-the side of not declaring a positive.</p>
+class="math inline">0</span>. The optimal predictor above is specific to
+classification error. If our loss function were different, the
+threshold&nbsp;<span class="math inline">1/2</span> in the definition
+above would need to change. This makes intuitive sense. If our cost for
+false positives was much higher than our cost for false negatives, we’d
+better err on the side of not declaring a positive.</p>
+<p>The optimal predictor is a theoretical construction that we may not
+be able to build from data. For example, when the vector of
+covariates&nbsp;<span class="math inline">X</span> is high-dimensional,
+a finite sample is likely going to miss out on some settings&nbsp;<span
+class="math inline">X=x</span> that the covariates might take on. In
+this case, it’s not clear how to get at the probability&nbsp;<span
+class="math inline">\mathop\mathbb{P}\{Y = 1\mid X=x\}</span>. There is
+a vast technical repertoire in statistics and machine learning for
+finding good predictors from finite samples. Throughout this chapter we
+focus on problems that persist even if we had access to the optimal
+predictor for a given population.</p>
 </section>
 <section id="risk-scores" class="level2">
 <h2>Risk scores</h2>
@@ -405,20 +435,20 @@ score we see here is a particularly important and natural one. We can
 think of it as taking the available evidence <span
 class="math inline">X=x</span> and calculating the expected outcome
 given the observed information. This is called the <em>posterior
-probability</em> of&nbsp;<span class="math inline">Y</span>
+probability</em> of the outcome&nbsp;<span class="math inline">Y</span>
 given&nbsp;<span class="math inline">X</span>. In an intuitive sense,
 the conditional expectation is a statistical <em>lookup table</em> that
 gives us for each setting of features the frequency of positive outcomes
-given these features.</p>
-<p>The risk score is in itself optimal in that it minimizes the
-<em>squared loss</em> <span class="math display">
+given these features. The risk score is sometimes called <em>Bayes
+optimal</em>. It minimizes the <em>squared loss</em> <span
+class="math display">
 \mathop\mathbb{E}(Y-r(X))^2
 </span> among all possible real-valued risk scores&nbsp;<span
 class="math inline">r(X)</span>. Minimization problems where we try to
 approximate the target variable&nbsp;<span class="math inline">Y</span>
 with a real-valued risk score are called <em>regression</em> problems.
-In this context, risk scores are often called <em>regressors</em>.</p>
-<p>Although our loss function was specific, there is a general lesson.
+In this context, risk scores are often called <em>regressors</em>.
+Although our loss function was specific, there is a general lesson.
 Classification is often attacked by first solving a regression problem
 to summarize the data in a single real-valued risk score. We then turn
 the risk score into a classifier by thresholding.</p>
@@ -459,7 +489,7 @@ and weigh 68kg. The conditional expectation is likely more useful as a
 risk measure of diabetes than the body mass index we saw earlier. After
 all, the conditional expectation directly reflects the incidence rate of
 diabetes given the observed characteristics, while the body mass index
-didn’t solve this specific classification problem.</p>
+didn’t solve this specific regression problem.</p>
 </section>
 <section id="varying-thresholds-and-roc-curves" class="level2">
 <h2>Varying thresholds and ROC curves</h2>
@@ -481,43 +511,27 @@ processing.</p>
 alt="Example of an ROC curve" />
 <figcaption aria-hidden="true">Example of an ROC curve</figcaption>
 </figure>
-<p>We can achieve any trade-off below the ROC curve via randomization.
-To understand this point, think about how we can realize trade-offs on
-the the dashed line in the plot. Take one classifier that accepts
-everyone. This corresponds to true and false positive rate 1, hence
-achieving the upper right corner of the plot. Take another classifier
-that accepts no one, resulting in true and false positive rate 0, the
-lower left corner of the plot. Now, construct a third classifier that
-given an instance randomly picks and applies the first classifier with
-probability&nbsp;<span class="math inline">1-p</span>, and the second
-with probability <span class="math inline">p</span>. This classifier
-achieves true and false positive rate&nbsp;<span
-class="math inline">p</span> thus giving us one point on the dashed line
-in the plot. In the same manner, we could have picked any other pair of
-classifiers and randomized between them. This way we can realize the
-entire area under the ROC curve. In particular, this means the area
-under the ROC curve must be <em>convex</em>, meaning that every point in
-it lies on a line segment between two classifiers on the boundary.</p>
-<p>Strictly speaking, in statistical decision theory, the ROC curve is a
-property of a distribution&nbsp;<span class="math inline">(X, Y)</span>.
-It gives us for each setting of false positive rate, the optimal true
-positive rate that can be achieved for the given false positive rate on
-the distribution&nbsp;<span class="math inline">(X, Y)</span>. This
-leads to several nice theoretical properties of the ROC curve. In the
-machine learning context, ROC curves are computed more liberally for any
-given risk score, even if it isn’t optimal. The ROC curve is often used
-to eyeball how predictive our score is of the target variable. A common
+<p>In statistical decision theory, the ROC curve is a property of a
+distribution&nbsp;<span class="math inline">(X, Y)</span>. It gives us
+for each setting of false positive rate, the optimal true positive rate
+that can be achieved for the given false positive rate on the
+distribution&nbsp;<span class="math inline">(X, Y)</span>. This leads to
+several nice theoretical properties of the ROC curve. In the machine
+learning context, ROC curves are computed more liberally for any given
+risk score, even if it isn’t optimal. The ROC curve is often used to
+eyeball how predictive our score is of the target variable. A common
 measure of predictiveness is the area under the curve (AUC), which
 equals the probability that a random positive instance gets a score
 higher than a random negative instance. An area of&nbsp;<span
 class="math inline">1/2</span> corresponds to random guessing, and an
-area of 1 corresponds to perfect classification.</p>
+area of&nbsp;<span class="math inline">1</span> corresponds to perfect
+classification.</p>
 </section>
 </section>
 <section id="supervised-learning" class="level1">
 <h1>Supervised learning</h1>
-<p>Supervised learning is what makes classification algorithmic. It
-instructs us how to construct good classifiers from samples drawn from a
+<p>Supervised learning is what makes classification algorithmic. It’s
+about how to construct good classifiers from samples drawn from a
 population. The details of supervised learning won’t matter for this
 chapter, but it is still worthwhile to have a working understanding of
 the basic idea.</p>
@@ -551,7 +565,8 @@ supervised learning must negotiate a balance along three axes:</p>
 <li><strong>Representation</strong>: Choose a family of functions that
 the score <span class="math inline">r</span> comes from. A common choice
 are linear functions <span class="math inline">r(x) = \langle w,
-x\rangle</span> for some vector of coefficients <span
+x\rangle</span> that take the inner product of the covariates <span
+class="math inline">x</span> with some vector of coefficients <span
 class="math inline">w</span>. More complex representations involve
 non-linear functions, such as <em>artificial neural networks</em>. This
 function family is often called the <em>model class</em> and the
@@ -560,7 +575,7 @@ parameters</em>.</li>
 <li><strong>Optimization</strong>: Solve the resulting optimization
 problem by finding model parameters that minimize the loss function on
 the training examples.</li>
-<li><strong>Generalization</strong>: Argue why small loss on the
+<li><strong>Generalization</strong>: Ensure that small loss on the
 training examples implies small loss on the population that we drew the
 training examples from.</li>
 </ul>
@@ -571,9 +586,9 @@ are tricks to make optimization feasible at the expense of
 representation or generalization.</p>
 <p>For the remainder of this chapter, we can think of supervised
 learning as a black box that provides us with classifiers when given
-training data. What matters are which properties these classifiers have
-at the population level. At the population level, we interpret a
-classifier as a random variable by considering&nbsp;<span
+labeled training data. What matters are which properties these
+classifiers have at the population level. At the population level, we
+interpret a classifier as a random variable by considering&nbsp;<span
 class="math inline">\hat Y=f(X)</span>. We ignore how&nbsp;<span
 class="math inline">\hat Y</span> was learned from a finite sample, what
 the functional form of the classifier is, and how we estimate various
@@ -582,8 +597,8 @@ considerations are fundamental to machine learning, they are not central
 to the conceptual and technical questions around fairness that we will
 discuss in this chapter.</p>
 </section>
-<section id="protected-categories" class="level1">
-<h1>Protected categories</h1>
+<section id="groups-in-the-population" class="level1">
+<h1>Groups in the population</h1>
 <p>Chapter 2 introduced some of the reasons why individuals might want
 to object to the use of statistical classification rules in
 consequential decisions. We now turn to one specific concern, namely,
@@ -608,7 +623,13 @@ attribute</em> in the technical literature.</p>
 protected categories as a single discrete attribute whose support
 corresponds to each of the possible settings of the original attributes.
 Consequently, our formal treatment in this chapter does apply to the
-case of multiple protected categories.</p>
+case of multiple protected categories. This formal maneuver, however,
+does not address the important concept of <em>intersectionality</em>
+that refers to the unique forms of disadvantage that members of multiple
+protected categories may experience.<span class="citation"
+data-cites="crenshaw2017intersectionality"><span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle" /><span class="sidenote">Crenshaw,
+<em>On Intersectionality: Essential Writings</em> (The New Press,
+2017).</span></span></span></p>
 <p>The fact that we allocate a special random variable for group
 membership does not mean that we can cleanly partition the set of
 features into two independent categories such as “neutral” and
@@ -634,9 +655,9 @@ somehow ensure the impartiality of the resulting classifier.
 Unfortunately, this practice can be ineffective and even harmful.</p>
 <p>In a typical dataset, we have many features that are slightly
 correlated with the sensitive attribute. Visiting the website
-<code>pinterest.com</code>, for example, has a small statistical
-correlation with being
-female.<span><label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle" /><span class="sidenote">As
+<code>pinterest.com</code> in the United States, for example, has a
+small statistical correlation with being
+female.<span><label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle" /><span class="sidenote">As
 of August 2017, 58.9% of Pinterest’s users in the United States were
 female. See <a
 href="https://www.statista.com/statistics/277759/pinterest-gender-usa/">here</a>
@@ -684,7 +705,7 @@ other. In such cases, the sensitive attribute may not have good
 redundant encodings. That does not mean that removing it is a good idea.
 Medication, for example, sometimes depends on race in legitimate ways if
 these correlate with underlying causal factors.<span class="citation"
-data-cites="bonham2016will"><span><label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle" /><span class="sidenote">Bonham,
+data-cites="bonham2016will"><span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle" /><span class="sidenote">Bonham,
 Callier, and Royal, <span>“Will Precision Medicine Move Us Beyond
 Race?”</span> <em>The New England Journal of Medicine</em> 374, no. 21
 (2016): 2003.</span></span></span> Forcing medications to be
@@ -744,13 +765,12 @@ a classifier <span class="math inline">\hat Y</span></li>
 class="math inline">\mathop\mathbb{P}\{Y = 1 \mid R = r\}</span> of a
 score <span class="math inline">R</span></li>
 </ul>
-<p>The three criteria can be generalized and simplified using three
-different (conditional) independence statements. We use the
-notation&nbsp;<span class="math inline">U\bot V\mid W</span> to denote
-that random variables&nbsp;<span class="math inline">U</span>
-and&nbsp;<span class="math inline">V</span> are conditionally
-independent given <span
-class="math inline">W</span>.<span><label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle" /><span class="sidenote">Wasserman’s
+<p>The three criteria can be generalized to score functions using simple
+(conditional) independence statements. We use the notation&nbsp;<span
+class="math inline">U\bot V\mid W</span> to denote that random
+variables&nbsp;<span class="math inline">U</span> and&nbsp;<span
+class="math inline">V</span> are conditionally independent given <span
+class="math inline">W</span>.<span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle" /><span class="sidenote">Wasserman’s
 text<span class="citation" data-cites="wasserman2010all"> (Wasserman,
 <em>All of Statistics: A Concise Course in Statistical Inference</em>
 (Springer, 2010))</span> gives an excellent introduction to conditional
@@ -779,12 +799,7 @@ R</span></td>
 </tbody>
 </table>
 <p>Below we will introduce and discuss each of these conditions in
-detail. Variants of these criteria arise from different ways of relaxing
-them. Earlier on we used the letter&nbsp;<span class="math inline">\hat
-Y</span> for a classifier. To avoid notational clutter, we think of a
-binary classifier now as a special case of a score function&nbsp;<span
-class="math inline">R\in\{0,1\}</span> that has just two values.</p>
-<p>This chapter focuses on the mathematical properties of and
+detail. This chapter focuses on the mathematical properties of and
 relationships between these different criteria. Once we have acquired
 familiarity with the technical matter, we’ll have a broader debate
 around the moral and normative content of these definitions in Chapter
@@ -800,29 +815,38 @@ be statistically independent of the score.</p>
 <em>independence</em> if&nbsp;<span class="math inline">A\bot
 R.</span></p>
 </div>
-<p>Independence has been explored through many equivalent terms or
-variants, referred to as <em>demographic parity</em>, <em>statistical
-parity</em>, <em>group fairness</em>, <em>disparate impact</em> and
-others. In the case of binary classification, independence simplifies to
-the condition <span class="math display">\mathbb{P}\{R=1\mid
-A=a\}=\mathbb{P}\{R=1\mid A=b\}\,,</span> for all groups&nbsp;<span
-class="math inline">a, b.</span> Thinking of the event&nbsp;<span
-class="math inline">R=1</span> as “acceptance”, the condition requires
-the acceptance rate to be the same in all groups. A relaxation of the
-constraint introduces a positive amount of slack&nbsp;<span
+<p>If&nbsp;<span class="math inline">R</span> is a score function that
+satisfies independence, then any classifier&nbsp;<span
+class="math inline">\hat Y = \mathbb{1}\{R &gt; t\}</span> that
+thresholds the score a value&nbsp;<span class="math inline">t</span>
+also satisfies indepndence. This is true so long as the threshold is
+independent of group membership. Group-specific thresholds may not
+preserve independence.</p>
+<p>Independence has been explored through many equivalent and related
+definitions. When applied to a binary classifier&nbsp;<span
+class="math inline">\hat Y</span>, indepence is often referred to as
+<em>demographic parity</em>, <em>statistical parity</em>, <em>group
+fairness</em>, <em>disparate impact</em> and others. In this case,
+independence corresponds to the condition <span
+class="math display">\mathbb{P}\{\hat Y =1\mid A=a\}=\mathbb{P}\{\hat
+Y=1\mid A=b\}\,,</span> for all groups&nbsp;<span class="math inline">a,
+b.</span> Thinking of the event&nbsp;<span class="math inline">\hat
+Y=1</span> as “acceptance”, the condition requires the acceptance rate
+to be the same in all groups. A relaxation of the constraint introduces
+a positive amount of slack&nbsp;<span
 class="math inline">\epsilon&gt;0</span> and requires that <span
-class="math display">\mathbb{P}\{R=1\mid A=a\}\ge \mathbb{P}\{R=1\mid
-A=b\}-\epsilon\,.</span></p>
+class="math display">\mathbb{P}\{\hat Y=1\mid A=a\}\ge \mathbb{P}\{\hat
+Y=1\mid A=b\}-\epsilon\,.</span></p>
 <p>Note that we can swap&nbsp;<span class="math inline">a</span>
 and&nbsp;<span class="math inline">b</span> to get an inequality in the
 other direction. An alternative relaxation is to consider a ratio
-condition, such as, <span class="math display">\frac{\mathbb{P}\{R=1\mid
-A=a\}}
-{\mathbb{P}\{R=1\mid A=b\}}\ge1-\epsilon\,.</span> Some have argued
+condition, such as, <span class="math display">\frac{\mathbb{P}\{\hat
+Y=1\mid A=a\}}
+{\mathbb{P}\{\hat Y=1\mid A=b\}}\ge1-\epsilon\,.</span> Some have argued
 that, for&nbsp;<span class="math inline">\epsilon=0.2,</span> this
 condition relates to the <em>80 percent rule</em> that appears in
 discussions around disparate impact law.<span class="citation"
-data-cites="feldman2015certifying"><span><label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle" /><span class="sidenote">Feldman
+data-cites="feldman2015certifying"><span><label for="sn-5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-5" class="margin-toggle" /><span class="sidenote">Feldman
 et al., <span>“Certifying and Removing Disparate Impact,”</span> in
 <em>Proc. <span class="math inline">21</span>St <span>SIGKDD</span></em>
 (ACM, 2015).</span></span></span></p>
@@ -864,6 +888,15 @@ other. As a result, it will appear in hindsight that members of
 group <span class="math inline">b</span> performed worse than members of
 group <span class="math inline">a,</span> thus establishing a negative
 track record for group <span class="math inline">b.</span></p>
+<p>A real-world phenomenon similar to this hypothetical example is
+termed the <em>glass cliff</em>: women and people of color are more
+likely to be appointed CEO when a firm is struggling. When the firm
+performs poorly during their tenure, they are likely to be replaced by
+white men.<span class="citation" data-cites="ryan2005glass">Cook and
+Glass<span><label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle" /><span class="sidenote"><span>“Above
+the Glass Ceiling: When Are Women and Racial/Ethnic Minorities Promoted
+to CEO?”</span> <em>Strategic Management Journal</em> 35, no. 7 (2014):
+1080–89.</span></span></span></p>
 <p>This situation might arise without positing malice: the company might
 have historically hired employees primarily from group <span
 class="math inline">a,</span> giving them a better understanding of this
@@ -919,27 +952,27 @@ separation</figcaption>
 says is that <span class="math inline">R</span> is conditionally
 independent of&nbsp;<span class="math inline">A</span> given&nbsp;<span
 class="math inline">Y</span>.</p>
-<p>In the case where&nbsp;<span class="math inline">R</span> is a binary
-classifier, separation is equivalent to requiring for all
-groups&nbsp;<span class="math inline">a,b</span> the two constraints
-<span class="math display">
+<p>In the case of a binary classifier, separation is equivalent to
+requiring for all groups&nbsp;<span class="math inline">a,b</span> the
+two constraints <span class="math display">
 \begin{aligned}
-\mathbb{P}\{ R=1 \mid Y=1, A=a\} &amp;= \mathbb{P}\{ R=1 \mid Y=1,
-A=b\}\\
-\mathbb{P}\{ R=1 \mid Y=0, A=a\} &amp;= \mathbb{P}\{ R=1 \mid Y=0,
-A=b\}\,.
+\mathbb{P}\{ \hat Y=1 \mid Y=1, A=a\} &amp;= \mathbb{P}\{ \hat Y=1 \mid
+Y=1, A=b\}\\
+\mathbb{P}\{ \hat Y=1 \mid Y=0, A=a\} &amp;= \mathbb{P}\{ \hat Y=1 \mid
+Y=0, A=b\}\,.
 \end{aligned}
 </span></p>
-<p>Recall that&nbsp;<span class="math inline">\mathbb{P}\{R=1 \mid
+<p>Recall that&nbsp;<span class="math inline">\mathbb{P}\{\hat Y=1 \mid
 Y=1\}</span> is called the <em>true positive rate</em> of the
 classifier. It is the rate at which the classifier correctly recognizes
 positive instances. The <em>false positive rate</em> <span
-class="math inline">\mathbb{P}\{R=1 \mid Y=0\}</span> highlights the
-rate at which the classifier mistakenly assigns positive outcomes to
-negative instances. What separation therefore requires is that all
-groups experience the same false negative rate and the same false
-positive rate. Consequently, also true positive rates are equalized
-between groups, as well as true negative rates.</p>
+class="math inline">\mathbb{P}\{\hat Y=1 \mid Y=0\}</span> highlights
+the rate at which the classifier mistakenly assigns positive outcomes to
+negative instances. Recall that the true positive rate equals&nbsp;<span
+class="math inline">1</span> minus the false negative rate. What
+separation therefore requires is that all groups experience the same
+false negative rate and the same false positive rate. Consequently, the
+definition asks for <em>error rate parity</em>.</p>
 <p>This interpretation in terms of equality of error rates leads to
 natural relaxations. For example, we could only require equality of
 false negative rates. A false negative, intuitively speaking,
@@ -1012,10 +1045,22 @@ curves.</figcaption>
 <p>The highlighted region is the <em>feasible region</em> of trade-offs
 that we can achieve in all groups. However, the thresholds that achieve
 these trade-offs are in general also group-specific. In other words, the
-bar for acceptance varies by group.</p>
-<p>Trade-offs that are not exactly on the curves, but rather in the
-interior of the region, require randomization as we discussed when we
-introduced the ROC curve earlier.</p>
+bar for acceptance varies by group. Trade-offs that are not exactly on
+the curves, but rather in the interior of the region, require
+randomization. To understand this point, think about how we can realize
+trade-offs on the the dashed line in the plot. Take one classifier that
+accepts everyone. This corresponds to true and false positive rate 1,
+hence achieving the upper right corner of the plot. Take another
+classifier that accepts no one, resulting in true and false positive
+rate 0, the lower left corner of the plot. Now, construct a third
+classifier that given an instance randomly picks and applies the first
+classifier with probability&nbsp;<span class="math inline">1-p</span>,
+and the second with probability&nbsp;<span class="math inline">p</span>.
+This classifier achieves true and false positive rate&nbsp;<span
+class="math inline">p</span> thus giving us one point on the dashed line
+in the plot. In the same manner, we could have picked any other pair of
+classifiers and randomized between them. This way we can realize the
+entire area under the ROC curve.</p>
 </section>
 <section id="conditional-acceptance-rates" class="level2">
 <h2>Conditional acceptance rates</h2>
@@ -1079,22 +1124,22 @@ groups <span class="math inline">a,b</span> and all values <span
 class="math inline">r</span> in the support of <span
 class="math inline">R,</span> we have <span
 class="math display">\mathbb{P}\{Y=1 \mid R=r, A=a\}=\mathbb{P}\{ Y=1
-\mid R=r, A=b\}\,.</span> When&nbsp;<span class="math inline">R</span>
-has only two values we recognize this condition as requiring a parity of
-positive/negative predictive values across all groups.</p>
-<p>While it is often useful to think of sufficiency in terms of positive
-and negative predictive values, there’s a useful alternative. Indeed,
-sufficiency turns out to be closely related to an important notion
-called <em>calibration</em>, as we will discuss next.</p>
+\mid R=r, A=b\}\,.</span> If we replace&nbsp;<span
+class="math inline">R</span> by a binary predictor&nbsp;<span
+class="math inline">\hat Y</span>, we recognize this condition as
+requiring a parity of positive/negative predictive values across all
+groups.</p>
 <section id="calibration-and-sufficiency" class="level2">
 <h2>Calibration and sufficiency</h2>
-<p>In some applications it is desirable to be able to interpret the
-values of the score functions as if they were probabilities. The notion
-of calibration allows us to move in this direction. Restricting our
-attention to binary outcome variables, we say that a score <span
-class="math inline">R</span> is <em>calibrated</em> with respect to an
-outcome variable&nbsp;<span class="math inline">Y</span> if for all
-score values <span class="math inline">r\in[0,1],</span> we have <span
+<p>Sufficiency is closely related to an important notion called
+<em>calibration</em>. In some applications it is desirable to be able to
+interpret the values of the score functions as if they were
+probabilities. The notion of calibration allows us to move in this
+direction. Restricting our attention to binary outcome variables, we say
+that a score <span class="math inline">R</span> is <em>calibrated</em>
+with respect to an outcome variable&nbsp;<span
+class="math inline">Y</span> if for all score values <span
+class="math inline">r\in[0,1],</span> we have <span
 class="math display">
 \mathbb{P}\{Y=1 \mid R=r\} = r\,.
 </span> This condition means that the set of all instances assigned a
@@ -1154,7 +1199,7 @@ equivalent notions.</p>
 example, Platt scaling takes a possibly uncalibrated score, treats it as
 a single feature, and fits a one variable regression model against the
 target variable based on this feature.<span class="citation"
-data-cites="platt1999probabilistic"><span><label for="sn-5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-5" class="margin-toggle" /><span class="sidenote">Platt
+data-cites="platt1999probabilistic"><span><label for="sn-8" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-8" class="margin-toggle" /><span class="sidenote">Platt
 et al., <span>“Probabilistic Outputs for Support Vector Machines and
 Comparisons to Regularized Likelihood Methods,”</span> <em>Advances in
 Large Margin Classifiers</em> 10, no. 3 (1999):
@@ -1186,7 +1231,7 @@ look at the calibration values of a standard machine learning model, a
 <em>random forest ensemble</em>, on an income classification task
 derived from the American Community Survey of the US Census Bureau.<span
 class="citation"
-data-cites="ding2021retiring"><span><label for="sn-6" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-6" class="margin-toggle" /><span class="sidenote">Ding
+data-cites="ding2021retiring"><span><label for="sn-9" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-9" class="margin-toggle" /><span class="sidenote">Ding
 et al., <span>“Retiring Adult: New Datasets for Fair Machine
 Learning,”</span> <em>Advances in Neural Information Processing
 Systems</em> 34 (2021).</span></span></span> We restrict the dataset to
@@ -1211,7 +1256,7 @@ dataset.</p>
 <p>These observations are no coincidence. Theory shows that under
 certain technical conditions, unconstrained supervised learning does, in
 fact, imply group calibration.<span class="citation"
-data-cites="liu2019implicit"><span><label for="sn-7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-7" class="margin-toggle" /><span class="sidenote">Liu,
+data-cites="liu2019implicit"><span><label for="sn-10" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-10" class="margin-toggle" /><span class="sidenote">Liu,
 Simchowitz, and Hardt, <span>“The Implicit Fairness Criterion of
 Unconstrained Learning,”</span> in <em>International Conference on
 Machine Learning</em> (PMLR, 2019), 4051–60.</span></span></span> Note,
@@ -1225,9 +1270,9 @@ classification system may not be much of an intervention. In particular,
 it would not effect a substantial change in current practices.</p>
 </section>
 </section>
-<section id="how-to-achieve-a-non-discrimination-criterion"
+<section id="how-to-satisfy-a-non-discrimination-criterion"
 class="level1">
-<h1>How to achieve a non-discrimination criterion</h1>
+<h1>How to satisfy a non-discrimination criterion</h1>
 <p>Now that we have formally introduced three non-discrimination
 criteria, it is worth asking how we can achieve them algorithmically. We
 distinguish between three different techniques. While they generally
@@ -1251,7 +1296,7 @@ transformation ensures independence, any deterministic training process
 on the new space will also satisfy independence. This is a formal
 consequence of the well-known data processing inequality from
 information theory.<span class="citation"
-data-cites="cover1999elements"><span><label for="sn-8" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-8" class="margin-toggle" /><span class="sidenote">Cover,
+data-cites="cover1999elements"><span><label for="sn-11" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-11" class="margin-toggle" /><span class="sidenote">Cover,
 <em>Elements of Information Theory</em> (John Wiley &amp; Sons,
 1999).</span></span></span></p>
 <p>Achieving independence at training time can lead to the highest
@@ -1284,10 +1329,8 @@ loss in utility.</p>
 non-trivial ways. We should therefore suspect that imposing any two of
 them simultaneously over-constrains the space to the point where only
 degenerate solutions remain. We will now see that this intuition is
-largely correct.</p>
-<p>What this shows is that we cannot impose multiple criteria as hard
-constraints. This leaves open the possibility that meaningful trade-offs
-between these different criteria exist.</p>
+largely correct. What this shows, in particular, is that if we observe
+that one criterion holds, we expect others to be violated.</p>
 <section id="independence-versus-sufficiency" class="level2">
 <h2>Independence versus sufficiency</h2>
 <p>We begin with a simple proposition that shows how in general
@@ -1324,7 +1367,7 @@ and&nbsp;<span class="math inline">Y.</span></p>
 \quad\Longrightarrow\quad
 A\not\bot R
 \quad\mathrm{or}\quad
-A\not\bot R \mid Y\,.</span></p>
+A\not\bot Y \mid A\,.</span></p>
 </div>
 </section>
 <section id="independence-versus-separation" class="level2">
@@ -1419,7 +1462,7 @@ separation and sufficiency cannot both hold.</p>
 <div class="numenv Proof">
 <span class="numenv Proof title">Proof.</span>
 <p>A standard
-fact<span><label for="sn-9" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-9" class="margin-toggle" /><span class="sidenote">See
+fact<span><label for="sn-12" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-12" class="margin-toggle" /><span class="sidenote">See
 Theorem 17.2 in <span class="citation" data-cites="wasserman2010all">
 (Wasserman, <em>All of Statistics</em>)</span></span></span> about
 conditional independence shows</p>
@@ -1433,7 +1476,10 @@ completes the proof.</p>
 <p>For a binary target, the non-degeneracy assumption in the previous
 proposition states that in all groups, at all score values, we have both
 positive and negative instances. In other words, the score value never
-fully resolves uncertainty regarding the outcome.</p>
+fully resolves uncertainty regarding the outcome. Recall that
+sufficiency holds for the Bayes optimal score function. The proposition
+therefore establishes an important fact: Optimal scores generally
+violate separation.</p>
 <p>The proposition also applies to binary classifiers. Here, the
 assumption says that within each group the classifier must have nonzero
 true positive, false positive, true negative, and false negative rates.
@@ -1486,6 +1532,13 @@ expression <span class="math display">\mathrm{NPV_a}
 \frac{(1-\mathrm{FPR})(1-p_a)}{(1-\mathrm{TPR})p_a+(1-\mathrm{FPR})(1-p_a)}\,.</span>
 Hence, sufficiency does not hold.</p>
 </div>
+<p>In the proposition we just proved, separation and sufficiency both
+refer to the binary classifier&nbsp;<span class="math inline">\hat
+Y</span>. The proposition does <em>not</em> apply to the case where
+separation refers to a binary clasisifer&nbsp;<span
+class="math inline">\hat Y=\mathbb{1}\{R &gt; t\}</span> and sufficiency
+refers to the underlying score function&nbsp;<span
+class="math inline">R</span>.</p>
 </section>
 </section>
 <section id="case-study-credit-scoring" class="level1">
@@ -1498,8 +1551,8 @@ from micro loans to jumbo mortgages. In the United States, there are
 three major credit-reporting agencies that collect data on various
 lendees. These agencies are for-profit organizations that each offer
 risk scores based on the data they collected. FICO scores are a
-well-known family of proprietary scores developed by FICO and sold by
-the three credit reporting agencies.</p>
+well-known family of proprietary scores developed by the FICO
+corporation and sold by the three credit reporting agencies.</p>
 <p>Regulation of credit agencies in the United States started with the
 Fair Credit Reporting Act, first passed in 1970, that aims to promote
 the accuracy, fairness, and privacy of consumer of information collected
@@ -1511,7 +1564,7 @@ national origin, sex, marital status, or age.</p>
 <h2>Score distribution</h2>
 <p>Our analysis relies on data published by the Federal Reserve<span
 class="citation"
-data-cites="federalreserve"><span><label for="sn-10" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-10" class="margin-toggle" /><span class="sidenote">The
+data-cites="federalreserve"><span><label for="sn-13" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-13" class="margin-toggle" /><span class="sidenote">The
 Federal Reserve Board, <span>“Report to the Congress on Credit Scoring
 and Its Effects on the Availability and Affordability of Credit”</span>
 (<a
@@ -1523,7 +1576,7 @@ from 2003 about a credit score, demographic information (race or
 ethnicity, gender, marital status), and outcomes (to be defined
 shortly). We’ll focus on the joint statistics of score, race, and
 outcome, where the race attributes assume four values detailed
-below.<span><label for="sn-11" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-11" class="margin-toggle" /><span class="sidenote">These
+below.<span><label for="sn-14" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-14" class="margin-toggle" /><span class="sidenote">These
 numbers come from the “Estimation sample” column of Table 9 on this <a
 href="https://www.federalreserve.gov/boarddocs/rptcongress/creditscore/datamodel_tables.htm">web
 page</a>.</span></span></p>
@@ -1560,9 +1613,8 @@ page</a>.</span></span></p>
 </table>
 <p>The score used in the study is based on the TransUnion TransRisk
 score. TransUnion is a US credit-reporting agency. The TransRisk score
-is in turn based on a proprietary model created by FICO, hence often
-referred to as FICO scores. The Federal Reserve renormalized the scores
-for the study to vary from 0 to 100, with 0 being <em>least
+is in turn based on FICO scores. The Federal Reserve renormalized the
+scores for the study to vary from 0 to 100, with 0 being <em>least
 creditworthy</em>.</p>
 <p>The information on race was provided by the Social Security
 Administration, thus relying on self-reported values. The cumulative
@@ -1653,7 +1705,7 @@ regards to the profit achieved subject to each constraint. For this
 reason and the fact that our choice of cost function was rather
 arbitrary, we do not state the profit numbers. The numbers can be found
 in the original analysis<span class="citation"
-data-cites="hardt2016equality"><span><label for="sn-12" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-12" class="margin-toggle" /><span class="sidenote">Hardt,
+data-cites="hardt2016equality"><span><label for="sn-15" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-15" class="margin-toggle" /><span class="sidenote">Hardt,
 Price, and Srebro, <span>“Equality of Opportunity in Supervised
 Learning,”</span> in <em>Proc. <span class="math inline">29</span>Th
 <span>NIPS</span></em>, 2016, 3315–23.</span></span></span>, which
@@ -1703,7 +1755,7 @@ and making it binary.</p>
 <section id="inherent-limitations-of-observational-criteria"
 class="level1">
 <h1>Inherent limitations of observational criteria</h1>
-<p>All criteria we’ve seen so far have one important aspect in common.
+<p>The criteria we’ve seen so far have one important aspect in common.
 They are properties of the joint distribution of the score, sensitive
 attribute, and the target variable. In other words, if we know the joint
 distribution of the random variables&nbsp;<span class="math inline">(R,
@@ -1711,12 +1763,13 @@ A, Y),</span> we can without ambiguity determine whether this joint
 distribution satisfies one of these criteria or not. For example, if all
 variables are binary, there are eight numbers specifying the joint
 distributions. We can verify each of the criteria we discussed in this
-chapter by looking only at these eight numbers and nothing else.</p>
-<p>We can broaden this notion a bit and also include all other features,
-not just the group attribute. So, let’s call a criterion
-<em>observational</em> if it is a property of the joint distribution of
-the features&nbsp;<span class="math inline">X,</span> the sensitive
-attribute <span class="math inline">A,</span> a score function <span
+chapter by looking only at these eight numbers and nothing else. We can
+broaden this notion a bit and also include all other features
+in&nbsp;<span class="math inline">X</span>, not just the group
+attribute. So, let’s call a criterion <em>observational</em> if it is a
+property of the joint distribution of the features&nbsp;<span
+class="math inline">X,</span> the sensitive attribute&nbsp;<span
+class="math inline">A,</span> a score function <span
 class="math inline">R</span> and an outcome variable <span
 class="math inline">Y.</span> Intuitively speaking, a criterion is
 observational if we can write it down unambiguously using probability
@@ -1748,39 +1801,39 @@ beyond the scope of observational criteria.</p>
 <h1>Chapter notes</h1>
 <p>For the early history of probability and the rise of statistical
 thinking, turn to books by Hacking<span class="citation"
-data-cites="hacking1990taming hacking2006emergence"><span><label for="sn-13" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-13" class="margin-toggle" /><span class="sidenote">Hacking,
+data-cites="hacking1990taming hacking2006emergence"><span><label for="sn-16" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-16" class="margin-toggle" /><span class="sidenote">Hacking,
 Hacking, et al., <em>The Taming of Chance</em>, 17 (Cambridge University
 Press, 1990); Hacking, <em>The Emergence of Probability: A Philosophical
 Study of Early Ideas about Probability, Induction and Statistical
 Inference</em> (Cambridge University Press, 2006).</span></span></span>,
 Porter<span class="citation"
-data-cites="porter2020rise"><span><label for="sn-14" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-14" class="margin-toggle" /><span class="sidenote">Porter,
+data-cites="porter2020rise"><span><label for="sn-17" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-17" class="margin-toggle" /><span class="sidenote">Porter,
 <em>The Rise of Statistical Thinking,
 1820–1900</em>.</span></span></span>, and Desrosières<span
 class="citation"
-data-cites="desrosieres1998politics"><span><label for="sn-15" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-15" class="margin-toggle" /><span class="sidenote">Desrosières,
+data-cites="desrosieres1998politics"><span><label for="sn-18" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-18" class="margin-toggle" /><span class="sidenote">Desrosières,
 <em>The Politics of Large Numbers</em>.</span></span></span>.</p>
-<p>The satistical decision theory we covered in this chapter is also
+<p>The statistical decision theory we covered in this chapter is also
 called (signal) detection theory and is the subject of various
 textbooks. What we call classification is also called prediction in
 other contexts. Likewise, classifiers are often called predictors. For a
 graduate introduction, see the text by Hardt and Recht.<span
 class="citation"
-data-cites="hardtrecht2022patterns"><span><label for="sn-16" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-16" class="margin-toggle" /><span class="sidenote">Hardt
+data-cites="hardtrecht2022patterns"><span><label for="sn-19" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-19" class="margin-toggle" /><span class="sidenote">Hardt
 and Recht, <em>Patterns, Predictions, and Actions: Foundations of
 Machine Learning</em> (Princeton University Press,
 2022).</span></span></span></p>
 <p>Similar fairness criteria to the ones reviewed in this chapter were
 already known in the 1960s and 70s, primarily in the education testing
 and psychometrics literature.<span class="citation"
-data-cites="hutchinson201950"><span><label for="sn-17" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-17" class="margin-toggle" /><span class="sidenote">Hutchinson
+data-cites="hutchinson201950"><span><label for="sn-20" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-20" class="margin-toggle" /><span class="sidenote">Hutchinson
 and Mitchell, <span>“50 Years of Test (Un) Fairness: Lessons for Machine
 Learning,”</span> in <em>Proc. <span class="math inline">2</span>Nd
 Conference on <span class="nocase">Fairness, Accountability, and
 Transparency (FAccT)</span></em>, 2019, 49–58.</span></span></span> The
 first and most influential fairness criterion in this context is due to
 Cleary.<span class="citation"
-data-cites="cleary1966test cleary1968test"><span><label for="sn-18" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-18" class="margin-toggle" /><span class="sidenote">Cleary,
+data-cites="cleary1966test cleary1968test"><span><label for="sn-21" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-21" class="margin-toggle" /><span class="sidenote">Cleary,
 <span>“Test Bias: Validity of the Scholastic Aptitude Test for Negro and
 White Students in Integrated Colleges,”</span> <em>ETS Research Bulletin
 Series</em> 1966, no. 2 (1966): i–23; Cleary, <span>“Test Bias:
@@ -1792,18 +1845,18 @@ from the score with a linear model. This condition follows from
 sufficiency and can be expressed by replacing the conditional
 independence statement with an analogous statement about partial
 correlations.<span class="citation"
-data-cites="darlington1971another"><span><label for="sn-19" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-19" class="margin-toggle" /><span class="sidenote">Darlington,
+data-cites="darlington1971another"><span><label for="sn-22" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-22" class="margin-toggle" /><span class="sidenote">Darlington,
 <span>“Another Look at <span>‘Cultural Fairness’</span>,”</span>
 <em>Journal of Educational Measurement</em> 8, no. 2 (1971):
 71–82.</span></span></span></p>
 <p>Einhorn and Bass<span class="citation"
-data-cites="einhorn1971methodological"><span><label for="sn-20" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-20" class="margin-toggle" /><span class="sidenote">Einhorn
+data-cites="einhorn1971methodological"><span><label for="sn-23" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-23" class="margin-toggle" /><span class="sidenote">Einhorn
 and Bass, <span>“Methodological Considerations Relevant to
 Discrimination in Employment Testing.”</span> <em>Psychological
 Bulletin</em> 75, no. 4 (1971): 261.</span></span></span> considered
 equality of precision values, which is a relaxation of sufficiency as we
 saw earlier. Thorndike<span class="citation"
-data-cites="thorndike1971concepts"><span><label for="sn-21" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-21" class="margin-toggle" /><span class="sidenote">Thorndike,
+data-cites="thorndike1971concepts"><span><label for="sn-24" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-24" class="margin-toggle" /><span class="sidenote">Thorndike,
 <span>“Concepts of Culture-Fairness,”</span> <em>Journal of Educational
 Measurement</em> 8, no. 2 (1971): 63–70.</span></span></span> considered
 a weak variant of calibration by which the frequency of positive
@@ -1812,7 +1865,7 @@ and proposed achieving it via a post-processing step that sets different
 thresholds in different groups. Thorndike’s criterion is incomparable to
 sufficiency in general.</p>
 <p>Darlington<span class="citation"
-data-cites="darlington1971another"><span><label for="sn-22" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-22" class="margin-toggle" /><span class="sidenote">Darlington,
+data-cites="darlington1971another"><span><label for="sn-25" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-25" class="margin-toggle" /><span class="sidenote">Darlington,
 <span>“Another Look at <span>‘Cultural
 Fairness’</span>.”</span></span></span></span> stated four different
 criteria in terms of succinct expressions involving the correlation
@@ -1821,7 +1874,7 @@ include independence, a relaxation of sufficiency, a relaxation of
 separation, and Thorndike’s criterion. Darlington included an intuitive
 visual argument showing that the four criteria are incompatible except
 in degenerate cases. Lewis<span class="citation"
-data-cites="lewis1978comparison"><span><label for="sn-23" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-23" class="margin-toggle" /><span class="sidenote">Lewis,
+data-cites="lewis1978comparison"><span><label for="sn-26" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-26" class="margin-toggle" /><span class="sidenote">Lewis,
 <span>“A Comparison of Three Models for Determining Test
 Fairness”</span> (Federal Aviation Administration Washington DC Office
 of Aviation Medicine, 1978).</span></span></span> reviewed three
@@ -1829,11 +1882,11 @@ fairness criteria including equal precision and equal true/false
 positive rates.</p>
 <p>These important early works were re-discovered later in the machine
 learning and data mining community.<span class="citation"
-data-cites="hutchinson201950"><span><label for="sn-24" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-24" class="margin-toggle" /><span class="sidenote">Hutchinson
+data-cites="hutchinson201950"><span><label for="sn-27" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-27" class="margin-toggle" /><span class="sidenote">Hutchinson
 and Mitchell, <span>“50 Years of Test (Un)
 Fairness.”</span></span></span></span> Numerous works considered
 variants of independence as a fairness constraint.<span class="citation"
-data-cites="calders2009building kamiran2009classifying"><span><label for="sn-25" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-25" class="margin-toggle" /><span class="sidenote">Calders,
+data-cites="calders2009building kamiran2009classifying"><span><label for="sn-28" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-28" class="margin-toggle" /><span class="sidenote">Calders,
 Kamiran, and Pechenizkiy, <span>“Building Classifiers with Independency
 Constraints,”</span> in <em>In Proc. <span>IEEE</span>
 <span>ICDMW</span></em>, 2009, 13–18; Kamiran and Calders,
@@ -1841,18 +1894,18 @@ Constraints,”</span> in <em>In Proc. <span>IEEE</span>
 class="math inline">2</span>Nd International Conference on Computer,
 Control and Communication</em>, 2009.</span></span></span> Feldman et
 al.<span class="citation"
-data-cites="feldman2015certifying"><span><label for="sn-26" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-26" class="margin-toggle" /><span class="sidenote">Feldman
+data-cites="feldman2015certifying"><span><label for="sn-29" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-29" class="margin-toggle" /><span class="sidenote">Feldman
 et al., <span>“Certifying and Removing Disparate
 Impact.”</span></span></span></span> studied a relaxation of demographic
 parity in the context of disparate impact law. Zemel et al.<span
 class="citation"
-data-cites="zemel2013learning"><span><label for="sn-27" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-27" class="margin-toggle" /><span class="sidenote">Zemel
+data-cites="zemel2013learning"><span><label for="sn-30" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-30" class="margin-toggle" /><span class="sidenote">Zemel
 et al., <span>“Learning Fair Representations,”</span> in <em>Proc. <span
 class="math inline">30</span>Th <span>ICML</span></em>,
 2013.</span></span></span> adopted the mutual information viewpoint and
 proposed a heuristic pre-processing approach for minimizing mutual
 information. As early as 2012, Dwork et al.<span class="citation"
-data-cites="dwork2012fairness"><span><label for="sn-28" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-28" class="margin-toggle" /><span class="sidenote">Dwork
+data-cites="dwork2012fairness"><span><label for="sn-31" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-31" class="margin-toggle" /><span class="sidenote">Dwork
 et al., <span>“Fairness Through Awareness,”</span> in <em>Proc. <span
 class="math inline">3</span>Rd <span>ITCS</span></em>, 2012,
 214–26.</span></span></span> argued that the independence criterion was
@@ -1860,35 +1913,35 @@ inadequate as a fairness constraint. In particular, this work identified
 the problem with independence we discussed in this chapter.</p>
 <p>The separation criterion appeared under the name <em>equalized
 odds</em><span class="citation"
-data-cites="hardt2016equality"><span><label for="sn-29" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-29" class="margin-toggle" /><span class="sidenote">Hardt,
+data-cites="hardt2016equality"><span><label for="sn-32" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-32" class="margin-toggle" /><span class="sidenote">Hardt,
 Price, and Srebro, <span>“Equality of Opportunity in Supervised
 Learning.”</span></span></span></span>, alongside the relaxation to
 equal false negative rates, called <em>equality of opportunity.</em>
 These criteria also appeared in an independent work<span
 class="citation"
-data-cites="zafar2017fairnessbeyond"><span><label for="sn-30" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-30" class="margin-toggle" /><span class="sidenote">Zafar
+data-cites="zafar2017fairnessbeyond"><span><label for="sn-33" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-33" class="margin-toggle" /><span class="sidenote">Zafar
 et al., <span>“Fairness Beyond Disparate Treatment &amp; Disparate
 Impact: Learning Classification Without Disparate Mistreatment,”</span>
 in <em>Proc. <span class="math inline">26</span>Th
 <span>WWW</span></em>, 2017.</span></span></span> under different names.
 Woodworth et al.<span class="citation"
-data-cites="woodworth2017learning"><span><label for="sn-31" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-31" class="margin-toggle" /><span class="sidenote">Woodworth
+data-cites="woodworth2017learning"><span><label for="sn-34" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-34" class="margin-toggle" /><span class="sidenote">Woodworth
 et al., <span>“Learning Non-Discriminatory Predictors,”</span> in
 <em>Proc. <span class="math inline">30</span>Th <span>COLT</span></em>,
 2017, 1920–53.</span></span></span> studied a relaxation of separation
 stated in terms of correlation coefficients. This relaxation corresponds
 to the third criterion studied by Darlington.<span class="citation"
-data-cites="darlington1971another"><span><label for="sn-32" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-32" class="margin-toggle" /><span class="sidenote">Darlington,
+data-cites="darlington1971another"><span><label for="sn-35" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-35" class="margin-toggle" /><span class="sidenote">Darlington,
 <span>“Another Look at <span>‘Cultural
 Fairness’</span>.”</span></span></span></span></p>
 <p>ProPublica<span class="citation"
-data-cites="angwin2016machine"><span><label for="sn-33" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-33" class="margin-toggle" /><span class="sidenote">Angwin
+data-cites="angwin2016machine"><span><label for="sn-36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-36" class="margin-toggle" /><span class="sidenote">Angwin
 et al., <span>“Machine Bias,”</span> <em>Pro Publica</em>,
 2016.</span></span></span> implicitly adopted equality of false positive
 rates as a fairness criterion in their article on COMPAS scores.
 Northpointe, the maker of the COMPAS software, emphasized the importance
 of calibration by group in their rebuttal<span class="citation"
-data-cites="dieterich16compas"><span><label for="sn-34" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-34" class="margin-toggle" /><span class="sidenote">Dieterich,
+data-cites="dieterich16compas"><span><label for="sn-37" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-37" class="margin-toggle" /><span class="sidenote">Dieterich,
 Mendoza, and Brennan, <span>“COMPAS Risk Scales: Demonstrating Accuracy
 Equity and Predictive Parity,”</span> 2016, <a
 href="https://www.documentcloud.org/documents/2998391-ProPublica-Commentary-Final-070616.html"
@@ -1898,19 +1951,19 @@ publication of ProPublica’s article by bloggers including Abe Gong.
 There has been extensive scholarship on actuarial risk assessment in
 criminal justice that long predates the ProPublica debate; Berk et
 al.<span class="citation"
-data-cites="berk2017fairness"><span><label for="sn-35" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-35" class="margin-toggle" /><span class="sidenote">Berk
+data-cites="berk2017fairness"><span><label for="sn-38" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-38" class="margin-toggle" /><span class="sidenote">Berk
 et al., <span>“<span class="nocase">Fairness in Criminal Justice Risk
 Assessments: The State of the Art</span>,”</span> <em>ArXiv
 e-Prints</em> 1703.09207 (2017).</span></span></span> provide a survey
 with commentary.</p>
 <p>Variants of the trade-off between separation and sufficiency were
 shown by Chouldechova<span class="citation"
-data-cites="chouldechova2016fair"><span><label for="sn-36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-36" class="margin-toggle" /><span class="sidenote">Chouldechova,
+data-cites="chouldechova2016fair"><span><label for="sn-39" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-39" class="margin-toggle" /><span class="sidenote">Chouldechova,
 <span>“Fair Prediction with Disparate Impact: A Study of Bias in
 Recidivism Prediction Instruments,”</span> in <em>Proc. <span
 class="math inline">3</span>Rd <span>FATML</span></em>,
 2016.</span></span></span> and Kleinberg et al.<span class="citation"
-data-cites="kleinberg2016inherent"><span><label for="sn-37" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-37" class="margin-toggle" /><span class="sidenote">Kleinberg,
+data-cites="kleinberg2016inherent"><span><label for="sn-40" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-40" class="margin-toggle" /><span class="sidenote">Kleinberg,
 Mullainathan, and Raghavan, <span>“Inherent Trade-Offs in the Fair
 Determination of Risk Scores,”</span> <em>arXiv Preprint
 arXiv:1609.05807</em>, 2016.</span></span></span> Each of them
@@ -1918,7 +1971,7 @@ considered somewhat different criteria to trade-off. Chouldechova’s
 argument is very similar to the proof we presented that invokes the
 relationship between positive predictive value and true positive rate.
 Subsequent work<span class="citation"
-data-cites="weinberger2017calibration"><span><label for="sn-38" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-38" class="margin-toggle" /><span class="sidenote">Pleiss
+data-cites="weinberger2017calibration"><span><label for="sn-41" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-41" class="margin-toggle" /><span class="sidenote">Pleiss
 et al., <span>“On Fairness and Calibration,”</span> in <em>Proc. <span
 class="math inline">30</span>Th <span>NIPS</span></em>,
 2017.</span></span></span> considers trade-offs between relaxed and
@@ -1929,7 +1982,7 @@ counterexample for ternary classifiers, is due to Shira Mitchell and
 Jackie Shadlen, pointed out to us in personal communication.</p>
 <p>The credit score case study is from Hardt, Price, and Srebro<span
 class="citation"
-data-cites="hardt2016equality"><span><label for="sn-39" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-39" class="margin-toggle" /><span class="sidenote">Hardt,
+data-cites="hardt2016equality"><span><label for="sn-42" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-42" class="margin-toggle" /><span class="sidenote">Hardt,
 Price, and Srebro, <span>“Equality of Opportunity in Supervised
 Learning.”</span></span></span></span> However, we highlight the
 independence criterion in our plots, whereas the authors of the paper
@@ -2118,10 +2171,20 @@ Educational Measurement</em> 5, no. 2 (1968): 115–24.
 Negro and White Students in Integrated Colleges.”</span> <em>ETS
 Research Bulletin Series</em> 1966, no. 2 (1966): i–23.
 </div>
+<div id="ref-cook2014above" class="csl-entry" role="doc-biblioentry">
+Cook, Alison, and Christy Glass. <span>“Above the Glass Ceiling: When
+Are Women and Racial/Ethnic Minorities Promoted to CEO?”</span>
+<em>Strategic Management Journal</em> 35, no. 7 (2014): 1080–89.
+</div>
 <div id="ref-cover1999elements" class="csl-entry"
 role="doc-biblioentry">
 Cover, Thomas M. <em>Elements of Information Theory</em>. John Wiley
 &amp; Sons, 1999.
+</div>
+<div id="ref-crenshaw2017intersectionality" class="csl-entry"
+role="doc-biblioentry">
+Crenshaw, Kimberlé W. <em>On Intersectionality: Essential Writings</em>.
+The New Press, 2017.
 </div>
 <div id="ref-darlington1971another" class="csl-entry"
 role="doc-biblioentry">
@@ -2238,6 +2301,12 @@ Weinberger. <span>“On Fairness and Calibration.”</span> In
 Porter, Theodore M. <em>The Rise of Statistical Thinking,
 1820–1900</em>. Princeton University Press, 2020.
 </div>
+<div id="ref-ryan2005glass" class="csl-entry" role="doc-biblioentry">
+Ryan, Michelle K, and S Alexander Haslam. <span>“The Glass Cliff:
+Evidence That Women Are over-Represented in Precarious Leadership
+Positions.”</span> <em>British Journal of Management</em> 16, no. 2
+(2005): 81–90.
+</div>
 <div id="ref-federalreserve" class="csl-entry" role="doc-biblioentry">
 The Federal Reserve Board. <span>“Report to the Congress on Credit
 Scoring and Its Effects on the Availability and Affordability of
@@ -2280,7 +2349,7 @@ class="math inline">30</span>Th <span>ICML</span></em>, 2013.
 </section>
 
 <div id="lastupdate">
-Last updated: Tue Jun 28 10:06:01 CEST 2022
+Last updated: Thu Oct 27 14:38:20 CEST 2022
 </div>
 </article>
 
