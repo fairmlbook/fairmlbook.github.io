@@ -1,1 +1,1 @@
-This directory contains the compiled product. Do not delete.
+Do not delete.
